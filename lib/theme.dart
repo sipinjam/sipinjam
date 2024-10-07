@@ -1,4 +1,3 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-// TextStyle MyanmarText = GoogleFonts.myan
+Color biruTua = Color(0xff615EFC);
