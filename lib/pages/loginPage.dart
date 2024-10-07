@@ -6,7 +6,7 @@ class Loginpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffEEEEEE),
+        backgroundColor: const Color(0xffEEEEEE),
         body: Expanded(
           child: Stack(
             children: [
@@ -36,24 +36,21 @@ class Loginpage extends StatelessWidget {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 295,
-                  height: 459,
-                  color: Colors.blue,
-                  child: const Column(
-                    children: [
-                      Text(
-                        'SIPINJAM',
-                        style: TextStyle(fontSize: 40),
-                      ),
-                      SizedBox(
-                        height: 62,
-                      ),
-                      Positioned(left: 0, child: Text("Let's get you sign in!"))
-                    ],
-                  ),
+              Container(
+                width: 295,
+                height: 459,
+                color: Colors.blue,
+                child: const Column(
+                  children: [
+                    Text(
+                      'SIPINJAM',
+                      style: TextStyle(fontSize: 40),
+                    ),
+                    SizedBox(
+                      height: 62,
+                    ),
+                    Positioned(left: 0, child: Text("Let's get you sign in!"))
+                  ],
                 ),
               )
             ],
