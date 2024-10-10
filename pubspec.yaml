@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.1
   google_fonts: ^6.2.1
+  d_input: ^0.4.2
+  d_button: ^0.0.10
 
 # flutter_native_splash:
 #   background_image: assets/splashBackground.png

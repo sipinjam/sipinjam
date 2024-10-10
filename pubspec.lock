@@ -89,6 +89,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  d_button:
+    dependency: "direct main"
+    description:
+      name: d_button
+      sha256: "3bb2c013259f02db0b582a56373dafcd8a1882ae6b9537e5035d78f3d4fc914a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.10"
+  d_input:
+    dependency: "direct main"
+    description:
+      name: d_input
+      sha256: "156526b669b56a78f8ed10491c3567389c0d9ac95cd714674c9e36ba50b6cfa5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.2"
   fake_async:
     dependency: transitive
     description:
@@ -431,4 +447,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.5.2 <4.0.0"
-  flutter: ">=3.22.0"
+  flutter: ">=3.24.1"

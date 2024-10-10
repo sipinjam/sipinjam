@@ -1,3 +1,4 @@
 import 'package:flutter/material.dart';
 
-Color biruTua = Color(0xff615EFC);
+Color biruTua = const Color(0xff615EFC);
+Color putih = const Color(0xffEEEEEE);
