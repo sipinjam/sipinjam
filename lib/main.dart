@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/pages/detailRuangan.dart';
 import 'package:sipit_app/pages/history.dart';
 import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/pages/loginPage.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/peminjaman': (context) => const peminjamanPage(),
         '/profile': (context) => const profilePage(),
         '/history': (context) => const historyPage(),
-        '/scedule': (context) => const LoginPage(),
+        '/detailRuangan': (context) => const detailRuanganPage(),
       },
     );
   }
