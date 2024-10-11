@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/pages/history.dart';
 import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/pages/loginPage.dart';
+import 'package:sipit_app/pages/peminjaman.dart';
+import 'package:sipit_app/pages/profile.dart';
 import 'package:sipit_app/pages/splash.dart';
 
 void main() {
@@ -18,6 +21,11 @@ class MyApp extends StatelessWidget {
       home: const SplashPage(),
       routes: {
         '/login': (context) => const LoginPage(),
+        '/home': (context) => const HomePage(),
+        '/peminjaman': (context) => const peminjamanPage(),
+        '/profile': (context) => const profilePage(),
+        '/history': (context) => const historyPage(),
+        '/scedule': (context) => const LoginPage(),
       },
     );
   }

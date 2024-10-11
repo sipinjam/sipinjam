@@ -52,7 +52,7 @@ class LoginPage extends StatelessWidget {
                   child: Column(
                     children: [
                       const Text(
-                        'SIPERA',
+                        'SIPINJAM',
                         style: TextStyle(
                           fontSize: 40,
                         ),
