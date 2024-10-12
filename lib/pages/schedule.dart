@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
+class SchedulePage extends StatelessWidget {
+  const SchedulePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Text('Schedule'),
+      ),
+    );
   }
 }

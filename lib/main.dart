@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sipit_app/pages/authentication/loginPage.dart';
 import 'package:sipit_app/pages/detailRuangan.dart';
 import 'package:sipit_app/pages/history.dart';
 import 'package:sipit_app/pages/homePage.dart';
-import 'package:sipit_app/pages/loginPage.dart';
 import 'package:sipit_app/pages/peminjaman.dart';
 import 'package:sipit_app/pages/profile.dart';
 import 'package:sipit_app/pages/splash.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

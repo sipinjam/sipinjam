@@ -1,6 +1,8 @@
 import 'package:d_button/d_button.dart';
 import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/dashboard/dashboardPage.dart';
 import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/theme.dart';
 
@@ -46,10 +48,11 @@ class LoginPage extends StatelessWidget {
             ),
             Align(
                 alignment: Alignment.center,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
                   height: 400,
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
                         'SIPINJAM',
@@ -106,12 +109,8 @@ class LoginPage extends StatelessWidget {
                           borderColor: Colors.white,
                           mainColor: const Color.fromRGBO(246, 195, 0, 5),
                           radius: 10,
-                          onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
-                          },
+                          onClick: () =>
+                              Nav.push(context, const Dashboardpage()),
                           child: const Text(
                             'SIGN IN',
                             style: TextStyle(

@@ -22,6 +22,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
+      // fit: StackFit.expand,
       alignment: Alignment.center,
       children: [
         Container(
@@ -32,7 +33,12 @@ class _SplashPageState extends State<SplashPage> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Image.asset('assets/images/gedungkuliah-terpadu.png'),
+          child: Image.asset(
+            'assets/images/gedungkuliah-terpadu.png',
+            // width: MediaQuery.of(context).size.width,
+            // height: MediaQuery.of(context).size.height / 2,
+            fit: BoxFit.cover,
+          ),
         ),
         Column(
           children: [
