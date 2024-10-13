@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sipit_app/theme.dart';
 
 void main() {
   runApp(HistoryPage());
@@ -66,6 +65,38 @@ class _HistoryState extends State<History> {
               date: '20 September 2024',
               status: 'Proses',
               statusColor: Colors.blue,
+            ),
+            BookingCard(
+              imageUrl: 'assets/images/gedungkuliah-terpadu.png',
+              buildingName: 'Gedung Kuliah Terpadu',
+              borrower: 'UKM ROHKRIS',
+              date: '20 September 2024',
+              status: 'Disetujui',
+              statusColor: Colors.green,
+            ),
+            BookingCard(
+              imageUrl: 'assets/images/gedungkuliah-terpadu.png',
+              buildingName: 'Gedung Kuliah Terpadu',
+              borrower: 'UKM ROHKRIS',
+              date: '20 September 2024',
+              status: 'Disetujui',
+              statusColor: Colors.green,
+            ),
+            BookingCard(
+              imageUrl: 'assets/images/gedungkuliah-terpadu.png',
+              buildingName: 'Gedung Kuliah Terpadu',
+              borrower: 'UKM ROHKRIS',
+              date: '20 September 2024',
+              status: 'Disetujui',
+              statusColor: Colors.green,
+            ),
+            BookingCard(
+              imageUrl: 'assets/images/gedungkuliah-terpadu.png',
+              buildingName: 'Gedung Kuliah Terpadu',
+              borrower: 'UKM ROHKRIS',
+              date: '20 September 2024',
+              status: 'Disetujui',
+              statusColor: Colors.green,
             ),
           ],
         ),
