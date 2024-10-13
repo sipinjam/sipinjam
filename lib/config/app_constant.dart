@@ -12,7 +12,7 @@ class AppConstants {
       'label': 'Home',
     },
     {
-      'view': const historyPage(),
+      'view': const HistoryPage(),
       'icon': Icons.history_rounded,
       'label': 'History',
     },
