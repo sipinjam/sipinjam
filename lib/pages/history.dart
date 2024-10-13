@@ -15,14 +15,12 @@ class HistoryPage extends StatelessWidget {
   }
 }
 
-
 class History extends StatefulWidget {
   const History({super.key});
 
   @override
   State<History> createState() => _HistoryState();
 }
-
 
 class _HistoryState extends State<History> {
 
