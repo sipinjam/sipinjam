@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Define the FAQ model (struktur data untuk FAQ)
+// Definisikan model untuk FAQ
 class Faq {
   final String question;
   final String answer;
@@ -8,13 +8,15 @@ class Faq {
   Faq({required this.question, required this.answer});
 }
 
-class FaqScreen extends StatelessWidget {
-  // List of FAQ items
+class FaqPage extends StatelessWidget {
+  FaqPage({super.key});
+
+  // List FAQ (isi pertanyaan dan jawaban)
   final List<Faq> faqs = [
     Faq(
       question: 'Bagaimana Cara Pengajuan Peminjaman Ruangan?',
       answer:
-          '1. Membuat surat peminjaman tempat. 2. Meminta disposisi helper. 3. Meminta memo ke BEM. 4. Surat diserahkan ke Bapak Unggul.',
+          '1. Membuat surat peminjaman tempat.\n2. Meminta disposisi helper.\n3. Meminta memo ke BEM.\n4. Surat diserahkan ke Bapak Unggul.',
     ),
     Faq(
       question: 'Apakah ada batasan waktu dalam peminjaman tempat?',
@@ -28,17 +30,28 @@ class FaqScreen extends StatelessWidget {
       question: 'Apakah ada biaya tambahan selain biaya sewa tempat?',
       answer: 'Tidak ada biaya tambahan.',
     ),
-    // Tambah lebih banyak FAQ jika perlu
   ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FAQ App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('FAQ'),
       ),
-      home: FaqScreen(), // Set FAQ screen sebagai home
+      body: ListView.builder(
+        itemCount: faqs.length,
+        itemBuilder: (context, index) {
+          return ExpansionTile(
+            title: Text(faqs[index].question),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(faqs[index].answer),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
