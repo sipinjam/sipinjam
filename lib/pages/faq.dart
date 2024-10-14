@@ -33,24 +33,12 @@ class FaqScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('FAQ'),
+    return MaterialApp(
+      title: 'FAQ App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      body: ListView.builder(
-        itemCount: faqs.length,
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            title: Text(faqs[index].question),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(faqs[index].answer),
-              ),
-            ],
-          );
-        },
-      ),
+      home: FaqScreen(), // Set FAQ screen sebagai home
     );
   }
 }
