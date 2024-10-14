@@ -8,13 +8,25 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const TextField(
-          decoration: InputDecoration(
-            hintText: 'Cari ruangan',
-            border: InputBorder.none,
+        automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
+        title: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
+          ),
+          elevation: 2, // Memberi efek bayangan
+          margin: const EdgeInsets.only(top: 20), // Menambahkan margin atas
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Cari ruangan',
+                border: InputBorder.none,
+                icon: Icon(Icons.search, color: Colors.grey.shade600),
+              ),
+            ),
           ),
         ),
-        leading: const Icon(Icons.search, color: Colors.black)
+        leading: null, // Tidak ada ikon search di leading, karena sudah di dalam TextField
       ),
       body: SingleChildScrollView(
         child: Column(
