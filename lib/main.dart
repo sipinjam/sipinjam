@@ -8,6 +8,7 @@ import 'package:sipit_app/pages/peminjaman.dart';
 import 'package:sipit_app/pages/profile.dart';
 import 'package:sipit_app/pages/splash.dart';
 
+
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
