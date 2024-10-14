@@ -26,7 +26,8 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        leading: null, // Tidak ada ikon search di leading, karena sudah di dalam TextField
+        leading:
+            null, // Tidak ada ikon search di leading, karena sudah di dalam TextField
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -70,14 +71,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
     );
   }
 }
@@ -109,7 +102,7 @@ class GedungCard extends StatelessWidget {
   }
 }
 
-  class RoomCard extends StatelessWidget {
+class RoomCard extends StatelessWidget {
   final String title;
   final int capacity;
   const RoomCard(this.title, this.capacity, {super.key});
@@ -146,14 +139,15 @@ class GedungCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 16, 
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        const Icon(Icons.people, size: 20), // Ukuran ikon lebih besar
+                        const Icon(Icons.people,
+                            size: 20), // Ukuran ikon lebih besar
                         const SizedBox(width: 4),
                         Text('$capacity'),
                         const SizedBox(width: 10),
@@ -174,7 +168,6 @@ class GedungCard extends StatelessWidget {
     );
   }
 }
-
 
 void main() {
   runApp(const MaterialApp(

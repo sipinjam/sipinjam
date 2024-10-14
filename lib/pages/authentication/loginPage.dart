@@ -3,7 +3,6 @@ import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/dashboard/dashboardPage.dart';
-import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/theme.dart';
 
 class LoginPage extends StatelessWidget {
@@ -52,7 +51,6 @@ class LoginPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.7,
                   height: 400,
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
                         'SIPINJAM',
