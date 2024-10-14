@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                   children: const [
                     GedungCard('Administrasi Bisnis'),
                     GedungCard('Gedung Kuliah Terpadu'),
-                    GedungCard('Magister'),
+                    GedungCard('Magister Terapan'),
                   ],
                 ),
               ),
@@ -54,6 +54,8 @@ class HomePage extends StatelessWidget {
                   const RoomCard('GKT Lantai 1', 300),
                   const RoomCard('GKT Lantai 2', 300),
                   const RoomCard('GKT IV/401', 30),
+                  const RoomCard('GKT IV/402', 30),
+                  const RoomCard('GKT IV/403', 30),
                 ],
               ),
             ),
