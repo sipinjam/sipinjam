@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/theme.dart';
 
 class peminjamanPage extends StatelessWidget {
   const peminjamanPage({super.key});
-
-  @override
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -11,6 +10,7 @@ class peminjamanPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Form Peminjaman"),
       ),
+      backgroundColor: Color.fromARGB(255, 212, 209, 209),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -18,144 +18,189 @@ class peminjamanPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Bagian Peminjam
-              Text(
-                'Peminjam',
-                style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                initialValue: 'PENGGUNA SIPIT',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
+              Card(
+                color: putih, // Warna abu-abu
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Sudut membulat
+                ),
+                elevation: 4, // Efek bayangan
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Peminjam',
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        initialValue: 'PENGGUNA SIPIT',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Username',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        initialValue: 'Rohani Kristiani Polines',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Ormawa',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: 8),
-              TextFormField(
-                initialValue: 'Rohani Kristiani Polines',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Ormawa',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-
               // Bagian Kegiatan
-              Text(
-                'Kegiatan',
-                style: TextStyle(
-                    color: Colors.purple, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Nama Kegiatan',
-                  border: OutlineInputBorder(),
-                  errorText: 'Silahkan isi nama kegiatan',
+              Card(
+                color: putih, // Warna abu-abu
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Tema Kegiatan',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Tanggal',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
-                ),
-              ),
-              SizedBox(height: 8),
+                elevation: 4, // Efek bayangan
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Kegiatan',
+                        style: TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Nama Kegiatan',
+                          border: OutlineInputBorder(),
+                          errorText: 'Silahkan isi nama kegiatan',
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Tema Kegiatan',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Tanggal',
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                      ),
+                      SizedBox(height: 8),
 
-              // Bagian Waktu
-              Text('Waktu', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  ChoiceChip(
-                    label: Text("08.00 - 12.00"),
-                    selected: false,
-                  ),
-                  SizedBox(width: 8),
-                  ChoiceChip(
-                    label: Text("12.00 - 16.00"),
-                    selected: true,
-                  ),
-                  SizedBox(width: 8),
-                  ChoiceChip(
-                    label: Text("16.00 - 20.00"),
-                    selected: false,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
+                      // Bagian Waktu
+                      Text('Waktu',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          ChoiceChip(
+                            label: Text("08.00 - 12.00"),
+                            selected: false,
+                          ),
+                          SizedBox(width: 8),
+                          ChoiceChip(
+                            label: Text("12.00 - 16.00"),
+                            selected: true,
+                          ),
+                          SizedBox(width: 8),
+                          ChoiceChip(
+                            label: Text("16.00 - 20.00"),
+                            selected: false,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
 
-              // Bagian Ruangan
-              TextFormField(
-                initialValue: 'Ruang Seminar MST',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Ruangan',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              Text(
-                'Ormawa',
-                style: TextStyle(
-                    color: Colors.purple, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                initialValue: 'Miftachussurur',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Ketua ormawa',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                initialValue: '4.33.23.1.15',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'NIM ',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Nama Ketua Pelaksana',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                initialValue: 'Miftachussurur',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Pembina ormawa',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                initialValue: '4.33.23.1.15',
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'NIP ',
-                  border: OutlineInputBorder(),
+                      // Bagian Ruangan
+                      TextFormField(
+                        initialValue: 'Ruang Seminar MST',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Ruangan',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Card(
-                color: Colors.grey[300], // Warna abu-abu
+                color: putih, // Warna abu-abu
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Sudut membulat
+                ),
+                elevation: 4, // Efek bayangan
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Ormawa',
+                        style: TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        initialValue: 'Miftachussurur',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Ketua ormawa',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        initialValue: '4.33.23.1.15',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'NIM ',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Nama Ketua Pelaksana',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        initialValue: 'Miftachussurur',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Pembina ormawa',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        initialValue: '4.33.23.1.15',
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'NIP ',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Card(
+                color: putih, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -203,7 +248,7 @@ class peminjamanPage extends StatelessWidget {
 
               // Daftar Peserta
               Card(
-                color: Colors.grey[300], // Warna abu-abu
+                color: putih, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -246,7 +291,7 @@ class peminjamanPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
 
               // Tombol Cancel dan Submit
               Row(
@@ -260,7 +305,7 @@ class peminjamanPage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red, // Warna latar belakang merah
                       padding: EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30), // Ukuran tombol
+                          vertical: 15, horizontal: 50), // Ukuran tombol
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -281,7 +326,7 @@ class peminjamanPage extends StatelessWidget {
                       backgroundColor:
                           Colors.green, // Warna latar belakang hijau
                       padding: EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30), // Ukuran tombol
+                          vertical: 15, horizontal: 50), // Ukuran tombol
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
