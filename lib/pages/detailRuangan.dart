@@ -7,6 +7,7 @@ class detailRuanganPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

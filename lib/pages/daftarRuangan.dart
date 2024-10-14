@@ -43,7 +43,7 @@ class daftarRuanganPage extends StatelessWidget {
           itemCount: items.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // Jumlah kolom dalam grid
-            childAspectRatio: 0.75, // Rasio aspek item
+            childAspectRatio: 0.80, // Rasio aspek item
           ),
           itemBuilder: (context, index) {
             final item = items[index];
@@ -68,7 +68,7 @@ class daftarRuanganPage extends StatelessWidget {
                           item['title'],
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 12,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -79,7 +79,7 @@ class daftarRuanganPage extends StatelessWidget {
                             const SizedBox(width: 3),
                             Text(
                               '${item['capacity']}',
-                              style: const TextStyle(fontSize: 14),
+                              style: const TextStyle(fontSize: 10),
                             ),
                           ],
                         ),
