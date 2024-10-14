@@ -7,14 +7,7 @@ class detailRuanganPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gedung Kuliah Terpadu'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
         ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -131,12 +124,15 @@ class detailRuanganPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
                 backgroundColor: Colors.blueAccent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
               child: const Text(
                 'Book Now',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  ),
               ),
             ),
           ],
