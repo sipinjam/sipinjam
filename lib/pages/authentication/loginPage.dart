@@ -49,8 +49,8 @@ class LoginPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
-                  height: 400,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
                         'SIPINJAM',
