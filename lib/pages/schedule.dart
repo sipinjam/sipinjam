@@ -6,59 +6,77 @@ class SchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('SCHEDULE'),
-        ),
-        body: ScheduleGrid(),
+      title: 'Schedule',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: const MyHomePage(),
     );
   }
 }
 
-class ScheduleGrid extends StatelessWidget {
-  final List<String> rooms = [
-    "GKT Lantai 1",
-    "GKT Lantai 2",
-    "UPT Bahasa Lantai 1",
-    "Ruang Seminar MST",
-    "Auditorium AB",
-    "Workshop Sipil",
-  ];
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: EdgeInsets.all(10),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Menampilkan dua kolom
-        childAspectRatio: 0.75, // Menyesuaikan proporsi gambar dan teks
-        crossAxisSpacing: 10, // Jarak antar kolom
-        mainAxisSpacing: 10, // Jarak antar baris
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Schedule'),
       ),
-      itemCount: rooms.length,
-      itemBuilder: (context, index) {
-        return Column(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           children: [
-            Container(
-              height: 120, // Mengatur tinggi gambar agar tidak kebesaran
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8), // Membuat sudut gambar melengkung
-                image: DecorationImage(
-                  image: AssetImage('assets/images/gedungkuliah-terpadu.png'),
-                  fit: BoxFit.cover, // Menyesuaikan gambar ke ukuran container
+            Row(
+              children: [
+                Image.asset('assets/images/gedungkuliah-terpadu.png'),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text('GKT Lantai 1'),
+                    Text('GKT Lantai 2'),
+                  ],
                 ),
-              ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              rooms[index],
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Image.asset('assets/images/gedungkuliah-terpadu.png'),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text('UPT Bahasa Lantai 1'),
+                    Text('Ruang Seminar MST'),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Image.asset('assets/images/gedungkuliah-terpadu.png'),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text('Auditorium AB'),
+                    Text('Workshop Sipil'),
+                  ],
+                ),
+              ],
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }
