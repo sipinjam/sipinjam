@@ -43,7 +43,7 @@ class daftarRuanganPage extends StatelessWidget {
           itemCount: items.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // Jumlah kolom dalam grid
-            childAspectRatio: 0.80, // Rasio aspek item
+            childAspectRatio: 0.75, // Rasio aspek item
           ),
           itemBuilder: (context, index) {
             final item = items[index];
