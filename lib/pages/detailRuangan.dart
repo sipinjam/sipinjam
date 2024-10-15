@@ -163,12 +163,12 @@ class FacilityIcon extends StatelessWidget {
 
 const List<Map<String, dynamic>> rooms = [
   {
-    'image': 'assets/images/gedungkuliah-terpadu.png', // Ganti dengan gambar gedung 1
+    'image': 'assets/images/gktdalam2.jpg', // Ganti dengan gambar gedung 1
   },
   {
-    'image': 'assets/images/gedungkuliah-terpadu.png', // Ganti dengan gambar gedung 2
+    'image': 'assets/images/gktdalam.jpg', // Ganti dengan gambar gedung 2
   },
   {
-    'image': 'assets/images/gedungkuliah-terpadu.png', // Ganti dengan gambar gedung 3
+    'image': 'assets/images/gktdalam3.jpg', // Ganti dengan gambar gedung 3
   },
 ];
