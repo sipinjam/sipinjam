@@ -3,78 +3,93 @@ import 'package:flutter/material.dart';
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Schedule',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
+  final List<Map<String, dynamic>> items = const [
+    {"title": "GKT Lantai 1"},
+    {"title": "GKT Lantai 2"},
+    {"title": "UPT Bahasa Lantai 1"},
+    {"title": "Ruang Seminar MST"},
+    {"title": "Auditorium AB"},
+    {"title": "Workshop Sipil"},
+  ];
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schedule'),
+        
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
+        title: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
+          ),
+          elevation: 2, // Memberi efek bayangan
+          margin: const EdgeInsets.only(top: 6), // Menambahkan margin atas
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Cari ruangan',
+                border: InputBorder.none,
+                icon: Icon(Icons.search, color: Colors.grey.shade600),
+              ),
+            ), 
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Image.asset('assets/images/gedungkuliah-terpadu.png'),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('GKT Lantai 1'),
-                    Text('GKT Lantai 2'),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Image.asset('assets/images/gedungkuliah-terpadu.png'),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('UPT Bahasa Lantai 1'),
-                    Text('Ruang Seminar MST'),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Image.asset('assets/images/gedungkuliah-terpadu.png'),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Auditorium AB'),
-                    Text('Workshop Sipil'),
-                  ],
-                ),
-              ],
-            ),
-          ],
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          itemCount: items.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Jumlah kolom dalam grid
+            childAspectRatio: 0.75, // Rasio aspek item
+          ),
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Image.asset(
+                      'assets/images/gedungkuliah-terpadu.png', // Ganti dengan path gambar Anda
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          item['title'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.people, size: 18),
+                            const SizedBox(width: 3),
+                            Text(
+                              '${item['capacity']}',
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
