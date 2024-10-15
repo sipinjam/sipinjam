@@ -9,25 +9,8 @@ class SchedulePage extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('SCHEDULE'),
-          centerTitle: false,
         ),
         body: ScheduleGrid(),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '',
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -49,7 +32,7 @@ class ScheduleGrid extends StatelessWidget {
       padding: EdgeInsets.all(10),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2, // Menampilkan dua kolom
-        childAspectRatio: 1, // Membuat gambar kotak
+        childAspectRatio: 0.75, // Menyesuaikan proporsi gambar dan teks
         crossAxisSpacing: 10, // Jarak antar kolom
         mainAxisSpacing: 10, // Jarak antar baris
       ),
@@ -57,16 +40,21 @@ class ScheduleGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         return Column(
           children: [
-            Expanded(
-              child: Image.asset(
-                'assets/images/gedungkuliah-terpadu.png', // Gambar yang sama untuk semua item
-                fit: BoxFit.cover,
+            Container(
+              height: 120, // Mengatur tinggi gambar agar tidak kebesaran
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8), // Membuat sudut gambar melengkung
+                image: DecorationImage(
+                  image: AssetImage('assets/images/gedungkuliah-terpadu.png'),
+                  fit: BoxFit.cover, // Menyesuaikan gambar ke ukuran container
+                ),
               ),
             ),
             SizedBox(height: 8),
             Text(
               rooms[index],
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ],
         );
