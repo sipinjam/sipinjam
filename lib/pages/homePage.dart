@@ -7,14 +7,14 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
         title: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
           ),
           elevation: 2, // Memberi efek bayangan
-          margin: const EdgeInsets.only(top: 20), // Menambahkan margin atas
+          margin: const EdgeInsets.symmetric(
+              vertical: 20), // Menambahkan margin atas
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextField(
@@ -32,18 +32,21 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
             // Bagian daftar gedung dengan horizontal scroll
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: SizedBox(
                 height: 200, // Tinggi container yang memuat gedung
                 child: ListView(
                   scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
                   children: const [
                     GedungCard('Administrasi Bisnis'),
                     GedungCard('Gedung Kuliah Terpadu'),
                     GedungCard('Magister Terapan'),
+                    GedungCard('Sekolah A'),
+                    GedungCard('Sekolah B'),
                   ],
                 ),
               ),
