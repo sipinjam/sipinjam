@@ -7,6 +7,7 @@ import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/pages/peminjaman.dart';
 import 'package:sipit_app/pages/profile.dart';
 import 'package:sipit_app/pages/splash.dart';
+import 'package:sipit_app/pages/daftarRuangan.dart';
 
 
 void main() {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const profilePage(),
         '/history': (context) => const HistoryPage(),
         '/detailRuangan': (context) => const detailRuanganPage(),
+        '/daftarRuangan': (context) => const daftarRuanganPage(),
       },
     );
   }

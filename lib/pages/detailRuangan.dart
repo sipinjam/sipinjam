@@ -26,7 +26,7 @@ class detailRuanganPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
                       'assets/images/gedungkuliah-terpadu.png', // Gambar ruangan
-                      height: 300,
+                      height: 400,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
@@ -92,7 +92,7 @@ class detailRuanganPage extends StatelessWidget {
 
             // GridView gambar gedung lainnya
             SizedBox(
-              height: 100, // Ukuran lebih besar
+              height: 125, // Ukuran lebih besar
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: rooms.length,
@@ -104,7 +104,7 @@ class detailRuanganPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(
                         room['image'], // Path gambar
-                        width: 130, // Ukuran lebih besar
+                        width: 135, // Ukuran lebih besar
                         fit: BoxFit.cover,
                       ),
                     ),
