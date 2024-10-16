@@ -38,7 +38,7 @@ class _HistoryState extends State<History> {
           shadowColor: Colors.black,
         ),
         body: ListView(
-          padding: EdgeInsets.all(4),
+          padding: EdgeInsets.all(6),
           children: [
             // Each of these cards represents one booking item
             BookingCard(
