@@ -22,7 +22,7 @@ class AppConstants {
       'label': 'Schedule',
     },
     {
-      'view': const profilePage(),
+      'view': const ProfilePage(),
       'icon': Icons.account_circle,
       'label': 'Profile',
     },
