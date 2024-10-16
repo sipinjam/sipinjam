@@ -27,6 +27,7 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -37,7 +38,7 @@ class _HistoryState extends State<History> {
           shadowColor: Colors.black,
         ),
         body: ListView(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(4),
           children: [
             // Each of these cards represents one booking item
             BookingCard(
@@ -115,20 +116,20 @@ class BookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+      elevation: 5,
       shadowColor: Colors.black,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 5),
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(
               imageUrl,
-              width: 150,
-              height: 180,
+              width: 100,
+              height: 120,
               fit: BoxFit.cover,
             ),
           ),
@@ -161,7 +162,7 @@ class BookingCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 20),
+                          SizedBox(height: 10),
                           Text('Tanggal Pinjam:'),
                           SizedBox(height: 3),
                           Text(
@@ -176,7 +177,7 @@ class BookingCard extends StatelessWidget {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Text(
                               'Status: ',
                               style: TextStyle(fontWeight: FontWeight.bold),
