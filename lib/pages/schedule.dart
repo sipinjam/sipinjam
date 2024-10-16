@@ -16,27 +16,13 @@ class SchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
-        title: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
+          title: Text(
+              'Schedule',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          elevation: 2, // Memberi efek bayangan
-          margin: const EdgeInsets.only(top: 6), // Menambahkan margin atas
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari ruangan',
-                border: InputBorder.none,
-                icon: Icon(Icons.search, color: Colors.grey.shade600),
-              ),
-            ), 
-          ),
+          elevation: 8,
+          shadowColor: Colors.black,
         ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
@@ -74,14 +60,6 @@ class SchedulePage extends StatelessWidget {
                         const SizedBox(height: 3),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.people, size: 18),
-                            const SizedBox(width: 3),
-                            Text(
-                              '${item['capacity']}',
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          ],
                         ),
                       ],
                     ),
