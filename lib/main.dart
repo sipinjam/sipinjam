@@ -8,6 +8,7 @@ import 'package:sipit_app/pages/peminjaman.dart';
 import 'package:sipit_app/pages/profile.dart';
 import 'package:sipit_app/pages/splash.dart';
 import 'package:sipit_app/pages/daftarRuangan.dart';
+import 'package:sipit_app/pages/faq.dart';
 
 
 void main() {
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/history': (context) => const HistoryPage(),
         '/detailRuangan': (context) => const detailRuanganPage(),
         '/daftarRuangan': (context) => const daftarRuanganPage(),
+        '/faq': (context) => FaqPage(),
       },
     );
   }

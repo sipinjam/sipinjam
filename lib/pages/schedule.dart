@@ -16,58 +16,40 @@ class SchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              'Schedule',
-            style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
+        title: const Text(
+          'SCHEDULE',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          elevation: 8,
-          shadowColor: Colors.black,
         ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: items.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Jumlah kolom dalam grid
-            childAspectRatio: 0.75, // Rasio aspek item
-          ),
-          itemBuilder: (context, index) {
-            final item = items[index];
-            return Card(
-              elevation: 2,
+        padding: const EdgeInsets.all(16.0), // Memberi padding di seluruh sisi body
+        child: Column(
+          children: [
+            Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
               ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Image.asset(
-                      'assets/images/gedungkuliah-terpadu.png', // Ganti dengan path gambar Anda
-                      fit: BoxFit.cover,
-                    ),
+              elevation: 2, // Memberi efek bayangan
+              margin: const EdgeInsets.only(top: 6), // Menambahkan margin atas
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Cari ruangan',
+                    border: InputBorder.none,
+                    icon: Icon(Icons.search, color: Colors.grey.shade600),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          item['title'],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                        const SizedBox(height: 3),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            );
-          },
+            ),
+            // Tambahkan konten body lainnya di sini, misalnya daftar ruangan, kalender, dll.
+          ],
         ),
       ),
     );
