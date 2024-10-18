@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+    <!-- Sidebar -->
     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
         type="button"
         class="inline-flex items-center p-2mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -45,11 +45,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
-                        class="flex items-center p-2 text-white rounded-lg active bg-biru-500 group">
-                        <svg class="w-5 h-5 text-white"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 24 24">
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg active bg-biru-500 group">
+                        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="m6,1c0-.553.448-1,1-1h10c.552,0,1,.447,1,1s-.448,1-1,1H7c-.552,0-1-.447-1-1Zm-2,6h16c.552,0,1-.447,1-1s-.448-1-1-1H4c-.552,0-1,.447-1,1s.448,1,1,1Zm20,11c0,3.314-2.686,6-6,6s-6-2.686-6-6,2.686-6,6-6,6,2.686,6,6Zm-2.5,0c0-.553-.447-1-1-1h-1.5v-1.5c0-.553-.447-1-1-1s-1,.447-1,1v1.5h-1.5c-.553,0-1,.447-1,1s.447,1,1,1h1.5v1.5c0,.553.447,1,1,1s1-.447,1-1v-1.5h1.5c.553,0,1-.447,1-1Zm-11.5,0c0-4.418,3.582-8,8-8H5c-2.757,0-5,2.243-5,5v4c0,2.757,2.243,5,5,5h7.709c-1.661-1.466-2.709-3.61-2.709-6Z" />
                         </svg>
@@ -84,6 +82,72 @@
             </ul>
         </div>
     </aside>
+    <!-- End Sidebar -->
+
+    <!-- Main Content -->
+    <div class="p-4 sm:ml-64">
+        <h1 class="text-4xl font-bold p-4">Riwayat Aktivitas</h1>
+        <!-- Responsive Grid -->
+        <div class="pt-5 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mb-4">
+            <a href="#"
+                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
+                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
+                <div class="flex flex-col justify-between p-4 leading-normal">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
+                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
+                    <p class="text-sm font-bold">Rohkris</p>
+                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
+                    <p class="text-sm font-bold">28 September 2024</p>
+                    <p class="text-sm mt-2">Status: <span class="text-green-600 font-bold">Disetujui</span></p>
+                </div>
+            </a>
+
+            <a href="#"
+                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
+                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
+                <div class="flex flex-col justify-between p-4 leading-normal">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
+                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
+                    <p class="text-sm font-bold">Rohkris</p>
+                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
+                    <p class="text-sm font-bold">28 September 2024</p>
+                    <p class="text-sm mt-2">Status: <span class="text-red-600 font-bold">Ditolak</span></p>
+                </div>
+            </a>
+
+            <a href="#"
+                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
+                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
+                <div class="flex flex-col justify-between p-4 leading-normal">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
+                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
+                    <p class="text-sm font-bold">Rohkris</p>
+                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
+                    <p class="text-sm font-bold">28 September 2024</p>
+                    <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
+                </div>
+            </a>
+
+            <a href="#"
+                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
+                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
+                <div class="flex flex-col justify-between p-4 leading-normal">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
+                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
+                    <p class="text-sm font-bold">Rohkris</p>
+                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
+                    <p class="text-sm font-bold">28 September 2024</p>
+                    <p class="text-sm mt-2">Status: <span class="text-blue-600 font-bold">Selesai</span></p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <!-- End Main -->
 </body>
 
 </html>

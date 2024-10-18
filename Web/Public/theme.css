@@ -3,11 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+    background-color: var(--putih-200);
+}
+
 /* Custom colors */
 :root {
     --biru-800: #1D1C63;
     --biru-500: #7E8EF1;
+
     --putih-100: #D1D8C5;
+    --putih-200: #F4F6F9;
 
 }
 
@@ -21,6 +27,9 @@
 .bg-putih-100 {
     background-color: var(--putih-100);
 }
+.bg-putih-200 {
+    background-color: var(--putih-200);
+}
 
 .text-biru-800{
     color: var(--biru-800);
@@ -28,6 +37,9 @@
 .text-biru-500{
     color: var(--biru-500);
 }
-.text-putih-putih {
+.text-putih-100 {
     color: var(--putih-100);
+}
+.text-putih-200 {
+    color: var(--putih-200);
 }
