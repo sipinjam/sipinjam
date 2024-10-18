@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sipit_app/pages/authentication/loginPage.dart';
 import 'package:sipit_app/pages/detailRuangan.dart';
+import 'package:sipit_app/pages/editProfile.dart';
 import 'package:sipit_app/pages/history.dart';
 import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/pages/peminjaman.dart';
@@ -9,6 +10,7 @@ import 'package:sipit_app/pages/profile.dart';
 import 'package:sipit_app/pages/splash.dart';
 import 'package:sipit_app/pages/daftarRuangan.dart';
 import 'package:sipit_app/pages/faq.dart';
+import 'package:sipit_app/pages/updatePassword.dart';
 
 
 void main() {
@@ -33,6 +35,8 @@ class MyApp extends StatelessWidget {
         '/detailRuangan': (context) => const detailRuanganPage(),
         '/daftarRuangan': (context) => const daftarRuanganPage(),
         '/faq': (context) => FaqPage(),
+        '/editProfile': (context) => EditProfileApp(),
+        '/updatePass': (context) => UpdatePass(),
       },
     );
   }
