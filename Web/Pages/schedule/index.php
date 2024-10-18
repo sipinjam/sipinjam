@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../Public/theme.css">
-    <title>SIPINJAM - Riwayat</title>
+    <title>SIPINJAM - Jadwal</title>
 </head>
+
+<!-- Schedule aku bantu buatin sidebar -->
 
 <body>
 
+<!-- Sidebar -->
     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
         type="button"
         class="inline-flex items-center p-2mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -33,7 +36,7 @@
             </a>
             <ul class="space-y-2 pt-10 font-medium">
                 <li>
-                    <a href="../home/"
+                    <a href="../Home/"
                         class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -45,9 +48,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
-                        class="flex items-center p-2 text-white rounded-lg active bg-biru-500 group">
-                        <svg class="w-5 h-5 text-white"
+                    <a href="../History/"
+                        class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 24 24">
                             <path
@@ -57,9 +60,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../Schedule/"
-                        class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
+                    <a href="#"
+                        class="flex items-center p-2 text-white rounded-lg active bg-biru-500 group">
+                        <svg class="w-5 h-5 text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 24 24">
                             <path
@@ -84,6 +87,7 @@
             </ul>
         </div>
     </aside>
+<!-- End Sidebar -->
 </body>
 
 </html>

@@ -1,0 +1,33 @@
+/* custom.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors */
+:root {
+    --biru-800: #1D1C63;
+    --biru-500: #7E8EF1;
+    --putih-100: #D1D8C5;
+
+}
+
+/* Example utility classes */
+.bg-biru-800 {
+    background-color: var(--biru-800);
+}
+.bg-biru-500 {
+    background-color: var(--biru-500);
+}
+.bg-putih-100 {
+    background-color: var(--putih-100);
+}
+
+.text-biru-800{
+    color: var(--biru-800);
+}
+.text-biru-500{
+    color: var(--biru-500);
+}
+.text-putih-putih {
+    color: var(--putih-100);
+}
