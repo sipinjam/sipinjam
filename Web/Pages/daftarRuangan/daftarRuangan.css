@@ -1,0 +1,155 @@
+/* Style untuk body dan container */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex; /* Mengatur flexbox untuk tata letak horizontal */
+  justify-content: right; /* Mengatur konten di tengah */
+  margin-top: 50px;
+  margin-bottom: 20px; /* Memberikan jarak di bawah search bar */
+}
+
+.container {
+  width: 95%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input {
+  width: 300px; /* Lebar input */
+  padding: 10px; /* Jarak dalam input */
+  border: 1px solid #ccc; /* Garis batas */
+  border-radius: 5px; /* Sudut melengkung */
+  font-size: 16px; /* Ukuran font */
+}
+
+.search-bar button {
+  padding: 10px; /* Jarak dalam tombol */
+  border: none; /* Menghilangkan garis batas */
+  background-color: #007bff; /* Warna latar belakang */
+  color: white; /* Warna teks */
+  border-radius: 5px; /* Sudut melengkung */
+  cursor: pointer; /* Mengubah kursor saat hover */
+  margin-left: 10px; /* Memberikan jarak di kiri tombol */
+  transition: background-color 0.3s ease; /* Efek transisi */
+}
+
+.search-bar button:hover {
+  background-color: #0056b3; /* Warna latar belakang saat hover */
+}
+
+/* Style untuk judul halaman */
+h1 {
+  text-align: left;
+  color: #333;
+  margin-bottom: 40px;
+  font-size: 2em;
+}
+
+/* Style untuk grid container */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Tetap menampilkan 2 kolom */
+  gap: 10px; /* Mengurangi jarak antar elemen di grid */
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Mengubah menjadi 1 kolom pada layar kecil */
+  }
+}
+
+/* Style untuk card ruangan */
+.room-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px; /* Mengurangi padding card */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 10px; /* Mengurangi jarak antar card */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.room-card:hover {
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Style untuk gambar ruangan */
+.room-card img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Style untuk informasi ruangan */
+.room-info {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.room-info h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #2c3e50;
+}
+
+.room-info p {
+  margin: 5px 0;
+  font-size: 1em;
+  color: #7f8c8d;
+  display: flex;
+  align-items: center;
+}
+
+/* Style untuk icon fasilitas */
+.room-info i {
+  color: #2c3e50;
+  margin-right: 5px;
+}
+
+/* Style untuk status */
+.status {
+  font-weight: bold;
+  color: #27ae60; /* Hijau untuk status tersedia */
+}
+
+.not-available {
+  font-weight: bold;
+  color: #e74c3c; /* Merah untuk status tidak tersedia */
+}
+
+/* Style untuk tombol Book Now */
+.book-btn {
+    background-color: #6c5ce7;
+    color: white;
+    padding: 10px 10px; /* Ukuran tombol lebih kecil */
+    text-decoration: none;
+    border-radius: 15px;
+    display: flex;
+    align-items: bottom;
+    justify-content: bottom;
+    font-size: 0.8em; /* Ukuran font lebih kecil */
+    transition: background-color 0.3s ease;
+  }
+
+.book-btn:hover {
+  background-color: #5a4bc7; /* Mengubah warna saat hover */
+}
+
+.room-info p {
+  display: flex;
+  gap: 10px; /* Mengurangi jarak antar fasilitas (ikon + teks) */
+  align-items: center;
+  flex-wrap: wrap;
+}
