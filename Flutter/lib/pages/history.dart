@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(HistoryPage());
+  runApp(const HistoryPage());
 }
 
 class HistoryPage extends StatelessWidget {
@@ -10,6 +10,7 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: History(),
     );
   }
@@ -23,7 +24,6 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +31,7 @@ class _HistoryState extends State<History> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-              'Riwayat Aktivitas',
+            'Riwayat Aktivitas',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           elevation: 8,
@@ -155,7 +155,6 @@ class BookingCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -190,8 +189,7 @@ class BookingCard extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ]
-                      ),
+                          ]),
                     ],
                   ),
                 ],
