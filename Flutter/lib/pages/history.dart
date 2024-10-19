@@ -34,8 +34,6 @@ class _HistoryState extends State<History> {
             'Riwayat Aktivitas',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          elevation: 8,
-          shadowColor: Colors.black,
         ),
         body: ListView(
           padding: EdgeInsets.all(6),

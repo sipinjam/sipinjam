@@ -17,15 +17,9 @@ class SchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
-        title: const Text(
-          'SCHEDULE',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text(
+          'Schedule',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

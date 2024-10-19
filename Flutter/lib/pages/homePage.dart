@@ -8,34 +8,51 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
-        title: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
-          ),
-          elevation: 2, // Memberi efek bayangan
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari ruangan',
-                border: InputBorder.none,
-                icon: Icon(Icons.search, color: Colors.grey.shade600),
-              ),
-            ),
-          ),
-        ),
-        leading:
-            null, // Tidak ada ikon search di leading, karena sudah di dalam TextField
-      ),
-      body: ListView(children: const [
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
+      //   title: Card(
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
+      //     ),
+      //     elevation: 2, // Memberi efek bayangan
+      //     child: Padding(
+      //       padding: const EdgeInsets.symmetric(horizontal: 10),
+      //       child: TextField(
+      //         decoration: InputDecoration(
+      //           hintText: 'Cari ruangan',
+      //           border: InputBorder.none,
+      //           icon: Icon(Icons.search, color: Colors.grey.shade600),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   leading:
+      //       null, // Tidak ada ikon search di leading, karena sudah di dalam TextField
+      // ),
+      body: ListView(children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(30), // Membulatkan sisi card
+                ),
+                elevation: 2, // Memberi efek bayangan
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Cari ruangan',
+                      border: InputBorder.none,
+                      icon: Icon(Icons.search, color: Colors.grey.shade600),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 12),
               // Menambahkan horizontal scroll pada daftar gedung
               SizedBox(

@@ -13,7 +13,7 @@ class detailRuanganPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
