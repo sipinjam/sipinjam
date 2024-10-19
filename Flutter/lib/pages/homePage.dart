@@ -9,6 +9,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false, // Menonaktifkan ikon back otomatis
         title: Card(
           shape: RoundedRectangleBorder(

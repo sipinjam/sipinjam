@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/theme.dart';
 
 class peminjamanPage extends StatelessWidget {
@@ -8,9 +10,9 @@ class peminjamanPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Form Peminjaman"),
+        title: const Text("Form Peminjaman"),
       ),
-      backgroundColor: Color.fromARGB(255, 212, 209, 209),
+      backgroundColor: const Color.fromARGB(255, 212, 209, 209),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -29,16 +31,16 @@ class peminjamanPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Peminjam',
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         initialValue: 'PENGGUNA SIPIT',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Username',
                           border: OutlineInputBorder(),
                         ),
@@ -300,7 +302,7 @@ class peminjamanPage extends StatelessWidget {
                   // Tombol Cancel
                   ElevatedButton(
                     onPressed: () {
-                      // Tambahkan aksi untuk cancel
+                      Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red, // Warna latar belakang merah
@@ -320,7 +322,7 @@ class peminjamanPage extends StatelessWidget {
                   // Tombol Submit
                   ElevatedButton(
                     onPressed: () {
-                      // Tambahkan aksi untuk submit
+                      Nav.push(context, const HomePage());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
