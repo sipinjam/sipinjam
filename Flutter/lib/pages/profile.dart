@@ -1,4 +1,5 @@
 import 'package:d_button/d_button.dart';
+import 'package:d_info/d_info.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/authentication/loginPage.dart';
@@ -8,6 +9,16 @@ import 'package:sipit_app/pages/updatePassword.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
+  logout(BuildContext context) {
+    DInfo.dialogConfirmation(
+            context, textNo: 'Cancel', 'Logout', 'You sure want to logout?')
+        .then((yes) {
+      if (yes ?? false) {
+        Nav.replace(context, const LoginPage());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +138,10 @@ class ProfilePage extends StatelessWidget {
                         // Aksi ketika tombol Logout ditekan
                       },
                       child: DButtonBorder(
-                          onClick: () {
-                            Nav.push(context, const LoginPage());
-                          },
+                          onClick: () => logout(context),
                           radius: 10,
                           borderColor: const Color.fromARGB(255, 211, 211, 211),
-                          child: Text(
+                          child: const Text(
                             "LOG OUT",
                             style: TextStyle(color: Colors.red),
                           )),
