@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/detailRuangan.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -161,87 +163,92 @@ class RoomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 170, // Menambah tinggi RoomCard
-      child: Card(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Mengatur tinggi gambar lebih fleksibel
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            Container(
-              width: 150,
-              height: 170,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(8), // Menentukan radius lengkungan
-                image: DecorationImage(
-                  image: AssetImage(imageUrl),
-                  fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          Nav.push(context, const detailRuanganPage());
+        },
+        child: Card(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Mengatur tinggi gambar lebih fleksibel
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-            ),
-            const SizedBox(width: 20),
-            // Bagian teks dan ikon
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
-                    buildingName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Container(
+                width: 150,
+                height: 170,
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(8), // Menentukan radius lengkungan
+                  image: DecorationImage(
+                    image: AssetImage(imageUrl),
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 10),
-                  Row(children: [
-                    const SizedBox(width: 10),
-                    const Icon(Icons.people,
-                        size: 20), // Ukuran ikon lebih besar
-                    const SizedBox(width: 10),
-                    Text('$capacity'),
-                  ]),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(Icons.wifi, size: 20),
-                      const SizedBox(width: 10),
-                      Text('WIFI')
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(Icons.chair, size: 20),
-                      const SizedBox(width: 10),
-                      Text('SEAT')
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(Icons.ac_unit, size: 20),
-                      const SizedBox(width: 10),
-                      Text('AC')
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(Icons.tv, size: 20),
-                      const SizedBox(width: 10),
-                      Text('LCD')
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: 20),
+              // Bagian teks dan ikon
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(
+                      buildingName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(children: [
+                      const SizedBox(width: 10),
+                      const Icon(Icons.people,
+                          size: 20), // Ukuran ikon lebih besar
+                      const SizedBox(width: 10),
+                      Text('$capacity'),
+                    ]),
+                    const Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Icon(Icons.wifi, size: 20),
+                        const SizedBox(width: 10),
+                        Text('WIFI')
+                      ],
+                    ),
+                    const Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Icon(Icons.chair, size: 20),
+                        const SizedBox(width: 10),
+                        Text('SEAT')
+                      ],
+                    ),
+                    const Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Icon(Icons.ac_unit, size: 20),
+                        const SizedBox(width: 10),
+                        Text('AC')
+                      ],
+                    ),
+                    const Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Icon(Icons.tv, size: 20),
+                        const SizedBox(width: 10),
+                        Text('LCD')
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
