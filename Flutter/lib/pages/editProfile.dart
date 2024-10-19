@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/profile.dart';
 
 void main() {
   runApp(EditProfileApp());
@@ -22,7 +24,7 @@ class EditProfilePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Action untuk tombol kembali
+            Nav.push(context, ProfilePage());
           },
         ),
         title: Text("Edit Profile"),
@@ -75,9 +77,12 @@ class EditProfilePage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Action untuk tombol simpan
+                Nav.push(context, ProfilePage());
               },
-              child: Text("Save", style: TextStyle(color: Colors.white),),
+              child: Text(
+                "Save",
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
                 minimumSize: Size(double.infinity, 50),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/profile.dart';
 
 void main() {
   runApp(UpdatePass());
@@ -20,9 +22,11 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Handle back button press
+            Nav.push(context, ProfilePage());
           },
         ),
         title: Text(
@@ -76,7 +80,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle update password logic here
+                  Nav.push(context, ProfilePage());
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, // Button color

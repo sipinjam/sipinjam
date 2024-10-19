@@ -1,5 +1,10 @@
 import 'package:d_button/d_button.dart';
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/authentication/loginPage.dart';
+import 'package:sipit_app/pages/editProfile.dart';
+import 'package:sipit_app/pages/faq.dart';
+import 'package:sipit_app/pages/updatePassword.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -72,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                     title: Text('EDIT PROFILE'),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      // Aksi ketika tombol Edit Profile ditekan
+                      Nav.push(context, EditProfileApp());
                     },
                   ),
                   Divider(),
@@ -81,7 +86,7 @@ class ProfilePage extends StatelessWidget {
                     title: Text('EDIT PASSWORD'),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      // Aksi ketika tombol Edit Password ditekan
+                      Nav.push(context, UpdatePass());
                     },
                   ),
                   Divider(),
@@ -111,7 +116,7 @@ class ProfilePage extends StatelessWidget {
                     title: Text('FAQ'),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      // Aksi ketika tombol FAQ ditekan
+                      Nav.push(context, FaqPage());
                     },
                   ),
                   SizedBox(height: 20.0),
@@ -122,7 +127,9 @@ class ProfilePage extends StatelessWidget {
                         // Aksi ketika tombol Logout ditekan
                       },
                       child: DButtonBorder(
-                          onClick: () {},
+                          onClick: () {
+                            Nav.push(context, const LoginPage());
+                          },
                           radius: 10,
                           borderColor: const Color.fromARGB(255, 211, 211, 211),
                           child: Text(
