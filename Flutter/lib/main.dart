@@ -11,7 +11,7 @@ import 'package:sipit_app/pages/splash.dart';
 import 'package:sipit_app/pages/daftarRuangan.dart';
 import 'package:sipit_app/pages/faq.dart';
 import 'package:sipit_app/pages/updatePassword.dart';
-
+import 'package:sipit_app/theme.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -24,6 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          scaffoldBackgroundColor: putih,
+          appBarTheme: AppBarTheme(
+              elevation: 8,
+              // shadowColor: Colors.black54,
+              backgroundColor: putih)),
       debugShowCheckedModeBanner: false,
       home: const SplashPage(),
       routes: {
