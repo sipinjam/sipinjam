@@ -36,7 +36,14 @@ class FaqPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FAQ'),
+        title: const Text(
+          'FAQ',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: ListView.builder(
         itemCount: faqs.length,
