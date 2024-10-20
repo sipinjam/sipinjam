@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/pages/daftarRuangan.dart';
 import 'package:sipit_app/pages/detailRuangan.dart';
 
 class HomePage extends StatelessWidget {
@@ -135,30 +136,35 @@ class GedungCard extends StatelessWidget {
     return SizedBox(
       width: 200,
       height: 200,
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            Container(
-              width: 200,
-              height: 150,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(8), // Menentukan radius lengkungan
-                image: DecorationImage(
-                  image: AssetImage(imageUrl),
-                  fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          Nav.push(context, const daftarRuanganPage());
+        },
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(buildingName, style: const TextStyle(fontSize: 16)),
-          ],
+              Container(
+                width: 200,
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(8), // Menentukan radius lengkungan
+                  image: DecorationImage(
+                    image: AssetImage(imageUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(buildingName, style: const TextStyle(fontSize: 16)),
+            ],
+          ),
         ),
       ),
     );
