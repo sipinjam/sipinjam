@@ -105,24 +105,7 @@ class peminjamanPage extends StatelessWidget {
                       Text('Waktu',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       SizedBox(height: 8),
-                      Row(
-                        children: [
-                          ChoiceChip(
-                            label: Text("08.00 - 12.00"),
-                            selected: false,
-                          ),
-                          SizedBox(width: 8),
-                          ChoiceChip(
-                            label: Text("12.00 - 16.00"),
-                            selected: true,
-                          ),
-                          SizedBox(width: 8),
-                          ChoiceChip(
-                            label: Text("16.00 - 20.00"),
-                            selected: false,
-                          ),
-                        ],
-                      ),
+                      WaktuToggleButton(),
                       SizedBox(height: 16),
 
                       // Bagian Ruangan
@@ -345,6 +328,52 @@ class peminjamanPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+class WaktuToggleButton extends StatefulWidget {
+  const WaktuToggleButton({Key? key}) : super(key: key);
+
+  @override
+  _WaktuToggleButtonState createState() => _WaktuToggleButtonState();
+}
+
+class _WaktuToggleButtonState extends State<WaktuToggleButton> {
+  List<bool> isSelected = [false, false, false]; // Pilihan awal untuk waktu
+
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text("08.00 - 12.00"),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text("12.00 - 16.00"),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text("08.00 - 16.00"),
+        ),
+      ],
+      isSelected: isSelected,
+      onPressed: (int index) {
+        setState(() {
+          // Mengizinkan hanya satu pilihan waktu yang aktif dalam satu waktu
+          for (int i = 0; i < isSelected.length; i++) {
+            isSelected[i] = i == index;
+          }
+        });
+      },
+      borderRadius: BorderRadius.circular(8),
+      selectedColor: Colors.white,
+      fillColor: Colors.blue,
+      color: Colors.black,
+      borderWidth: 2,
+      borderColor: Colors.blue,
+      selectedBorderColor: Colors.blueAccent,
     );
   }
 }
