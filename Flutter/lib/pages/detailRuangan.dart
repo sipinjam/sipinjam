@@ -125,7 +125,7 @@ class detailRuanganPage extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Nav.push(context, const peminjamanPage());
+                    Nav.push(context, peminjamanPage());
                   },
                   style: ElevatedButton.styleFrom(
                     // padding: const EdgeInsets.symmetric(

@@ -3,8 +3,37 @@ import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/homePage.dart';
 import 'package:sipit_app/theme.dart';
 
-class peminjamanPage extends StatelessWidget {
-  const peminjamanPage({super.key});
+class peminjamanPage extends StatefulWidget {
+  peminjamanPage({super.key});
+
+  @override
+  _peminjamanPageState createState() => _peminjamanPageState();
+}
+
+class _peminjamanPageState extends State<peminjamanPage> {
+  TextEditingController _dateController = TextEditingController();
+
+  // Fungsi untuk memilih tanggal
+  Future<void> _selectDate() async {
+    DateTime? _picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (_picked != null) {
+      setState(() {
+        _dateController.text = _picked.toString().split(" ")[0]; // Hanya tanggalnya saja
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose(); // Pastikan untuk membuang controller setelah selesai
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -81,7 +110,6 @@ class peminjamanPage extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Nama Kegiatan',
                           border: OutlineInputBorder(),
-                          errorText: 'Silahkan isi nama kegiatan',
                         ),
                       ),
                       SizedBox(height: 8),
@@ -93,11 +121,20 @@ class peminjamanPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       TextFormField(
+                        controller: _dateController,
                         decoration: InputDecoration(
                           labelText: 'Tanggal',
                           border: OutlineInputBorder(),
-                          suffixIcon: Icon(Icons.calendar_today),
+                          prefixIcon: Icon(Icons.calendar_today),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)
+                          )
+
                         ),
+                        readOnly: true,
+                        onTap: () {
+                          _selectDate();
+                        },
                       ),
                       SizedBox(height: 8),
 
@@ -121,6 +158,7 @@ class peminjamanPage extends StatelessWidget {
                   ),
                 ),
               ),
+              // Bagian Ormawa
               Card(
                 color: putih, // Warna abu-abu
                 shape: RoundedRectangleBorder(
@@ -151,7 +189,7 @@ class peminjamanPage extends StatelessWidget {
                         initialValue: '4.33.23.1.15',
                         readOnly: true,
                         decoration: InputDecoration(
-                          labelText: 'NIM ',
+                          labelText: 'NIM',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -176,7 +214,7 @@ class peminjamanPage extends StatelessWidget {
                         initialValue: '4.33.23.1.15',
                         readOnly: true,
                         decoration: InputDecoration(
-                          labelText: 'NIP ',
+                          labelText: 'NIP',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -184,6 +222,7 @@ class peminjamanPage extends StatelessWidget {
                   ),
                 ),
               ),
+              // Bagian Panitia
               Card(
                 color: putih, // Warna abu-abu
                 shape: RoundedRectangleBorder(
@@ -250,7 +289,7 @@ class peminjamanPage extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 18),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 10),
                       ElevatedButton.icon(
                         onPressed: () {
                           // Tambahkan aksi untuk daftar peserta
@@ -262,11 +301,11 @@ class peminjamanPage extends StatelessWidget {
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Colors.blue[300], // Warna latar belakang biru
+                          backgroundColor: Colors.blue[300],
                           padding: EdgeInsets.symmetric(
                               vertical: 20), // Tinggi tombol
-                          minimumSize: Size(screenWidth * 1, 50),
+                          minimumSize: Size(screenWidth * 1,
+                              50), // Lebar menyesuaikan layar, tinggi minimum 50
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -276,54 +315,18 @@ class peminjamanPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
 
-              // Tombol Cancel dan Submit
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Tombol Cancel
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Warna latar belakang merah
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 50), // Ukuran tombol
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      'CANCEL',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  // Tombol Submit
-                  ElevatedButton(
-                    onPressed: () {
-                      Nav.push(context, const HomePage());
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.green, // Warna latar belakang hijau
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 50), // Ukuran tombol
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      'SUBMIT',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              )
+              // Submit Button
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Tambahkan aksi submit
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(screenWidth * 1, 50), // Lebar mengikuti layar
+                ),
+                child: Text('Ajukan Peminjaman'),
+              ),
             ],
           ),
         ),
@@ -331,6 +334,7 @@ class peminjamanPage extends StatelessWidget {
     );
   }
 }
+
 class WaktuToggleButton extends StatefulWidget {
   const WaktuToggleButton({Key? key}) : super(key: key);
 
