@@ -120,81 +120,83 @@ class BookingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       margin: EdgeInsets.only(bottom: 5),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              imageUrl,
-              width: 100,
-              height: 120,
-              fit: BoxFit.cover,
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Container(
+              width: 120,
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      topLeft: Radius.circular(16)),
+                  image: DecorationImage(
+                      image: NetworkImage(imageUrl), fit: BoxFit.cover)),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    buildingName,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text('Peminjam:'),
-                  SizedBox(height: 3),
-                  Text(
-                    '$borrower',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10),
-                          Text('Tanggal Pinjam:'),
-                          SizedBox(height: 3),
-                          Text(
-                            '$date',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      buildingName,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Column(
+                    ),
+                    SizedBox(height: 8),
+                    Text('Peminjam:'),
+                    SizedBox(height: 3),
+                    Text(
+                      '$borrower',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 10),
-                            Text(
-                              'Status: ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                            Text('Tanggal Pinjam:'),
                             SizedBox(height: 3),
                             Text(
-                              status,
+                              '$date',
                               style: TextStyle(
-                                color: statusColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ]),
-                    ],
-                  ),
-                ],
+                            SizedBox(height: 8),
+                          ],
+                        ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              Text(
+                                'Status: ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                status,
+                                style: TextStyle(
+                                  color: statusColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
