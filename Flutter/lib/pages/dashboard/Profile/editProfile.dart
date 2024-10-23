@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/profile.dart';
+import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
+import 'package:sipit_app/pages/dashboardPage.dart';
 
 void main() {
   runApp(EditProfileApp());
@@ -24,7 +25,7 @@ class EditProfilePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Nav.push(context, ProfilePage());
+            Nav.push(context, const Dashboardpage());
           },
         ),
         title: Text("Edit Profile"),

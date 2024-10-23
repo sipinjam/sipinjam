@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/dashboard/dashboardPage.dart';
-import 'package:sipit_app/pages/peminjaman.dart';
+import 'package:sipit_app/pages/dashboardPage.dart';
+import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
 
 class detailRuanganPage extends StatelessWidget {
   const detailRuanganPage({super.key});

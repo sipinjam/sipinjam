@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/daftarRuangan.dart';
-import 'package:sipit_app/pages/detailRuangan.dart';
+import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
+import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

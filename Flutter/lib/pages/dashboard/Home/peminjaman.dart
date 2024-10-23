@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/homePage.dart';
+import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
+import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
 
 class peminjamanPage extends StatefulWidget {
@@ -23,14 +24,16 @@ class _peminjamanPageState extends State<peminjamanPage> {
     );
     if (_picked != null) {
       setState(() {
-        _dateController.text = _picked.toString().split(" ")[0]; // Hanya tanggalnya saja
+        _dateController.text =
+            _picked.toString().split(" ")[0]; // Hanya tanggalnya saja
       });
     }
   }
 
   @override
   void dispose() {
-    _dateController.dispose(); // Pastikan untuk membuang controller setelah selesai
+    _dateController
+        .dispose(); // Pastikan untuk membuang controller setelah selesai
     super.dispose();
   }
 
@@ -123,14 +126,11 @@ class _peminjamanPageState extends State<peminjamanPage> {
                       TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
-                          labelText: 'Tanggal',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.calendar_today),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)
-                          )
-
-                        ),
+                            labelText: 'Tanggal',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.calendar_today),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue))),
                         readOnly: true,
                         onTap: () {
                           _selectDate();
@@ -320,10 +320,11 @@ class _peminjamanPageState extends State<peminjamanPage> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Tambahkan aksi submit
+                  Nav.replace(context, const Dashboardpage());
                 },
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(screenWidth * 1, 50), // Lebar mengikuti layar
+                  minimumSize:
+                      Size(screenWidth * 1, 50), // Lebar mengikuti layar
                 ),
                 child: Text('Ajukan Peminjaman'),
               ),

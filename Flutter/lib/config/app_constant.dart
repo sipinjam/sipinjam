@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sipit_app/pages/history.dart';
-import 'package:sipit_app/pages/homePage.dart';
-import 'package:sipit_app/pages/profile.dart';
-import 'package:sipit_app/pages/schedule.dart';
+import 'package:sipit_app/pages/dashboard/History/history.dart';
+import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
+import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
+import 'package:sipit_app/pages/dashboard/Schedule/schedule.dart';
 
 class AppConstants {
   static List<Map> navMenu = [

@@ -2,7 +2,7 @@ import 'package:d_button/d_button.dart';
 import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/dashboard/dashboardPage.dart';
+import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
 
 class LoginPage extends StatelessWidget {
