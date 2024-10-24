@@ -45,7 +45,7 @@
             <!-- Information Section -->
             <div>
                 <!-- Peminjam -->
-                <div class="mb-6">
+                <div class="mb-6 mt-6">
                     <h3 class="font-semibold text-xl text-purple-600">Peminjam</h3>
                     <p><span class="font-semibold">Peminjam:</span> <?php echo $data_peminjam['nama']; ?></p>
                     <p><span class="font-semibold">Ormawa:</span> <?php echo $data_peminjam['ormawa']; ?></p>
