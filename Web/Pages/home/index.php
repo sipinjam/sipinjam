@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIPINJAM - Beranda</title>
-    <link rel="stylesheet" href="home.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../Public/theme.css">
+    <title>SIPINJAM - Riwayat</title>
 </head>
+
 <body>
-
-<!-- Rename jadi index.php -->
-<!-- edit bagian sidebarnya -->
-<!-- Ntar jangan lupa yang home.css dihapus biar tailwindnya nda tabrakan -->
-<!-- theme.css itu cuma buat warna -Nicho -->
-
-<div class="container">
+    <!--SEARCH-->
+    <form class="max-w-md mx-auto mt-5">   
+        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
+            <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+        </div>
+    </form>
+    
     <!-- Sidebar -->
+    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
+        type="button"
+        class="inline-flex items-center p-2mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" fill-rule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+            </path>
+        </svg>
+    </button>
+
     <aside id="logo-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
@@ -27,9 +47,9 @@
             </a>
             <ul class="space-y-2 pt-10 font-medium">
                 <li>
-                    <a href="#"
+                    <a href="../home/"
                         class="flex items-center p-2 text-white rounded-lg active bg-biru-500 group">
-                        <svg class="w-5 h-5 text-white"
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 512.001 512.001">
                             <path
@@ -39,11 +59,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../History/"
-                        class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 24 24">
+                    <a href="#" class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
+                        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="m6,1c0-.553.448-1,1-1h10c.552,0,1,.447,1,1s-.448,1-1,1H7c-.552,0-1-.447-1-1Zm-2,6h16c.552,0,1-.447,1-1s-.448-1-1-1H4c-.552,0-1,.447-1,1s.448,1,1,1Zm20,11c0,3.314-2.686,6-6,6s-6-2.686-6-6,2.686-6,6-6,6,2.686,6,6Zm-2.5,0c0-.553-.447-1-1-1h-1.5v-1.5c0-.553-.447-1-1-1s-1,.447-1,1v1.5h-1.5c-.553,0-1,.447-1,1s.447,1,1,1h1.5v1.5c0,.553.447,1,1,1s1-.447,1-1v-1.5h1.5c.553,0,1-.447,1-1Zm-11.5,0c0-4.418,3.582-8,8-8H5c-2.757,0-5,2.243-5,5v4c0,2.757,2.243,5,5,5h7.709c-1.661-1.466-2.709-3.61-2.709-6Z" />
                         </svg>
@@ -51,7 +69,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../Schedule"
+                    <a href="../Schedule/"
                         class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -64,7 +82,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../Profile"
+                    <a href="../Profile/"
                         class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-400 transition duration-75 group-hover:text-white transition duration-75"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -80,142 +98,93 @@
     </aside>
     <!-- End Sidebar -->
 
-    <!-- Main content -->
-    <div class="content">
-        <!-- Search bar -->
-        <div class="search-bar">
-            <input type="text" placeholder="Cari ruangan">
-        </div>
+    <!-- Container for scrolling horizontally -->
+    <div class="p-10 sm:ml-64 overflow-x-auto">
+        <div class="flex space-x-4">
+            <!-- Gedung Card 1 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/AB.jpg" alt="Administrasi Bisnis"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Administrasi Bisnis</span>
+                    </a>
+                </div>
+            </div>
 
-        <!-- Daftar Gedung (Horizontal Scroll) -->
-        <div class="horizontal-scroll-container">
-            <div class="building">
-                <img src="../../Sources/Img/AB.jpg" alt="Administrasi Bisnis">
-                <p>Administrasi Bisnis</p>
+            <!-- Gedung Card 2 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/gkt-bg.jpeg" alt="Gedung Kuliah Terpadu"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung Kuliah Terpadu</span>
+                    </a>
+                </div>
             </div>
-            <div class="building">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="Gedung Kuliah Terpadu">
-                <p>Gedung Kuliah Terpadu</p>
-            </div>
-            <div class="building">
-                <img src="../../Sources/Img/mst.jpg" alt="Magister Terapan">
-                <p>Magister Terapan</p>
-            </div>
-            <div class="building">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="Gedung Kerja Sama">
-                <p>Gedung Kerja Sama</p>
-            </div>
-            <div class="building">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="Gedung Kerja Sama">
-                <p>Gedung Akuntansi</p>
-            </div>
-            <div class="building">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="Gedung Kerja Sama">
-                <p>Gedung Sekolah A</p>
-            </div>
-            <div class="building">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="Gedung Kerja Sama">
-                <p>Gedung Sekolah B</p>
-            </div>
-        </div>
 
-        <!-- Daftar Ruangan (Vertical Scroll) -->
-        <div class="room-list">
-            <h3>DAFTAR RUANGAN</h3>
-            <div class="room-card">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="GKT Lantai 1">
-                <div class="room-info">
-                    <h4>GKT Lantai 1</h4>
-                    <p>Kapasitas: 300</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
+            <!-- Gedung Card 3 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/mst.jpg" alt="Magister Terapan"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Magister Terapan</span>
+                    </a>
                 </div>
             </div>
-            <div class="room-card">
-                <img src="../../Sources/Img/gkt-bg.jpeg" alt="GKT Lantai 2">
-                <div class="room-info">
-                    <h4>GKT Lantai 2</h4>
-                    <p>Kapasitas: 300</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
+
+            <!-- Gedung Card 4 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/AB.jpg" alt="Gedung Sekolah A"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung Sekolah A</span>
+                    </a>
                 </div>
             </div>
-            <div class="room-card">
-                <img src="../../Sources/Img/mst.jpg" alt="MST Ruang Seminar">
-                <div class="room-info">
-                    <h4>MST Ruang Seminar</h4>
-                    <p>Kapasitas: 30</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
+
+            <!-- Gedung Card 5 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/AB.jpg" alt="Gedung Sekolah B"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung Sekolah B</span>
+                    </a>
                 </div>
             </div>
-            <div class="room-card">
-                <img src="../../Sources/Img/mst.jpg" alt="MST III/303">
-                <div class="room-info">
-                    <h4>MST III/303</h4>
-                    <p>Kapasitas: 30</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
+
+            <!-- Gedung Card 6 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/AB.jpg" alt="Gedung Sekolah C"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung Sekolah C</span>
+                    </a>
                 </div>
             </div>
-            <div class="room-card">
-                <img src="../../Sources/Img/mst.jpg" alt="MST III/304">
-                <div class="room-info">
-                    <h4>MST III/304</h4>
-                    <p>Kapasitas: 30</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
-                </div>
-            </div>
-            <div class="room-card">
-                <img src="../../Sources/Img/mst.jpg" alt="MST III/305">
-                <div class="room-info">
-                    <h4>MST III/305</h4>
-                    <p>Kapasitas: 30</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
-                </div>
-            </div>
-            <div class="room-card">
-                <img src="../../Sources/Img/mst.jpg" alt="MST III/306">
-                <div class="room-info">
-                    <h4>MST III/306</h4>
-                    <p>Kapasitas: 30</p>
-                    <ul>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">AC</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">WIFI</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">LCD</p>
-                        <p><img src="../../Sources/Icons/home.png" alt="Home Icon">SEAT</p>
-                    </ul>
+            
+            <!-- Gedung Card 7 -->
+            <div class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0">
+                <a href="#">
+                    <img class="gedung w-full h-[200px]" src="../../Sources/Img/AB.jpg" alt="Gedung Akuntansi"/>
+                </a>
+                <div class="p-3">
+                    <a href="#">
+                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung Akuntansi</span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-</body>
-</html>
+
