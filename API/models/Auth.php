@@ -9,7 +9,7 @@ class Auth{
     public function __construct($db) {
         $this->conn = $db;
     }
-    public function verifypeminjam($nama_peminjam, $password) {
+    public function verifyUser($nama_peminjam, $password) {
         // Query untuk mengambil data pengguna berdasarkan nama_peminjam
         $query = "SELECT * FROM peminjam WHERE nama_peminjam = :nama_peminjam LIMIT 1";
         $stmt = $this->conn->prepare($query);

@@ -13,14 +13,14 @@ class AuthController {
     }
 
     public function login($nama_peminjam, $password) {
-        $user = $this->auth->verifyUser($nama_peminjam, $password);
+        $peminjam = $this->auth->verifyUser($nama_peminjam, $password);
 
-        if ($user) {
+        if ($peminjam) {
             // Jika login berhasil, Anda bisa mengembalikan data pengguna (atau token)
             http_response_code(200);
             echo json_encode(array(
                 "message" => "Login berhasil",
-                "user" => $user // Anda bisa menghapus password dari respons
+                "nama_peminjam" => $peminjam['nama_peminjam'] // Anda bisa menghapus password dari respons
             ));
         } else {
             // Jika login gagal
