@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../Public/theme.css">
-    <title>SIPINJAM - Riwayat</title>
+    <title>SIPINJAM</title>
 </head>
 
 <body class="flex flex-col min-h-screen">
