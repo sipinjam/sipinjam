@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
     background-color: var(--putih-200);
 }
 
@@ -21,25 +21,37 @@ body{
 .bg-biru-800 {
     background-color: var(--biru-800);
 }
+
 .bg-biru-500 {
     background-color: var(--biru-500);
 }
+
 .bg-putih-100 {
     background-color: var(--putih-100);
 }
+
 .bg-putih-200 {
     background-color: var(--putih-200);
 }
 
-.text-biru-800{
+.text-biru-800 {
     color: var(--biru-800);
 }
-.text-biru-500{
+
+.text-biru-500 {
     color: var(--biru-500);
 }
+
 .text-putih-100 {
     color: var(--putih-100);
 }
+
 .text-putih-200 {
     color: var(--putih-200);
+}
+
+.wrapper {
+    width: 450px;
+    background: yellow;
+    margin-left: 500px;
 }
