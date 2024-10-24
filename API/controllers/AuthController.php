@@ -12,8 +12,8 @@ class AuthController {
         $this->auth = new Auth($db); // Inisialisasi model Auth
     }
 
-    public function login($username, $password) {
-        $user = $this->auth->verifyUser($username, $password);
+    public function login($nama_peminjam, $password) {
+        $user = $this->auth->verifyUser($nama_peminjam, $password);
 
         if ($user) {
             // Jika login berhasil, Anda bisa mengembalikan data pengguna (atau token)
@@ -25,7 +25,7 @@ class AuthController {
         } else {
             // Jika login gagal
             http_response_code(401); // Unauthorized
-            echo json_encode(array("message" => "Login gagal, username atau password salah."));
+            echo json_encode(array("message" => "Login gagal, nama_peminjam atau password salah."));
         }
     }
 }

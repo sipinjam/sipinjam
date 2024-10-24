@@ -11,12 +11,12 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'POST' && $uri[3] === 'authentications') {
     $data = json_decode(file_get_contents("php://input"));
-    $username = $data->username ?? null;
+    $nama_peminjam = $data->nama_peminjam ?? null;
     $password = $data->password ?? null;
 
-    if ($username && $password) {
+    if ($nama_peminjam && $password) {
 
-        $usersController->login($username, $password);
+        $usersController->login($nama_peminjam, $password);
     } else {
         http_response_code(400);
         echo json_encode(array("message" => "Username dan password harus diisi."));
