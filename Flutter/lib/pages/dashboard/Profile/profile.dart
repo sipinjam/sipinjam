@@ -3,9 +3,9 @@ import 'package:d_info/d_info.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/authentication/loginPage.dart';
-import 'package:sipit_app/pages/editProfile.dart';
-import 'package:sipit_app/pages/faq.dart';
-import 'package:sipit_app/pages/updatePassword.dart';
+import 'package:sipit_app/pages/dashboard/Profile/editProfile.dart';
+import 'package:sipit_app/pages/dashboard/Profile/faq.dart';
+import 'package:sipit_app/pages/dashboard/Profile/updatePassword.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -135,7 +135,7 @@ class ProfilePage extends StatelessWidget {
                   Center(
                     child: TextButton(
                       onPressed: () {
-                        // Aksi ketika tombol Logout ditekan
+                        Nav.replace(context, const LoginPage());
                       },
                       child: DButtonBorder(
                           onClick: () => logout(context),

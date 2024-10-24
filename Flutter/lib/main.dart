@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sipit_app/pages/authentication/loginPage.dart';
-import 'package:sipit_app/pages/detailRuangan.dart';
-import 'package:sipit_app/pages/editProfile.dart';
-import 'package:sipit_app/pages/history.dart';
-import 'package:sipit_app/pages/homePage.dart';
-import 'package:sipit_app/pages/peminjaman.dart';
-import 'package:sipit_app/pages/profile.dart';
-import 'package:sipit_app/pages/splash.dart';
-import 'package:sipit_app/pages/daftarRuangan.dart';
-import 'package:sipit_app/pages/faq.dart';
-import 'package:sipit_app/pages/updatePassword.dart';
+import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
+import 'package:sipit_app/pages/dashboard/Profile/editProfile.dart';
+import 'package:sipit_app/pages/dashboard/History/history.dart';
+import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
+import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
+import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
+import 'package:sipit_app/pages/dashboard/Profile/splash.dart';
+import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
+import 'package:sipit_app/pages/dashboard/Profile/faq.dart';
+import 'package:sipit_app/pages/dashboard/Profile/updatePassword.dart';
 import 'package:sipit_app/theme.dart';
 
 void main() {
@@ -25,11 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          scaffoldBackgroundColor: putih,
-          appBarTheme: AppBarTheme(
-              elevation: 8,
-              // shadowColor: Colors.black54,
-              backgroundColor: putih)),
+        scaffoldBackgroundColor: putih,
+      ),
       debugShowCheckedModeBanner: false,
       home: const SplashPage(),
       routes: {

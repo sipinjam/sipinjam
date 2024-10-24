@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/profile.dart';
+import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
 
 void main() {
   runApp(UpdatePass());

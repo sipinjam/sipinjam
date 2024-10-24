@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/homePage.dart';
+import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
+import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
 
 class peminjamanPage extends StatefulWidget {
@@ -23,14 +24,16 @@ class _peminjamanPageState extends State<peminjamanPage> {
     );
     if (_picked != null) {
       setState(() {
-        _dateController.text = _picked.toString().split(" ")[0]; // Hanya tanggalnya saja
+        _dateController.text =
+            _picked.toString().split(" ")[0]; // Hanya tanggalnya saja
       });
     }
   }
 
   @override
   void dispose() {
-    _dateController.dispose(); // Pastikan untuk membuang controller setelah selesai
+    _dateController
+        .dispose(); // Pastikan untuk membuang controller setelah selesai
     super.dispose();
   }
 
@@ -38,19 +41,38 @@ class _peminjamanPageState extends State<peminjamanPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Form Peminjaman"),
-      ),
-      backgroundColor: const Color.fromARGB(255, 212, 209, 209),
+      // appBar: AppBar(
+      //   title: const Text("Form Peminjaman"),
+      // ),
+      backgroundColor: putih,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.keyboard_arrow_left_rounded,
+                        size: 25,
+                      )),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Detail Ruangan',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
               // Bagian Peminjam
               Card(
-                color: putih, // Warna abu-abu
+                color: Colors.white, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -90,7 +112,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
               ),
               // Bagian Kegiatan
               Card(
-                color: putih, // Warna abu-abu
+                color: Colors.white, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -123,14 +145,11 @@ class _peminjamanPageState extends State<peminjamanPage> {
                       TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
-                          labelText: 'Tanggal',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.calendar_today),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)
-                          )
-
-                        ),
+                            labelText: 'Tanggal',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.calendar_today),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue))),
                         readOnly: true,
                         onTap: () {
                           _selectDate();
@@ -160,7 +179,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
               ),
               // Bagian Ormawa
               Card(
-                color: putih, // Warna abu-abu
+                color: Colors.white, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -224,7 +243,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
               ),
               // Bagian Panitia
               Card(
-                color: putih, // Warna abu-abu
+                color: Colors.white, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -268,11 +287,9 @@ class _peminjamanPageState extends State<peminjamanPage> {
                 ),
               ),
 
-              SizedBox(height: 20),
-
               // Daftar Peserta
               Card(
-                color: putih, // Warna abu-abu
+                color: Colors.white, // Warna abu-abu
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
@@ -320,11 +337,11 @@ class _peminjamanPageState extends State<peminjamanPage> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Tambahkan aksi submit
+                  Nav.replace(context, const Dashboardpage());
                 },
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(screenWidth * 1, 50), // Lebar mengikuti layar
-                ),
+                    minimumSize: Size(screenWidth * 1, 50),
+                    backgroundColor: Colors.white),
                 child: Text('Ajukan Peminjaman'),
               ),
             ],
