@@ -2,17 +2,20 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../models/Auth.php';
 
-class AuthController {
+class AuthController
+{
     private $auth;
 
     // Konstruktor untuk inisialisasi model Auth
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $db = $database->getConnection();
         $this->auth = new Auth($db); // Inisialisasi model Auth
     }
 
-    public function login($nama_peminjam, $password) {
+    public function login($nama_peminjam, $password)
+    {
         $peminjam = $this->auth->verifyUser($nama_peminjam, $password);
 
         if ($peminjam) {
@@ -20,6 +23,7 @@ class AuthController {
             http_response_code(200);
             echo json_encode(array(
                 "message" => "Login berhasil",
+                "success" => true,
                 "nama_peminjam" => $peminjam['nama_peminjam'] // Anda bisa menghapus password dari respons
             ));
         } else {
@@ -29,4 +33,3 @@ class AuthController {
         }
     }
 }
-?>
