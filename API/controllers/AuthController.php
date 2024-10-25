@@ -2,34 +2,45 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../models/Auth.php';
 
-class AuthController
-{
+class AuthController {
     private $auth;
 
-    // Konstruktor untuk inisialisasi model Auth
-    public function __construct()
-    {
+    public function __construct() {
         $database = new Database();
         $db = $database->getConnection();
-        $this->auth = new Auth($db); // Inisialisasi model Auth
+        $this->auth = new Auth($db);
     }
 
-    public function login($nama_peminjam, $password)
-    {
+    public function login($nama_peminjam, $password) {
         $peminjam = $this->auth->verifyUser($nama_peminjam, $password);
 
         if ($peminjam) {
-            // Jika login berhasil, Anda bisa mengembalikan data pengguna (atau token)
+            // Simpan data ke dalam session
+            $_SESSION['id_peminjam'] = $peminjam['id_peminjam'];  // Simpan ID peminjam
+            $_SESSION['nama_peminjam'] = $peminjam['nama_peminjam']; // Simpan nama_peminjam
+            $_SESSION['logged_in'] = true;  // Tandai bahwa pengguna sudah login
+
             http_response_code(200);
             echo json_encode(array(
                 "message" => "Login berhasil",
-                "success" => true,
-                "nama_peminjam" => $peminjam['nama_peminjam'] // Anda bisa menghapus password dari respons
+                "peminjam" => array(
+                    "id_peminjam" => $peminjam['id_peminjam'],
+                    "nama_peminjam" => $peminjam['nama_peminjam'],
+                    "email" => $peminjam['email']
+                )
             ));
         } else {
-            // Jika login gagal
             http_response_code(401); // Unauthorized
-            echo json_encode(array("message" => "Login gagal, nama_peminjam atau password salah."));
+            echo json_encode(array("message" => "Login gagal, nama peminjam atau password salah."));
         }
     }
+
+    // Fungsi logout
+    public function logout() {
+        // Hapus session
+        session_destroy();
+        http_response_code(200);
+        echo json_encode(array("message" => "Logout berhasil."));
+    }
 }
+?>

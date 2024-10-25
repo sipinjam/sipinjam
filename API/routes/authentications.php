@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/../controllers/AuthController.php';
 
 // Ambil URI dari request (pastikan kamu menggunakan versi yang benar dari index.php)
@@ -30,3 +31,4 @@ if ($method === 'POST' && $uri[4] === 'authentications') {
     echo json_encode(array("message" => "Metode tidak diizinkan atau rute salah."));
 }
 ?>
+
