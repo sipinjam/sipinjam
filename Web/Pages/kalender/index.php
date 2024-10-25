@@ -89,7 +89,7 @@
     <!-- End Keterangan -->
 
     <!-- Kalender -->
-    <div class="flex justify-center items-center py-4">
+    <div class="flex justify-evenly items-center py-4">
     <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-lg">&lt;</button>
     <h2 class="mx-6 text-2xl font-bold">Oktober</h2>
     <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-lg">&gt;</button>
@@ -124,7 +124,7 @@
         <div>15</div>
         <div class="relative">
             <span>16</span>
-            <span class="absolute top-0 left-0 mt-1 ml-1 px-3 py-1 bg-red-500 text-white text-sm rounded">Penuh</span>
+            <span class="absolute top-0 left-0 mt-1 ml-6 px-3 py-1 bg-red-500 text-white text-sm rounded toastify-center">Penuh</span>
         </div>
         <div>17</div>
         <div>18</div>
@@ -138,7 +138,7 @@
         <div>26</div>
         <div class="relative">
             <span>27</span>
-            <span class="absolute top-0 right-0 mt-1 mr-1 px-3 py-1 bg-yellow-400 text-white text-sm rounded">Sesi 2</span>
+            <span class="absolute top-0 right-0 mt-1 mr-6 px-3 py-1 bg-yellow-400 text-white text-sm rounded">Sesi 2</span>
         </div>
         <div>28</div>
         <div>29</div>
