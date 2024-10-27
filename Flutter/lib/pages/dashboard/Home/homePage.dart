@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/config/widget.dart';
 import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
-import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
 import 'package:sipit_app/theme.dart';
 
 class HomePage extends StatelessWidget {
