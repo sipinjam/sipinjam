@@ -11,33 +11,39 @@
 
 <body class="flex flex-col min-h-screen">
 
-    <div class="flex-grow">
-        <!--SEARCH-->
-        <form class="max-w-md mx-auto mt-5" id="search">
-            <label for="default-search"
-                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                </div>
-                <input type="search" id="default-search"
-                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-[20px] bg-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-300 dark:border-gray-300 dark:placeholder-gray-500 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-                    placeholder="Cari Ruangan" required />
-                <button type="submit"
-                    class="text-white absolute end-2.5 bottom-2.5 bg-biru-800 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-800 dark:hover:bg-blue-800 dark:focus:ring-blue-800">Cari</button>
-            </div>
-        </form>
+    <!-- Sidebar -->
+    <?php include '../../components/sidebar.php' ?>
+    <!-- End Sidebar -->
 
-        <!-- Sidebar -->
-        <?php include '../../components/sidebar.php' ?>
-        <!-- End Sidebar -->
+    <!-- Header -->
+    <div class="w-full h-[120px] bg-gradient-to-br from-blue-800 to-blue-300 p-4 shadow-md fixed top-0 left-0 z-20">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <div class="flex items-center space-x-3">
+                <img src="../../Sources/Img/LogoPolines.png" alt="Logo" class="h-20 w-20">
+                <h1 class="text-white text-3xl font-bold pl-3">SIPINJAM</h1>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="flex-grow pt-[120px]">
+
+    <!--SEARCH -->
+    <form class="p-5 ml-auto max-w-lg w-full justify-between max-w-7xl mx-auto" id="search">
+                <label for="default-search" class="mb-2 text-sm font-medium text-black sr-only dark:text-black">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+                    <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-black rounded-[20px] bg-gray-300 dark:bg-gray-300 dark:placeholder-gray-500 dark:text-black" placeholder="Cari Ruangan" required />
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2">Cari</button>
+                </div>
+            </form>
 
         <!-- Container for scrolling horizontally -->
-        <div class="p-10 sm:ml-64 overflow-x-auto">
+        <div class="p-10 ml-64 overflow-x-auto">
             <div class="flex space-x-4">
                 <!-- Gedung Card 1 -->
                 <div
