@@ -1,8 +1,8 @@
-abstract class Failure implements Exception {
-  final String? message;
-
+class Failure {
+  final String message;
   Failure(this.message);
 }
+
 
 class FetchFailure extends Failure {
   FetchFailure(super.message);

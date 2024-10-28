@@ -7,7 +7,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
 // Inisialisasi AuthController
-$authController = new AuthController();
+$authController = new AuthController($conn);
 
 // Cek metode request POST dan rute 'authentications'
 if ($method === 'POST' && $uri[4] === 'authentications') {

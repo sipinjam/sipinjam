@@ -44,6 +44,8 @@ dependencies:
   d_info: ^0.2.0
   http: ^1.2.2
   dartz: ^0.10.1
+  shared_preferences: ^2.0.15
+
 
 # flutter_native_splash:
 #   background_image: assets/splashBackground.png

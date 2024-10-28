@@ -7,8 +7,23 @@ import 'package:sipit_app/config/failure.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/peminjam_datasource.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
+import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void _checkLoginStatus(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+
+  if (isLoggedIn) {
+    // Jika sudah login, langsung ke halaman Dashboard
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,12 +49,16 @@ class _LoginPageState extends State<LoginPage> {
         });
 
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Login successful")));
-        Nav.push(context, const Dashboardpage());
+            .showSnackBar(const SnackBar(content: Text("Login successful")));
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
       }
     } catch (e) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Login failed")));
+          .showSnackBar(SnackBar(content: Text("Login failed: $e")));
     }
   }
 

@@ -1,27 +1,31 @@
 import 'dart:convert';
-
-import 'package:sipit_app/config/app_constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:sipit_app/models/peminjamModel.dart';
+import '../config/failure.dart';
 
 class PeminjamDatasource {
-  Uri url = Uri.parse('${AppConstants.baseUrl}/users.php');
+  final String baseUrl =
+      'http://localhost/sipinjamfix/sipinjam/api'; // Sesuaikan dengan API kamu
 
-  Future<PeminjamModel?> login(
-    String username,
-    String password,
-  ) async {
-    final response = await http.post(url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "username": username,
-          "password": password,
-        }));
+  Future<PeminjamModel?> login(String namaPeminjam, String password) async {
+    final url = Uri.parse('$baseUrl/authentications');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'nama_peminjam': namaPeminjam,
+      'password': password,
+    });
 
-    if (response.statusCode == 200) {
-      return peminjamModelFromJson(response.body);
-    } else {
-      throw Exception("Login Failed");
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return PeminjamModel.fromJson(data);
+      } else {
+        throw Failure('Login failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Failure('Login error: $e');
     }
   }
 }

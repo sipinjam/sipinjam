@@ -9,22 +9,23 @@ PeminjamModel peminjamModelFromJson(String str) =>
 
 String peminjamModelToJson(PeminjamModel data) => json.encode(data.toJson());
 
+// Menghapus List dari konstruktor utama
 class PeminjamModel {
-  List<Peminjam> peminjams;
+  Peminjam peminjam;
 
   PeminjamModel({
-    required this.peminjams,
+    required this.peminjam,
   });
 
   factory PeminjamModel.fromJson(Map<String, dynamic> json) => PeminjamModel(
-        peminjams: List<Peminjam>.from(
-            json["peminjams"].map((x) => Peminjam.fromJson(x))),
+        peminjam: Peminjam.fromJson(json["peminjam"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "peminjams": List<dynamic>.from(peminjams.map((x) => x.toJson())),
+        "peminjam": peminjam.toJson(),
       };
 }
+
 
 class Peminjam {
   int idPeminjam;
