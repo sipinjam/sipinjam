@@ -30,7 +30,7 @@
                     <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
                     <p class="text-sm font-bold">28 September 2024</p>
                     <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
+                    <button type="button" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
                 </div>
             </a>
 
@@ -45,7 +45,7 @@
                     <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
                     <p class="text-sm font-bold">28 September 2024</p>
                     <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
+                    <button type="button" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
                 </div>
             </a>
 
@@ -60,7 +60,7 @@
                     <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
                     <p class="text-sm font-bold">28 September 2024</p>
                     <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
+                    <button type="button" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
                 </div>
             </a>
 
@@ -75,7 +75,7 @@
                     <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
                     <p class="text-sm font-bold">28 September 2024</p>
                     <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
+                    <button type="button" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat Detail Peminjaman</button>
                 </div>
             </a>
         </div>   
