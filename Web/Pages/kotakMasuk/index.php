@@ -74,16 +74,14 @@
                     <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
                 </div>
             </a>
-
-        </div>
+        </div>   
     </div>
     <!-- End Main -->
     <div class="mt-4 text-left fixed left-0 bottom-9 p-4 pl-72">
-    <a href="#" class="text-blue-500 hover:underline">Lihat Daftar Panitia</a>
-    <br>
-    <a href="#" class="text-blue-500 hover:underline">Lihat Surat Peminjaman</a>
-</div>
-
+        <a href="#" class="text-blue-500 hover:underline">Lihat Daftar Panitia</a>
+        <br>
+        <a href="#" class="text-blue-500 hover:underline">Lihat Surat Peminjaman</a>
+    </div>
 </body>
 
 </html>
