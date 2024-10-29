@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Detail Peminjaman</title>
 </head>
-<body class="bg-gray-100">
+ <!--Sidebar-->
+    <aside style="background-color: #1e3a8a; color: white;" class="fixed top-0 left-0 z-40 w-64 h-screen">
+    <?php include '../../Components/sidebar.php'; ?>
+    </aside>
+    <!--End Sidebar-->
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
     <?php
     // Contoh data yang biasanya diambil dari database atau API
     $data_peminjam = [
@@ -26,7 +31,7 @@
     ];
     ?>
 
-    <div class="max-w-4xl mx-auto mt-10 bg-white shadow-lg rounded-lg">
+    <div class="max-w-4xl mx-auto mt-[-10px] bg-white shadow-lg rounded-lg">
         <div class="grid grid-cols-2 gap-4 p-6">
             <!-- Image Section -->
             <div class="flex justify-center">
@@ -65,7 +70,7 @@
 
                 <!-- Buttons -->
                 <div class="flex justify-mt-6 gap-x-4">
-                    <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">TOLAK</button>
+                <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">TOLAK</a>
                     <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">SETUJU</button>
                 </div>
             </div>
