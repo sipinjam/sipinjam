@@ -1,14 +1,14 @@
 <?php
 
-function response($success, $message, $data = null, $error = null, $statusCode = null) {
+function response($status, $message, $data = null, $statusCode = null) {
    header('Content-Type: application/json');
    http_response_code($statusCode);
 
    $response = ([
-        "success" => $success,
+        "status" => $status,
         "message" => $message,
         "data" => $data,
-        "error" => $error,
+        "code" => $statusCode,
     ]);
 
     echo json_encode($response);

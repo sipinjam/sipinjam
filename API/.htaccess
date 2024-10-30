@@ -1,7 +1,7 @@
 RewriteEngine On
 
 # Rute normal ke file PHP
-RewriteRule ^(events|categories|authentications|likes|comments|replies|tickets|auth|registration|session)/?$ routes/$1.php [NC,L]
+RewriteRule ^(authentications|users|gedung|ruangan|fasilitas|fotoruangan)/?$ routes/$1.php [NC,L]
 
 # Rute dengan parameter ID
-RewriteRule ^(events|categories|authentications|likes|comments|replies|tickets|auth|registration|session)/([0-9]+)/?$ routes/$1.php?id=$2 [NC,L]
+RewriteRule ^(authentications|users|gedung|ruangan|fasilitas|fotoruangan)/([0-9]+)/?$ routes/$1.php?id=$2 [NC,L]
