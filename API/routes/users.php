@@ -10,12 +10,16 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
-        $usersController->getAllUser();
+        if (!empty($_GET["id"])) {
+            $id = intval($_GET["id"]);
+            $usersController->getUserById($id);
+        } else {
+            $usersController->getAllUser();
+        }
         break;
-
-        // case 'POST':
-        //     $usersController->createUser();
-        //     break;
+    case 'POST':
+        $usersController->createUser();
+        break;
 
     default:
         http_response_code(405);

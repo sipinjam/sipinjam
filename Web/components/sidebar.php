@@ -81,17 +81,12 @@ $current_page = basename($_SERVER['REQUEST_URI']);
 </aside>
 
 <script>
-if (!localStorage.getItem('loggedIn')) {
-    alert("Anda harus login terlebih dahulu.");
-    window.location.href = '/sipinjamfix/sipinjam/web/'; // Arahkan kembali ke halaman login jika belum login
-}
+    function logout() {
+        // Hapus data di localStorage
+        localStorage.removeItem('nama_peminjam');
+        localStorage.removeItem('loggedIn');
 
-function logout() {
-    // Hapus data di localStorage
-    localStorage.removeItem('nama_peminjam');
-    localStorage.removeItem('loggedIn');
-
-    // Alihkan pengguna ke halaman login
-    window.location.href = '/sipinjamfix/sipinjam/web/pages/login';
-}
+        // Alihkan pengguna ke halaman login
+        window.location.href = '/sipinjamfix/sipinjam/web/pages/login';
+    }
 </script>

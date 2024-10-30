@@ -10,25 +10,22 @@ $uri = explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 $authController = new AuthController($conn);
 
 // Cek metode request POST dan rute 'authentications'
-if ($method === 'POST' && $uri[4] === 'authentications') {
-    // Ambil data dari request body
-    $data = json_decode(file_get_contents("php://input"));
-    $nama_peminjam = $data->nama_peminjam ?? null;
-    $password = $data->password ?? null;
+switch ($method) {
+    case 'POST':
+        // Untuk login
+        $authController->login();
+        break;
 
-    // Pastikan nama_peminjam dan password tidak kosong
-    if ($nama_peminjam && $password) {
-        // Panggil fungsi login
-        $authController->login($nama_peminjam, $password);
-    } else {
-        // Respons jika ada data yang kosong
-        http_response_code(400);
-        echo json_encode(array("message" => "Nama peminjam dan password harus diisi."));
-    }
-} else {
-    // Respons jika metode atau rute salah
-    http_response_code(405);
-    echo json_encode(array("message" => "Metode tidak diizinkan atau rute salah."));
+    case 'DELETE':
+        // Untuk logout
+        $authController->logout();
+        break;
+
+    default:
+        header("HTTP/1.0 405 Method Not Allowed");
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Method not allowed.'
+        ], JSON_PRETTY_PRINT);
+        break;
 }
-?>
-

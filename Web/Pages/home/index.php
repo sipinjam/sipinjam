@@ -25,22 +25,22 @@
         </div>
     </div>
 
-    
+
     <div class="flex-grow pt-[120px]">
 
-    <!--SEARCH -->
-    <form class="p-5 ml-auto max-w-lg w-full justify-between max-w-7xl mx-auto" id="search">
-                <label for="default-search" class="mb-2 text-sm font-medium text-black sr-only dark:text-black">Search</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                    </div>
-                    <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-black rounded-[20px] bg-gray-300 dark:bg-gray-300 dark:placeholder-gray-500 dark:text-black" placeholder="Cari Ruangan" required />
-                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2">Cari</button>
+        <!--SEARCH -->
+        <form class="p-5 ml-auto max-w-lg w-full justify-between max-w-7xl mx-auto" id="search">
+            <label for="default-search" class="mb-2 text-sm font-medium text-black sr-only dark:text-black">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
                 </div>
-            </form>
+                <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-black rounded-[20px] bg-gray-300 dark:bg-gray-300 dark:placeholder-gray-500 dark:text-black" placeholder="Cari Ruangan" required />
+                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2">Cari</button>
+            </div>
+        </form>
 
         <!-- Container for scrolling horizontally -->
         <div class="p-10 ml-64 overflow-x-auto">
@@ -262,21 +262,6 @@
                 </li>
             </ul>
         </nav>
-        <script>
-        if (!localStorage.getItem('loggedIn')) {
-            alert("Anda harus login terlebih dahulu.");
-            window.location.href = '/sipinjamfix/sipinjam/web/'; // Arahkan kembali ke halaman login jika belum login
-        }
-
-        function logout() {
-            // Hapus data di localStorage
-            localStorage.removeItem('nama_peminjam');
-            localStorage.removeItem('loggedIn');
-
-            // Alihkan pengguna ke halaman login
-            window.location.href = '/sipinjamfix/sipinjam/web/pages/login';
-        }
-        </script>
 </body>
 
 </html>
