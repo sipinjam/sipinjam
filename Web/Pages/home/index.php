@@ -16,6 +16,11 @@
     <!-- End Sidebar -->
 
     <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
+
+
+    <!-- Main Menu -->
     <div class="w-full h-[120px] bg-gradient-to-br from-blue-800 to-blue-300 p-4 shadow-md fixed top-0 left-0 z-20">
         <div class="flex items-center justify-between max-w-7xl mx-auto">
             <div class="flex items-center space-x-3">
