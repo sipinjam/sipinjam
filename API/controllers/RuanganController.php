@@ -24,13 +24,42 @@ class RuangansController
     }
     public function getAllRuangan()
     {
-        $query = "SELECT * FROM ruangan";
-        $data = array();
+        // Query untuk mengambil semua ruangan beserta data terkait
+        $query = "
+        SELECT 
+            r.id_ruangan,
+            r.nama_ruangan,
+            g.nama_gedung,
+            r.deskripsi_ruangan,
+            r.kapasitas,
+            p.nama_peminjam,
+            GROUP_CONCAT(DISTINCT f.nama_fasilitas SEPARATOR ', ') AS nama_fasilitas,
+            GROUP_CONCAT(DISTINCT fr.nama_foto SEPARATOR ', ') AS foto_ruangan
+        FROM 
+            ruangan r
+        LEFT JOIN 
+            gedung g ON r.id_gedung = g.id_gedung
+        LEFT JOIN 
+            peminjam p ON r.id_peminjam = p.id_peminjam
+        LEFT JOIN 
+            fasilitas_ruangan fru ON r.id_ruangan = fru.id_ruangan
+        LEFT JOIN 
+            fasilitas f ON fru.id_fasilitas = f.id_fasilitas
+        LEFT JOIN 
+            foto_ruangan fr ON r.id_ruangan = fr.id_ruangan
+        GROUP BY 
+            r.id_ruangan
+    ";
 
         $stmt = $this->conn->query($query);
+        $data = [];
 
         if ($stmt) {
-            while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                // Pecah foto_ruangan menjadi array untuk setiap ruangan
+                $row['foto_ruangan'] = explode(', ', $row['foto_ruangan']);
+
+                // Tambahkan setiap hasil ruangan ke dalam array data
                 $data[] = $row;
             }
             response('success', 'List of Ruangans Retrieved Successfully', $data);
@@ -41,6 +70,7 @@ class RuangansController
             ]);
         }
     }
+
     public function getRuanganById($id_ruangan)
     {
         // Validasi id_ruangan
@@ -58,7 +88,7 @@ class RuangansController
                 r.kapasitas,
                 p.nama_peminjam,
                 f.nama_fasilitas,
-                fr2.nama_foto
+                GROUP_CONCAT(fr.nama_foto SEPARATOR ', ') AS foto_ruangan
             FROM 
                 ruangan r
             LEFT JOIN 
@@ -66,13 +96,15 @@ class RuangansController
             LEFT JOIN 
                 peminjam p ON r.id_peminjam = p.id_peminjam
             LEFT JOIN 
-                fasilitas_ruangan fr ON r.id_ruangan = fr.id_ruangan
+                fasilitas_ruangan fru ON r.id_ruangan = fru.id_ruangan
             LEFT JOIN 
-                fasilitas f ON fr.id_fasilitas = f.id_fasilitas
+                fasilitas f ON fru.id_fasilitas = f.id_fasilitas
             LEFT JOIN 
-                foto_ruangan fr2 ON r.id_ruangan = fr2.id_ruangan
+                foto_ruangan fr ON r.id_ruangan = fr.id_ruangan
             WHERE 
                 r.id_ruangan = ?
+            GROUP BY 
+                r.id_ruangan
         ";
 
         $stmt = $this->conn->prepare($query);
@@ -80,11 +112,15 @@ class RuangansController
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
+            // Pecah foto_ruangan menjadi array untuk hasil yang lebih terstruktur
+            $result['foto_ruangan'] = explode(', ', $result['foto_ruangan']);
+
             response('success', 'Ruangan found', $result);
         } else {
             response('error', 'Ruangan not found', null, 404);
         }
     }
+
 
 
     public function createRuangan()

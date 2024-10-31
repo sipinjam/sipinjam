@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../controllers/RuanganController.php';
+require_once __DIR__ . '/../controllers/PeminjamanController.php';
 require_once __DIR__ . '/../config/db.php';
 
 $db = new Database();
 $conn = $db->getConnection();
-$ruanganController = new RuangansController($conn);
+$PeminjamanController = new PeminjamansController($conn);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -12,13 +12,13 @@ switch ($method) {
     case 'GET':
         if (!empty($_GET["id"])) {
             $id = intval($_GET["id"]);
-            $ruanganController->getRuanganById($id);
+            $PeminjamanController->getPeminjamanById($id);
         } else {
-            $ruanganController->getAllRuangan();
+            // $PeminjamanController->getAllPeminjaman();
         }
         break;
     case 'POST':
-        $ruanganController->createRuangan();
+        $PeminjamanController->createPeminjaman();
         break;
 
     default:
