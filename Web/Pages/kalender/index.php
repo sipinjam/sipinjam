@@ -19,8 +19,22 @@
     
     <!-- End Keterangan -->
 
+            <!-- Search Bar dengan posisi sticky -->
+            <div class="md:pl-64 z-10 sticky top-20 pt-6 pb-4 mt-28">
+            <form class="flex-grow max-w-md mx-auto">
+                <div class="relative">
+                    <input type="search" id="default-search" 
+                        class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
+                        placeholder="Cari Ruangan" required />
+                    <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
+                        Cari
+                    </button>
+                </div>
+            </form>
+        </div>
+
     <!-- Kalender -->
-    <div class="flex justify-evenly items-right py-4 mt-28">
+    <div class="flex justify-evenly items-right py-4 ">
     <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-lg">&lt;</button>
     <h2 class="mx-6 text-2xl font-bold">Oktober</h2>
     <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-lg">&gt;</button>
