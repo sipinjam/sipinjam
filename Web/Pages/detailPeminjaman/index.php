@@ -70,7 +70,7 @@
 
                 <!-- Buttons -->
                 <div class="flex justify-mt-6 gap-x-4">
-                <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">TOLAK</a>
+                <a href="http://localhost/sipinjamfix/sipinjam/web/components/popKeterangan.php" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">TOLAK</a>
                     <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">SETUJU</button>
                 </div>
             </div>
