@@ -9,6 +9,9 @@
 
 </head>
 <body>
+    <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
     <!-- sidebar -->
 <?php include '../../components/sidebar.php' ?>
 
@@ -17,7 +20,7 @@
     <!-- End Keterangan -->
 
     <!-- Kalender -->
-    <div class="flex justify-evenly items-center py-4">
+    <div class="flex justify-evenly items-right py-4 mt-28">
     <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-lg">&lt;</button>
     <h2 class="mx-6 text-2xl font-bold">Oktober</h2>
     <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-lg">&gt;</button>
