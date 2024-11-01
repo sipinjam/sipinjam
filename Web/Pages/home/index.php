@@ -19,45 +19,32 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
-
-    <!-- Main Menu -->
-    <div class="w-full h-[120px] bg-gradient-to-br from-blue-800 to-blue-300 p-4 shadow-md fixed top-0 left-0 z-20">
-        <div class="flex items-center justify-between max-w-7xl mx-auto">
-            <div class="flex items-center space-x-3">
-                <img src="../../Sources/Img/LogoPolines.png" alt="Logo" class="h-20 w-20">
-                <h1 class="text-white text-3xl font-bold pl-3">SIPINJAM</h1>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="flex-grow pt-[120px]">
-
-        <!--SEARCH -->
-        <form class="p-5 ml-auto max-w-lg w-full justify-between max-w-7xl mx-auto" id="search">
-            <label for="default-search" class="mb-2 text-sm font-medium text-black sr-only dark:text-black">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
+        <!-- Search Bar dengan posisi sticky -->
+        <div class="md:pl-64 bg-white z-10 sticky top-20 pt-6 pb-4">
+            <form class="flex-grow max-w-md mx-auto">
+                <div class="relative">
+                    <input type="search" id="default-search" 
+                        class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
+                        placeholder="Cari Ruangan" required />
+                    <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
+                        Cari
+                    </button>
                 </div>
-                <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-black rounded-[20px] bg-gray-300 dark:bg-gray-300 dark:placeholder-gray-500 dark:text-black" placeholder="Cari Ruangan" required />
-                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2">Cari</button>
-            </div>
-        </form>
+            </form>
+        </div>
 
+        <!-- Main Menu -->
         <!-- Container for scrolling horizontally -->
-        <div class="p-10 ml-64 overflow-x-auto">
-            <div class="flex space-x-4">
+        <div class="pt-24 md:pl-[270px] overflow-x-auto">
+            <div class="flex space-x-4 pb-4">
                 <!-- Gedung Card 1 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
                     <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
                             alt="Administrasi Bisnis" />
                     </a>
-                    <div class="p-3">
+                    <div class="p-2">
                         <a href="#">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Administrasi
@@ -68,13 +55,13 @@
 
                 <!-- Gedung Card 2 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                    <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/gkt-bg.jpeg"
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    <a href="../daftarRuangan/index.php">
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/gkt-bg.jpeg"
                             alt="Gedung Kuliah Terpadu" />
                     </a>
-                    <div class="p-3">
-                        <a href="#">
+                    <div class="p-2">
+                        <a href="../daftarRuangan/index.php">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
                                 Kuliah Terpadu</span>
@@ -84,12 +71,12 @@
 
                 <!-- Gedung Card 3 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
                     <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/mst.jpg"
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/mst.jpg"
                             alt="Magister Terapan" />
                     </a>
-                    <div class="p-3">
+                    <div class="p-2">
                         <a href="#">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Magister
@@ -100,12 +87,12 @@
 
                 <!-- Gedung Card 4 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
                     <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
                             alt="Gedung Sekolah A" />
                     </a>
-                    <div class="p-3">
+                    <div class="p-2">
                         <a href="#">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
@@ -116,12 +103,12 @@
 
                 <!-- Gedung Card 5 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
                     <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
                             alt="Gedung Sekolah B" />
                     </a>
-                    <div class="p-3">
+                    <div class="p-2">
                         <a href="#">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
@@ -132,12 +119,12 @@
 
                 <!-- Gedung Card 6 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
                     <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
                             alt="Gedung Sekolah C" />
                     </a>
-                    <div class="p-3">
+                    <div class="p-2">
                         <a href="#">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
@@ -148,12 +135,12 @@
 
                 <!-- Gedung Card 7 -->
                 <div
-                    class="w-[350px] h-[250px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
+                    class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
                     <a href="#">
-                        <img class="gedung w-full h-[200px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
+                        <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
                             alt="Gedung Akuntansi" />
                     </a>
-                    <div class="p-3">
+                    <div class="p-2">
                         <a href="#">
                             <span
                                 class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
