@@ -10,6 +10,10 @@
 </head>
 
 <body>
+    <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
+
     <!-- Sidebar -->
     <?php include '../../Components/sidebar.php'; ?>
     <!-- End Sidebar -->
