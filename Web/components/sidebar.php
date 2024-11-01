@@ -45,8 +45,8 @@ $current_page = basename($_SERVER['REQUEST_URI']);
                 </a>
             </li>
             <li>
-                <a href="../Schedule/"
-                    class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white <?php echo $current_page == 'Schedule' ? 'active bg-biru-500 text-white' : ''; ?>">
+                <a href="../kalender/"
+                    class="flex items-center p-2 text-gray-400 rounded-lg hover:bg-gray-700 group hover:text-white <?php echo $current_page == 'kalender' ? 'active bg-biru-500 text-white' : ''; ?>">
                     <svg class="w-5 h-5 transition duration-75 group-hover:text-white <?php echo $current_page == 'Schedule' ? 'text-white' : 'text-gray-400'; ?>"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                         <path
