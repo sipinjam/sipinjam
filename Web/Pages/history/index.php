@@ -19,7 +19,7 @@
     <!-- End Sidebar -->
 
     <!-- Main Content -->
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 pt-10 sm:ml-64">
         <h1 class="text-4xl font-bold p-4">Riwayat Aktivitas</h1>
         <!-- Pagination Table -->
         <div class="overflow-x-auto">

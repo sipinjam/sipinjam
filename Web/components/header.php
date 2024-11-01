@@ -1,5 +1,5 @@
 <!-- Header -->
-<div class="md:pl-64 w-full h-auto bg-blue-800 px-4 py-2 shadow-md fixed top-0">
+<div class="md:pl-64 w-full h-auto bg-biru-800 px-4 py-2 shadow-md fixed top-0">
     <div class="flex items-center justify-between max-w-screen-xl mx-auto gap-x-3 flex-wrap md:flex-nowrap">
         <div class="flex items-center space-x-3">
             <!-- Add any left-aligned content here -->
