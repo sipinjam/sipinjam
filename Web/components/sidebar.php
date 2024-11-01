@@ -18,7 +18,7 @@ $current_page = basename($_SERVER['REQUEST_URI']);
     <div class="h-full px-3 py-4 overflow-y-auto bg-biru-800 dark:bg-biru-800">
         <a href="https://flowbite.com/" class="flex items-center pt-4 ps-8 mb-5">
             <img src="../../Sources/Img/LogoPolines.png" class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">SIPINJAM</span>
+            <span class="self-center text-xl font-semibold whitespace-nowrap text-white">SIPINJAM</span>
         </a>
         <ul class="space-y-2 pt-10 font-medium">
             <li>
