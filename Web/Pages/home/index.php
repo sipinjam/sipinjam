@@ -19,20 +19,17 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
-    <!-- Search Bar dengan posisi sticky -->
-    <div class="md:pl-64 bg-white z-10 sticky top-12 pt-6 pb-4">
-        <form class="flex-grow max-w-md mx-auto">
+        <!-- Search Bar -->
+        <form class="flex-grow max-w-md mt-4 md:mt-0">
             <div class="relative">
-                <input type="search" id="default-search"
+                <input type="search" id="default-search" 
                     class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
                     placeholder="Cari Ruangan" required />
-                <button type="submit"
-                    class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
+                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
                     Cari
                 </button>
             </div>
         </form>
-    </div>
 
     <!-- Main Menu -->
     <!-- Container for scrolling horizontally -->
