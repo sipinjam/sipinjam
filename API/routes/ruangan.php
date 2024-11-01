@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../controllers/UsersController.php';
+require_once __DIR__ . '/../controllers/RuanganController.php';
 require_once __DIR__ . '/../config/db.php';
 
 $db = new Database();
 $conn = $db->getConnection();
-$usersController = new UsersController($conn);
+$ruanganController = new RuangansController($conn);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -12,13 +12,13 @@ switch ($method) {
     case 'GET':
         if (!empty($_GET["id"])) {
             $id = intval($_GET["id"]);
-            $usersController->getUserById($id);
+            $ruanganController->getRuanganById($id);
         } else {
-            $usersController->getAllUser();
+            $ruanganController->getAllRuangan();
         }
         break;
     case 'POST':
-        $usersController->createUser();
+        $ruanganController->createRuangan();
         break;
 
     default:

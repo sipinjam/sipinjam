@@ -86,19 +86,7 @@
                     }),
                 })
                 .then(response => response.json())
-                .then(data => {
-                    if (data.message === "Login berhasil") {
-                        // Simpan session atau token di localStorage
-                        localStorage.setItem('nama_peminjam', nama_peminjam);
-                        localStorage.setItem('loggedIn', true);
 
-                        // Alihkan ke halaman dashboard
-                        window.location.href = '/sipinjamfix/sipinjam/web/pages/home';
-                    } else {
-                        // Tampilkan pesan error jika login gagal
-                        document.getElementById('error-message').style.display = 'block';
-                    }
-                })
                 .catch(error => {
                     console.error('Error:', error);
                     document.getElementById('error-message').style.display = 'block';
@@ -106,9 +94,6 @@
         }
 
         // Cek apakah sudah login
-        if (localStorage.getItem('loggedIn')) {
-            window.location.href = '/sipinjamfix/sipinjam/web/pages/home';
-        }
     </script>
 </body>
 

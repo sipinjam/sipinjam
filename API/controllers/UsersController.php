@@ -1,102 +1,101 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
-require_once  __DIR__.'/../models/User.php';
+require_once __DIR__ . '/../helpers/response.php';
 
-class UsersController {
-    private $db;
-    private $peminjam;
-
-    public function __construct() {
-        // Inisialisasi koneksi database dan model User
-        $database = new Database();
-        $this->db = $database->getConnection();
-        $this->peminjam = new User($this->db);
+class UsersController
+{
+    private $conn;
+    private $table_name = "peminjam";
+    public function __construct($conn)
+    {
+        if (!$conn) {
+            response(false, 'Database connection failed');
+        }
+        $this->conn = $conn;
     }
 
-    // Fungsi untuk menangani request GET (mengambil semua user)
-    public function getUsers() {
-        $stmt = $this->peminjam->getUsers();
-        $num = $stmt->rowCount();
+    public function getAllUser()
+    {
+        $query = "SELECT * FROM peminjam";
+        $data = array();
 
-        if ($num > 0) {
-            $peminjams_arr = array();
-            $peminjams_arr["peminjams"] = array();
+        $stmt = $this->conn->query($query);
 
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                extract($row);
-                $peminjam_item = array(
-                    "id_peminjam" => $id_peminjam,
-                    "nama_peminjam" => $nama_peminjam,
-                    "email" => $email
-                );
-                array_push($peminjams_arr["peminjams"], $peminjam_item);
+        if ($stmt) {
+            while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
+                $data[] = $row;
             }
-
-            http_response_code(200);
-            echo json_encode($peminjams_arr);
+            response(true, 'List of Users Retrieved Successfully', $data);
         } else {
-            http_response_code(404);
-            echo json_encode(array("message" => "Tidak ada user yang ditemukan."));
+            response(false, 'Failed to Retrieve Users', null, [
+                'code' => 500,
+                'message' => 'Internal server error: ' . $this->conn->errorInfo()[2]
+            ]);
+        }
+    }
+    public function getUserById($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id_peminjam = :id_peminjam";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_peminjam', $id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            response('success', 'Get user by id successfully', $user);
+        } else {
+            response('error', 'User not found', null, 404);
         }
     }
 
-    // Fungsi untuk menangani request POST (membuat user baru)
     public function createUser() {
-        $data = json_decode(file_get_contents("php://input"));
+        // Menerima data JSON dan mendekode
+        $input = json_decode(file_get_contents('php://input'), true);
     
-        if (!empty($data->nama_peminjam) && 
-            !empty($data->password) && 
-            !empty($data->nama_lengkap) && 
-            !empty($data->email) && 
-            !empty($data->no_telpon) && 
-            !empty($data->id_jenis_peminjam)) {
-            
-            // Mengisi properti objek peminjam
-            $this->peminjam->nama_peminjam = $data->nama_peminjam;
-            $this->peminjam->password = $data->password;
-            $this->peminjam->nama_lengkap = $data->nama_lengkap;
-            $this->peminjam->email = $data->email;
-            $this->peminjam->no_telpon = $data->no_telpon;
-            $this->peminjam->id_jenis_peminjam = $data->id_jenis_peminjam;
+        // Pastikan input bukan null dan merupakan array
+        if (!is_array($input)) {
+            response('error', 'Invalid JSON input', null, 400);
+            return;
+        }
     
-            // Mencoba menambahkan user
-            if ($this->peminjam->createUser()) {
-                http_response_code(201); // Kode untuk resource berhasil dibuat
-                echo json_encode(array("message" => "User berhasil ditambahkan."));
+        $requiredFields = ['nama_peminjam', 'email', 'password', 'no_telpon', 'nama_jenis_peminjam'];
+        $missingParams = array_diff($requiredFields, array_keys($input));
+    
+        if (empty($missingParams)) {
+            // Memastikan nama_jenis_peminjam ada di tabel jenis_peminjam
+            $jenisQuery = "SELECT id_jenis_peminjam FROM jenis_peminjam WHERE nama_jenis_peminjam = ?";
+            $jenisStmt = $this->conn->prepare($jenisQuery);
+            $jenisStmt->execute([$input['nama_jenis_peminjam']]);
+            $jenisResult = $jenisStmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($jenisResult) {
+                $id_jenis_peminjam = $jenisResult['id_jenis_peminjam'];
+    
+                $query = "INSERT INTO peminjam (nama_peminjam, password, nama_lengkap, email, no_telpon, id_jenis_peminjam) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $this->conn->prepare($query);
+    
+                if ($stmt->execute([             
+                    $input['nama_peminjam'], 
+                    password_hash($input['password'], PASSWORD_BCRYPT), 
+                    $input['nama_lengkap'], 
+                    $input['email'], 
+                    $input['no_telpon'], 
+                    $id_jenis_peminjam
+                ])) {
+                    $new_id = $this->conn->lastInsertId();
+                    $result_stmt = $this->conn->prepare("SELECT * FROM peminjam WHERE id_peminjam = ?");
+                    $result_stmt->execute([$new_id]);
+                    $new_data = $result_stmt->fetch(PDO::FETCH_OBJ);
+    
+                    response('success', 'User Added Successfully', $new_data);
+                } else {
+                    response('error', 'Unable to create user', null, 400);
+                }
             } else {
-                http_response_code(503); // Kode untuk service unavailable
-                echo json_encode(array("message" => "Gagal menambahkan user."));
+                response('error', 'Invalid jenis peminjam', null, 400);
             }
-    
         } else {
-            // Menangani kasus ketika ada data yang kosong
-            http_response_code(400); // Kode untuk Bad Request
-            $errors = array();
-    
-            if (empty($data->nama_peminjam)) {
-                $errors['nama_peminjam'] = "Nama peminjam tidak boleh kosong.";
-            }
-            if (empty($data->password)) {
-                $errors['password'] = "Password tidak boleh kosong.";
-            }
-            if (empty($data->nama_lengkap)) {
-                $errors['nama_lengkap'] = "Nama lengkap tidak boleh kosong.";
-            }
-            if (empty($data->email)) {
-                $errors['email'] = "Email tidak boleh kosong.";
-            }
-            if (empty($data->no_telpon)) {
-                $errors['no_telpon'] = "No telpon tidak boleh kosong.";
-            }
-            if (empty($data->id_jenis_peminjam)) {
-                $errors['id_jenis_peminjam'] = "ID jenis peminjam tidak boleh kosong.";
-            }
-    
-            // Mengembalikan pesan error dalam bentuk JSON
-            echo json_encode(array("message" => "Data tidak lengkap.", "errors" => $errors));
+            response('error', 'Missing parameters: ' . implode(', ', $missingParams), null, 400);
         }
     }
     
-   
 }
-?>

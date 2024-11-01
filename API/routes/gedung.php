@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../controllers/UsersController.php';
+require_once __DIR__ . '/../controllers/GedungController.php';
 require_once __DIR__ . '/../config/db.php';
 
 $db = new Database();
 $conn = $db->getConnection();
-$usersController = new UsersController($conn);
+$gedungsController = new GedungsController($conn);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -14,11 +14,11 @@ switch ($method) {
             $id = intval($_GET["id"]);
             $usersController->getUserById($id);
         } else {
-            $usersController->getAllUser();
+            $gedungsController->getAllGedung();
         }
         break;
     case 'POST':
-        $usersController->createUser();
+        $gedungsController->createGedung();
         break;
 
     default:

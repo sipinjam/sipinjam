@@ -20,11 +20,6 @@
 </head>
 <body class="bg-gray-100">
 
-    <!-- Button to open the modal -->
-    <div class="flex justify-center mt-10">
-        <button id="openModal" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Open Modal</button>
-    </div>
-
     <!-- Modal Structure -->
     <div id="modal" class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">

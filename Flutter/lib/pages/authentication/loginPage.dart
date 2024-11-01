@@ -1,12 +1,66 @@
 import 'package:d_button/d_button.dart';
+import 'package:d_info/d_info.dart';
 import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sipit_app/config/failure.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/datasources/peminjam_datasource.dart';
+import 'package:sipit_app/models/peminjamModel.dart';
+import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+void _checkLoginStatus(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+
+  if (isLoggedIn) {
+    // Jika sudah login, langsung ke halaman Dashboard
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+  final _datasource = PeminjamDatasource();
+  PeminjamModel? _peminjamModel;
+
+  void _login() async {
+    try {
+      final peminjamData =
+          await _datasource.login(_username.text, _password.text);
+
+      if (peminjamData != null) {
+        setState(() {
+          _peminjamModel = peminjamData;
+        });
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Login successful")));
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Login failed: $e")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +130,11 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Expanded(
                                 child: DInput(
-                              controller: TextEditingController(),
+                              controller: _username,
+                              validator: (input) =>
+                                  input == '' ? "Don't Empty" : null,
                               maxLine: 1,
+                              hint: 'username',
                               label: 'Username',
                               radius: BorderRadius.circular(10),
                             ))
@@ -92,8 +149,11 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Expanded(
                                 child: DInputPassword(
-                              controller: TextEditingController(),
+                              controller: _password,
+                              validator: (input) =>
+                                  input == '' ? "Don't Empty" : null,
                               maxLine: 1,
+                              hint: 'password',
                               label: 'Password',
                               radius: BorderRadius.circular(10),
                             ))
@@ -107,8 +167,7 @@ class LoginPage extends StatelessWidget {
                           borderColor: Colors.white,
                           mainColor: const Color.fromRGBO(246, 195, 0, 5),
                           radius: 10,
-                          onClick: () =>
-                              Nav.push(context, const Dashboardpage()),
+                          onClick: _login,
                           child: const Text(
                             'SIGN IN',
                             style: TextStyle(

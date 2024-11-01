@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../controllers/UsersController.php';
+require_once __DIR__ . '/../controllers/PeminjamanController.php';
 require_once __DIR__ . '/../config/db.php';
 
 $db = new Database();
 $conn = $db->getConnection();
-$usersController = new UsersController($conn);
+$PeminjamanController = new PeminjamansController($conn);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -12,13 +12,13 @@ switch ($method) {
     case 'GET':
         if (!empty($_GET["id"])) {
             $id = intval($_GET["id"]);
-            $usersController->getUserById($id);
+            $PeminjamanController->getPeminjamanById($id);
         } else {
-            $usersController->getAllUser();
+            // $PeminjamanController->getAllPeminjaman();
         }
         break;
     case 'POST':
-        $usersController->createUser();
+        $PeminjamanController->createPeminjaman();
         break;
 
     default:
