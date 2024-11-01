@@ -1,14 +1,10 @@
-<?php
-$current_page = basename($_SERVER['REQUEST_URI']);
-?>
-
 <!-- Header -->
 <div class="md:pl-64 w-full h-auto bg-blue-800 px-4 py-2 shadow-md fixed top-0">
     <div class="flex items-center justify-between max-w-screen-xl mx-auto gap-x-3 flex-wrap md:flex-nowrap">
         <div class="flex items-center space-x-3">
-
+            <!-- Add any left-aligned content here -->
         </div>
-        <div class="p-5 flex items-center space-x-3">
+        <div class="ml-auto p-5 flex items-center space-x-3">
             <svg class="w-5 h-5 transition duration-75 group-hover:text-white <?php echo $current_page == 'Profile' ? 'text-white' : 'text-gray-400'; ?>"
                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                 <path
@@ -20,4 +16,3 @@ $current_page = basename($_SERVER['REQUEST_URI']);
         </div>
     </div>
 </div>
-<div class ="pt-10"></div>
