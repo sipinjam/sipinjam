@@ -12,7 +12,10 @@
     <?php include '../../Components/sidebar.php'; ?>
     </aside>
     <!--End Sidebar-->
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
+<body class="flex items-center justify-center pt-24 pl-52 min-h-screen bg-gray-100">
     <?php
     // Contoh data yang biasanya diambil dari database atau API
     $data_peminjam = [
@@ -32,7 +35,7 @@
     ?>
 
     <div class="max-w-4xl mx-auto mt-[-10px] bg-white shadow-lg rounded-lg">
-        <div class="grid grid-cols-2 gap-4 p-6">
+        <div class="grid grid-cols-2 gap-4 p-2">
             <!-- Image Section -->
             <div class="flex justify-center">
                 <div>
