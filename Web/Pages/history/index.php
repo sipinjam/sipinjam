@@ -21,64 +21,55 @@
     <!-- Main Content -->
     <div class="p-4 sm:ml-64">
         <h1 class="text-4xl font-bold p-4">Riwayat Aktivitas</h1>
-        <!-- Responsive Grid -->
-        <div class="pt-5 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mb-4">
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">28 September 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-green-600 font-bold">Disetujui</span></p>
-                </div>
-            </a>
-
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">28 September 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-red-600 font-bold">Ditolak</span></p>
-                </div>
-            </a>
-
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">28 September 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">Proses</span></p>
-                </div>
-            </a>
-
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">28 September 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-blue-600 font-bold">Selesai</span></p>
-                </div>
-            </a>
-
+        <!-- Pagination Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead class="bg-biru-500 text-white">
+                    <tr>
+                        <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
+                        <th class="w-1/4 px-4 py-2">Kegiatan</th>
+                        <th class="w-1/4 px-4 py-2">Peminjam</th>
+                        <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
+                        <th class="w-1/4 px-4 py-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    <tr>
+                        <td class="border px-4 py-2">Gedung Kuliah Terpadu</td>
+                        <td class="border px-4 py-2">Seminar</td>
+                        <td class="border px-4 py-2">Rohkris</td>
+                        <td class="border px-4 py-2">28 September 2024</td>
+                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                        <td class="border px-4 py-2">Gedung Kuliah Terpadu</td>
+                        <td class="border px-4 py-2">Workshop</td>
+                        <td class="border px-4 py-2">Rohkris</td>
+                        <td class="border px-4 py-2">28 September 2024</td>
+                        <td class="border px-4 py-2 text-red-600 font-bold">Ditolak</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">Gedung Kuliah Terpadu</td>
+                        <td class="border px-4 py-2">Meeting</td>
+                        <td class="border px-4 py-2">Rohkris</td>
+                        <td class="border px-4 py-2">28 September 2024</td>
+                        <td class="border px-4 py-2 text-yellow-600 font-bold">Proses</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                        <td class="border px-4 py-2">Gedung Kuliah Terpadu</td>
+                        <td class="border px-4 py-2">Conference</td>
+                        <td class="border px-4 py-2">Rohkris</td>
+                        <td class="border px-4 py-2">28 September 2024</td>
+                        <td class="border px-4 py-2 text-blue-600 font-bold">Selesai</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination Controls -->
+        <div class="flex justify-between items-center mt-4">
+            <button class="bg-gray-800 text-white px-4 py-2 rounded">Previous</button>
+            <span>Page 1 of 10</span>
+            <button class="bg-gray-800 text-white px-4 py-2 rounded">Next</button>
         </div>
     </div>
     <!-- End Main -->
