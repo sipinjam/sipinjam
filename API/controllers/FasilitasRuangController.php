@@ -40,7 +40,7 @@ class FasilitasRuangsController
                     'nama_ruangan' => $nama_ruangan,
                     'id_fasilitas' => $id_fasilitas,
                     'nama_fasilitas' => $nama_fasilitas
-                ]);
+                ], statusCode: 201);
             } else {
                 response('error', 'Unable to add fasilitas ruangan', null, 400);
             }

@@ -14,11 +14,15 @@ switch ($method) {
             $id = intval($_GET["id"]);
             $PeminjamanController->getPeminjamanById($id);
         } else {
-            // $PeminjamanController->getAllPeminjaman();
+            $PeminjamanController->getAllPeminjaman();
         }
         break;
     case 'POST':
         $PeminjamanController->createPeminjaman();
+        break;
+    case 'PATCH':
+        $id = intval($_GET["id"]);
+        $PeminjamanController->editPeminjaman($id);
         break;
 
     default:

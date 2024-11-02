@@ -20,6 +20,9 @@ switch ($method) {
     case 'POST':
         $usersController->createUser();
         break;
+    case 'PATCH':
+        $id = intval($_GET["id"]);
+        $usersController->editUser($id);
 
     default:
         http_response_code(405);

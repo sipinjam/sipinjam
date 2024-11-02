@@ -66,7 +66,7 @@ class GedungsController
                     $result_stmt->execute([$new_id]);
                     $new_data = $result_stmt->fetch(PDO::FETCH_OBJ);
 
-                    response('success', 'Gedung Added Successfully', $new_data);
+                    response('success', 'Gedung Added Successfully', $new_data, statusCode: 201);
                 } else {
                     response('error', 'Unable to create gedung', null, 400);
                 }

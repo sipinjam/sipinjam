@@ -87,7 +87,7 @@ class RuangansController
                 r.deskripsi_ruangan,
                 r.kapasitas,
                 p.nama_peminjam,
-                f.nama_fasilitas,
+                GROUP_CONCAT(DISTINCT f.nama_fasilitas SEPARATOR ', ') AS nama_fasilitas,
                 GROUP_CONCAT(fr.nama_foto SEPARATOR ', ') AS foto_ruangan
             FROM 
                 ruangan r
@@ -173,7 +173,7 @@ class RuangansController
             $resultStmt->execute([$id_ruangan]);
             $newData = $resultStmt->fetch(PDO::FETCH_OBJ);
 
-            response('success', 'Ruangan Added Successfully', $newData);
+            response('success', 'Ruangan Added Successfully', $newData, statusCode: 201);
         } else {
             response('error', 'Unable to create ruangan', null, 400);
         }

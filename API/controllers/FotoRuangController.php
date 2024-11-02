@@ -53,7 +53,7 @@ class FotoController
                             'id_ruangan' => $id_ruangan,
                             'nama_ruangan' => $nama_ruangan,
                             'nama_foto' => $filePath
-                        ]);
+                        ], statusCode: 201);
                     } else {
                         response('error', 'Unable to create foto ruangan', null, 400);
                     }
