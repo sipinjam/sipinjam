@@ -1,52 +1,43 @@
-// To parse this JSON data, do
-//
-//     final peminjamModel = peminjamModelFromJson(jsonString);
-
-import 'dart:convert';
-
-PeminjamModel peminjamModelFromJson(String str) =>
-    PeminjamModel.fromJson(json.decode(str));
-
-String peminjamModelToJson(PeminjamModel data) => json.encode(data.toJson());
-
-// Menghapus List dari konstruktor utama
 class PeminjamModel {
-  Peminjam peminjam;
+  int? idPeminjam;
+  String namaPeminjam;
+  String password;
+  String? namaLengkap;
+  String? email;
+  String? noTelpon;
+  int? idJenisPeminjam;
 
   PeminjamModel({
-    required this.peminjam,
+    this.idPeminjam,
+    required this.namaPeminjam,
+    required this.password,
+    this.namaLengkap,
+    this.email,
+    this.noTelpon,
+    this.idJenisPeminjam,
   });
 
   factory PeminjamModel.fromJson(Map<String, dynamic> json) => PeminjamModel(
-        peminjam: Peminjam.fromJson(json["peminjam"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "peminjam": peminjam.toJson(),
-      };
-}
-
-
-class Peminjam {
-  int idPeminjam;
-  String namaPeminjam;
-  String email;
-
-  Peminjam({
-    required this.idPeminjam,
-    required this.namaPeminjam,
-    required this.email,
-  });
-
-  factory Peminjam.fromJson(Map<String, dynamic> json) => Peminjam(
-        idPeminjam: json["id_peminjam"],
-        namaPeminjam: json["nama_peminjam"],
+        idPeminjam: json["id_peminjam"] != null ? json["id_peminjam"] : null,
+        namaPeminjam: json["nama_peminjam"] ??
+            '', // Pastikan selalu ada nilai default jika null
+        password: json["password"] ??
+            '', // Pastikan selalu ada nilai default jika null
+        namaLengkap: json["nama_lengkap"],
         email: json["email"],
+        noTelpon: json["no_telpon"],
+        idJenisPeminjam: json["id_jenis_peminjam"] != null
+            ? json["id_jenis_peminjam"]
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
         "id_peminjam": idPeminjam,
         "nama_peminjam": namaPeminjam,
+        "password": password,
+        "nama_lengkap": namaLengkap,
         "email": email,
+        "no_telpon": noTelpon,
+        "id_jenis_peminjam": idJenisPeminjam,
       };
 }
