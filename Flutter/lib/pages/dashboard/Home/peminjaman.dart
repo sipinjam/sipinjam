@@ -11,7 +11,7 @@ class peminjamanPage extends StatefulWidget {
 }
 
 class _peminjamanPageState extends State<peminjamanPage> {
-  TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   // Fungsi untuk memilih tanggal
   Future<void> _selectDate() async {
@@ -56,14 +56,14 @@ class _peminjamanPageState extends State<peminjamanPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.keyboard_arrow_left_rounded,
                         size: 25,
                       )),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
-                  Text(
+                  const Text(
                     'Detail Ruangan',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )
@@ -95,16 +95,16 @@ class _peminjamanPageState extends State<peminjamanPage> {
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         initialValue: 'Rohani Kristiani Polines',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Ormawa',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
@@ -121,29 +121,29 @@ class _peminjamanPageState extends State<peminjamanPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Kegiatan',
                         style: TextStyle(
                             color: Colors.purple, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Nama Kegiatan',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Tema Kegiatan',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         controller: _dateController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             labelText: 'Tanggal',
                             border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.calendar_today),
@@ -154,20 +154,20 @@ class _peminjamanPageState extends State<peminjamanPage> {
                           _selectDate();
                         },
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
 
                       // Bagian Waktu
-                      Text('Waktu',
+                      const Text('Waktu',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8),
-                      WaktuToggleButton(),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 8),
+                      const WaktuToggleButton(),
+                      const SizedBox(height: 16),
 
                       // Bagian Ruangan
                       TextFormField(
                         initialValue: 'Ruang Seminar MST',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Ruangan',
                           border: OutlineInputBorder(),
                         ),
@@ -188,50 +188,50 @@ class _peminjamanPageState extends State<peminjamanPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Ormawa',
                         style: TextStyle(
                             color: Colors.purple, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         initialValue: 'Miftachussurur',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Ketua ormawa',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         initialValue: '4.33.23.1.15',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'NIM',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Nama Ketua Pelaksana',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         initialValue: 'Miftachussurur',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Pembina ormawa',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextFormField(
                         initialValue: '4.33.23.1.15',
                         readOnly: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'NIP',
                           border: OutlineInputBorder(),
                         ),
@@ -252,27 +252,28 @@ class _peminjamanPageState extends State<peminjamanPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Panitia',
                         style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontSize: 18),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ElevatedButton.icon(
                         onPressed: () {
                           // Tambahkan aksi untuk daftar panitia
                         },
-                        icon: Icon(Icons.add, size: 24, color: Colors.black),
-                        label: Text(
+                        icon: const Icon(Icons.add,
+                            size: 24, color: Colors.black),
+                        label: const Text(
                           'DAFTAR PANITIA',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[300],
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 20), // Tinggi tombol
                           minimumSize: Size(screenWidth * 1,
                               50), // Lebar menyesuaikan layar, tinggi minimum 50
@@ -298,27 +299,28 @@ class _peminjamanPageState extends State<peminjamanPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Peserta',
                         style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontSize: 18),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ElevatedButton.icon(
                         onPressed: () {
                           // Tambahkan aksi untuk daftar peserta
                         },
-                        icon: Icon(Icons.add, size: 24, color: Colors.black),
-                        label: Text(
+                        icon: const Icon(Icons.add,
+                            size: 24, color: Colors.black),
+                        label: const Text(
                           'DAFTAR PESERTA',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[300],
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 20), // Tinggi tombol
                           minimumSize: Size(screenWidth * 1,
                               50), // Lebar menyesuaikan layar, tinggi minimum 50
@@ -333,7 +335,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
               ),
 
               // Submit Button
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Nav.replace(context, const Dashboardpage());
@@ -341,7 +343,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(screenWidth * 1, 50),
                     backgroundColor: Colors.white),
-                child: Text('Ajukan Peminjaman'),
+                child: const Text('Ajukan Peminjaman'),
               ),
             ],
           ),
@@ -364,20 +366,6 @@ class _WaktuToggleButtonState extends State<WaktuToggleButton> {
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text("08.00 - 12.00"),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text("12.00 - 16.00"),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text("08.00 - 16.00"),
-        ),
-      ],
       isSelected: isSelected,
       onPressed: (int index) {
         setState(() {
@@ -394,6 +382,20 @@ class _WaktuToggleButtonState extends State<WaktuToggleButton> {
       borderWidth: 2,
       borderColor: Colors.blue,
       selectedBorderColor: Colors.blueAccent,
+      children: const <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text("08.00 - 12.00"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text("12.00 - 16.00"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text("08.00 - 16.00"),
+        ),
+      ],
     );
   }
 }

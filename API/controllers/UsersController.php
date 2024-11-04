@@ -97,31 +97,7 @@ class UsersController
             response('error', 'Missing parameters: ' . implode(', ', $missingParams), null, 400);
         }
     }
-
-    public function loginUser() {
-        $input = json_decode(file_get_contents('php://input'), true);
-
-        if(!isset($input['nama_peminjam']) || !isset($input['password'])) {
-            response('error', 'Missing username or password', null, 400);
-            return;
-        }
-
-        $nama_peminjam = $input['nama_peminjam'];
-        $password = $input['password'];
-
-        $query = "SELECT * FROM peminjam WHERE nama_peminjam = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nama_peminjam]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if($user && password_verify($password, $user['password'])) {
-            unset($user['password']);
-            response('success', 'Login Successful', $user, 200);
-        } else {
-            response('error', 'Invalid credentials', null, 401);
-        }
-    }
-
+    
     public function editUser($id_peminjam)
 {
     // Menerima data JSON dan mendekode

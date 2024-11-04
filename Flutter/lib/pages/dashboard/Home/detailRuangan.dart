@@ -3,6 +3,8 @@ import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
 
+import '../../../config/widget.dart';
+
 class detailRuanganPage extends StatelessWidget {
   const detailRuanganPage({super.key});
 
@@ -17,14 +19,14 @@ class detailRuanganPage extends StatelessWidget {
                   onPressed: () {
                     Nav.replace(context, const Dashboardpage());
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.keyboard_arrow_left_rounded,
                     size: 25,
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
-              Text(
+              const Text(
                 'Detail Ruangan',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               )
@@ -173,24 +175,6 @@ class detailRuanganPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class FacilityIcon extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const FacilityIcon({super.key, required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(icon, size: 32),
-        const SizedBox(height: 4),
-        Text(label),
-      ],
     );
   }
 }

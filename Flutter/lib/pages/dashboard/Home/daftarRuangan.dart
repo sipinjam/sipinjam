@@ -31,10 +31,10 @@ class daftarRuanganPage extends StatelessWidget {
                     Nav.replace(context, const Dashboardpage());
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
-                Text(
+                const Text(
                   'Daftar Ruangan',
                   style: TextStyle(
                     fontSize: 20,
@@ -43,7 +43,7 @@ class daftarRuanganPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Expanded(

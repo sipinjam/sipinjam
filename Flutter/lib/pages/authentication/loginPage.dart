@@ -3,7 +3,6 @@ import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/datasources/peminjam_datasource.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
-import 'package:sipit_app/pages/dashboard/Home/homePage.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Username atau Password tidak cocok")),
+        const SnackBar(content: Text("Username atau Password tidak cocok")),
       );
     }
   }

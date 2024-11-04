@@ -30,10 +30,10 @@ class ProfilePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.blue[700],
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,8 +47,8 @@ class ProfilePage extends StatelessWidget {
                       color: Colors.blue[700],
                     ),
                   ),
-                  SizedBox(width: 16.0),
-                  Column(
+                  const SizedBox(width: 16.0),
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -84,26 +84,26 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text('EDIT PROFILE'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    leading: const Icon(Icons.edit),
+                    title: const Text('EDIT PROFILE'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       Nav.push(context, EditProfileApp());
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.lock),
-                    title: Text('EDIT PASSWORD'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    leading: const Icon(Icons.lock),
+                    title: const Text('EDIT PASSWORD'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       Nav.push(context, UpdatePass());
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.notifications),
-                    title: Text('NOTIFIKASI'),
+                    leading: const Icon(Icons.notifications),
+                    title: const Text('NOTIFIKASI'),
                     trailing: Switch(
                       value:
                           true, // ganti dengan state logika apakah notifikasi aktif atau tidak
@@ -112,25 +112,25 @@ class ProfilePage extends StatelessWidget {
                       },
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.language),
-                    title: Text('BAHASA'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    leading: const Icon(Icons.language),
+                    title: const Text('BAHASA'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       // Aksi ketika tombol Bahasa ditekan
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.help_outline),
-                    title: Text('FAQ'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    leading: const Icon(Icons.help_outline),
+                    title: const Text('FAQ'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       Nav.push(context, FaqPage());
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   // Tombol Logout
                   Center(
                     child: TextButton(
@@ -159,7 +159,7 @@ class ProfilePage extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ProfilePage(),
   ));
 }

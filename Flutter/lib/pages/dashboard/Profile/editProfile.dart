@@ -23,12 +23,12 @@ class EditProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Nav.push(context, const Dashboardpage());
           },
         ),
-        title: Text("Edit Profile"),
+        title: const Text("Edit Profile"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -40,7 +40,7 @@ class EditProfilePage extends StatelessWidget {
               radius: 50,
               backgroundColor: Colors.grey[300],
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.person,
                   size: 50,
                   color: Colors.purple,
@@ -50,43 +50,43 @@ class EditProfilePage extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextButton(
               onPressed: () {
                 // Action untuk mengedit gambar
               },
-              child: Text(
+              child: const Text(
                 "Edit Picture",
                 style: TextStyle(color: Colors.black54),
               ),
             ),
-            SizedBox(height: 20),
-            TextField(
+            const SizedBox(height: 20),
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Username",
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            TextField(
+            const SizedBox(height: 20),
+            const TextField(
               obscureText: true,
               decoration: InputDecoration(
                 labelText: "Confirm Password",
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Nav.push(context, ProfilePage());
+                Nav.push(context, const ProfilePage());
               },
-              child: Text(
-                "Save",
-                style: TextStyle(color: Colors.white),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
+              ),
+              child: const Text(
+                "Save",
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],

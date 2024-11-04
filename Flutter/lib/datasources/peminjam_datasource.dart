@@ -5,7 +5,7 @@ import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:http/http.dart' as http;
 
 class PeminjamDatasource {
-  Uri loginUrl = Uri.parse('${AppConstants.baseUrl}/users.php?action=login');
+  Uri loginUrl = Uri.parse('${AppConstants.baseUrl}/authentications.php');
 
   Future<PeminjamModel> login(
     String namaPeminjam,
