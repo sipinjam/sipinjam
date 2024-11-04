@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "./helpers/HeaderAccessControl.php";
+require_once __DIR__ . '/helpers/HeaderAccessControl.php';
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
