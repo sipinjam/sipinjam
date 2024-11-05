@@ -19,21 +19,24 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
-        <!-- Search Bar -->
-        <form class="flex-grow max-w-md mt-4 md:mt-0">
+    <!-- Search Bar dengan posisi sticky -->
+    <div class="pt-24">
+        <form class="flex-grow max-w-md mx-auto">
             <div class="relative">
-                <input type="search" id="default-search" 
+                <input type="search" id="default-search"
                     class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
                     placeholder="Cari Ruangan" required />
-                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
+                <button type="submit"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
                     Cari
                 </button>
             </div>
         </form>
+    </div>
 
     <!-- Main Menu -->
     <!-- Container for scrolling horizontally -->
-    <div class="pt-24 md:pl-[270px] overflow-x-auto">
+    <div class="pt-12 md:pl-[270px] overflow-x-auto">
         <div class="flex space-x-4 pb-4">
             <!-- Gedung Card 1 -->
             <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
@@ -139,65 +142,44 @@
     <!--Ruangan yang Sedang Dipinjam-->
     <div class="p-4 sm:ml-64">
         <h3 class="text-4xl font-bold p-4">Ruangan yang Sedang Dipinjam</h3>
-        <!-- Responsive Grid -->
-        <div class="pt-5 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mb-4">
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">UKM Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">28 September 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-green-600 font-bold">Disetujui</span></p>
-                </div>
-            </a>
+        <!-- Pagination Table -->
 
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">UKM Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">29 September 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-green-600 font-bold">Disetujui</span></p>
-                </div>
-            </a>
-
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">UKM Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">10 Oktober 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-green-600 font-bold">Disetujui</span></p>
-                </div>
-            </a>
-
-            <a href="#"
-                class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
-                <img class="object-cover w-full rounded-t-lg h-48 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Gedung Kuliah Terpadu</h5>
-                    <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                    <p class="text-sm font-bold">UKM Rohkris</p>
-                    <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                    <p class="text-sm font-bold">17 Oktober 2024</p>
-                    <p class="text-sm mt-2">Status: <span class="text-green-600 font-bold">Disetujui</span></p>
-                </div>
-            </a>
-
-        </div>
+            <table class="min-w-full bg-white">
+                <thead class="bg-biru-500 text-white">
+                    <tr>
+                        <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
+                        <th class="w-1/4 px-4 py-2">Kegiatan</th>
+                        <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
+                        <th class="w-1/4 px-4 py-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    <tr>
+                        <td class="border px-4 py-2">GKT Lantai 2</td>
+                        <td class="border px-4 py-2">Seminar</td>
+                        <td class="border px-4 py-2">28 September 2024</td>
+                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                        <td class="border px-4 py-2">GKT Lantai 2</td>
+                        <td class="border px-4 py-2">Workshop</td>
+                        <td class="border px-4 py-2">1 Oktober 2024</td>
+                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">GKT Lantai 1</td>
+                        <td class="border px-4 py-2">Rapat Besar</td>
+                        <td class="border px-4 py-2">10 Oktober 2024</td>
+                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                        <td class="border px-4 py-2">GKT Lantai 2</td>
+                        <td class="border px-4 py-2">Conference</td>
+                        <td class="border px-4 py-2">18 Oktober 2024</td>
+                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                    </tr>
+                </tbody>
+            </table>
     </div>
 
     <!-- Page Navigation -->
@@ -205,8 +187,7 @@
         <ul class="flex items-center justify-center h-20 text-sm">
             <li>
                 <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <span class="sr-only">Previous</span>
+                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">
                     <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -216,19 +197,15 @@
             </li>
             <li>
                 <a href="#" aria-current="page"
-                    class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">1</a>
+                    class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">1</a>
             </li>
             <li>
                 <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
             </li>
             <li>
                 <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">3</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">
                     <span class="sr-only">Next</span>
                     <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 6 10">
