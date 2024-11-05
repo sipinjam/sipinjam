@@ -8,7 +8,7 @@
     <title>Sipinjam</title>
     <style>
         .event-day {
-            background-color: #FFD700; /* Warna lingkaran untuk menandai kegiatan, bisa disesuaikan */
+            background-color: rgb(96 165 250); /* Warna lingkaran untuk menandai kegiatan, bisa disesuaikan */
             color: white;
         }
     </style>
@@ -22,7 +22,7 @@
     <?php include '../../components/sidebar.php' ?>
     
     <!-- Search Bar dengan posisi sticky -->
-    <div class="md:pl-64 z-10 sticky top-20 pt-6 pb-4 mt-28">
+    <div class="md:pl-64 z-10 sticky top-10 mt-28">
         <form class="flex-grow max-w-md mx-auto">
             <div class="relative">
                 <input type="search" id="default-search" 
@@ -35,16 +35,7 @@
     
     <!-- Wrapper Keterangan dan Kalender -->
     <div class="flex flex-row md:pl-64 mt-10 space-x-4 mx-4">
-        <!-- Keterangan -->
-        <div class="w-1/5 p-6 bg-white rounded-lg shadow">
-            <h2 class="text-lg font-bold mb-2">Keterangan</h2>
-            <div class="space-y-2">
-                <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi sudah penuh</div>
-                <div class="bg-blue-400 text-black px-4 py-2 rounded-md">Sesi 1</div>
-                <div class="bg-green-400 text-black px-4 py-2 rounded-md">Sesi 2</div>
-            </div>
-        </div>
-        
+
         <!-- Kalender -->
         <div class="flex-1 p-6 bg-white rounded-lg shadow">
             <!-- Header Bulan dan Navigasi -->
@@ -67,6 +58,26 @@
 
             <div id="calendar-days" class="grid grid-cols-7 gap-4 mt-4 text-center text-xl">
                 <!-- Tanggal akan diisi oleh JavaScript -->
+            </div>
+        </div>
+
+        <div class="flex flex-col">
+            <!-- Keterangan -->
+            <div class="p-6 bg-white rounded-lg shadow max-h-max">
+                <h2 class="text-lg font-bold mb-2">Keterangan</h2>
+                <div class="space-y-2">
+                    <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi sudah penuh</div>
+                    <div class="bg-blue-400 text-white px-4 py-2 rounded-md">Sesi 1</div>
+                    <div class="bg-green-400 text-white px-4 py-2 rounded-md">Sesi 2</div>
+                </div>
+            </div>
+
+            <div class="w-full h-32">
+                <button
+                    class="mt-5 tracking-wide font-semibold bg-yellow-400 text-white-500 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    onclick="window.location.href='../peminjaman/index.php'">
+                    <span class="ml-">BOOKING</span>
+                </button>
             </div>
         </div>
     </div>
