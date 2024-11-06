@@ -4,7 +4,6 @@ $room = [
     "name" => "GKT Lantai 1",
     "capacity" => 300,
     "features" => ["WiFi", "AC", "SEAT", "LCD"],
-    "status" => "Tersedia",
     "images" => [
         "main" => "../../Sources/Img/gedungkuliah-terpadu.png",
         "thumbnails" => ["../../Sources/Img/gktdalam.jpg", "../../Sources/Img/gktdalam2.jpg", "../../Sources/Img/gktdalam3.jpg", "../../Sources/Img/gktdalam.jpg"]
@@ -29,17 +28,12 @@ $room = [
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
-    <!-- Tombol untuk membuka modal -->
-    <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-        Open Room Details
-    </button>
-
     <!-- Overlay Popup -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <!-- Konten Popup -->
         <div class="bg-white rounded-lg shadow-lg max-w-6xl w-full mx-4 p-6 relative">
             <!-- Tombol Close -->
-            <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
+            <button onclick="window.location.href='../daftarRuangan/index.php'" class="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
                 &times;
             </button>
 
@@ -70,14 +64,14 @@ $room = [
                     <div>
                         <!-- Nama Gedung -->
                         <h2 class="text-xl font-semibold"><?php echo $room['name']; ?></h2>
-                        <hr class="my-2 border-gray-300"> <!-- Garis pemisah -->
+                        <hr class="my-2 border-gray-300">
 
                         <!-- Kapasitas -->
                         <p class="text-gray-500 flex items-center space-x-2">
                             <i class="fas fa-users"></i>
                             <span>Kapasitas: <?php echo $room['capacity']; ?></span>
                         </p>
-                        <hr class="my-2 border-gray-300"> <!-- Garis pemisah -->
+                        <hr class="my-2 border-gray-300">
 
                         <!-- Fitur Ruangan -->
                         <?php foreach ($room['features'] as $feature): ?>
@@ -101,20 +95,12 @@ $room = [
                                 <span><?php echo $feature; ?></span>
                             </div>
                         <?php endforeach; ?>
-                        <hr class="my-2 border-gray-300"> <!-- Garis pemisah -->
-
-                        <!-- Status Ruangan -->
-                        <p class="mt-4 font-semibold">
-                        <span class="text-black">Status:</span>
-                        <span class="<?php echo $room['status'] === 'Tersedia' ? 'text-green-600' : 'text-red-600'; ?>">
-                        <?php echo $room['status']; ?>
-                        </span>
-                        </p>
+                        <hr class="my-2 border-gray-300">
                     </div>
 
                     <!-- Tombol Booking -->
-                    <button class="mt-4 bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700">
-                        Book Now
+                    <button class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700">
+                        Pinjam
                     </button>
                 </div>
             </div>
@@ -124,11 +110,6 @@ $room = [
     <script>
         const images = <?php echo json_encode($room['images']['thumbnails']); ?>;
         let currentIndex = 0;
-
-        function openModal() {
-            document.getElementById("modal").classList.remove("hidden");
-            updateThumbnailHighlight();
-        }
 
         function closeModal() {
             document.getElementById("modal").classList.add("hidden");
@@ -153,12 +134,10 @@ $room = [
         }
 
         function updateThumbnailHighlight() {
-            // Hapus kelas "active-thumbnail" dari semua thumbnail
             document.querySelectorAll('.thumbnail').forEach(thumbnail => {
                 thumbnail.classList.remove('active-thumbnail');
             });
 
-            // Tambahkan kelas "active-thumbnail" ke thumbnail yang sedang aktif
             document.getElementById(`thumbnail-${currentIndex}`).classList.add('active-thumbnail');
         }
     </script>
