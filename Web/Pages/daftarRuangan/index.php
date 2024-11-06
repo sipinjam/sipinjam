@@ -29,16 +29,6 @@
 </div>
 
 <script>
-  // Fungsi untuk mendapatkan parameter dari URL
-  function getParameterByName(name) {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(name);
-  }
-
-  // Ambil id_gedung dari URL
-  const idGedung = getParameterByName("id_gedung");
-
-  // URL API ruangan (menyesuaikan dengan endpoint API)
   const apiUrl = "http://localhost/sipinjamfix/sipinjam/api/ruangan";
 
   async function fetchRooms() {
@@ -48,15 +38,13 @@
 
       if (result.status === "success") {
         const rooms = result.data;
-        const filteredRooms = rooms.filter(room => room.id_gedung == idGedung); // Filter berdasarkan id_gedung
         const roomList = document.getElementById("room-list");
-
-        roomList.innerHTML = ""; // Kosongkan elemen sebelum menambahkan data baru
-
-        filteredRooms.forEach(room => {
+        
+        rooms.forEach(room => {
           const { nama_ruangan, nama_gedung, kapasitas, nama_fasilitas, foto_ruangan, deskripsi_ruangan } = room;
 
-          const imageUrl = foto_ruangan[0] || "path/to/default-image.jpg";
+          // Set default image if no image is available
+          const imageUrl = foto_ruangan[0] ;
           const features = nama_fasilitas ? nama_fasilitas.split(", ") : [];
 
           const roomCard = `
@@ -92,7 +80,7 @@
                       </div>`;
                   }).join("")}
                 </div>
-                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
+                <a href="http://localhost/sipinjamfix/sipinjam/web/pages/detailRuangan?id_ruangan=${room.id_ruangan}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
                   Book Now
                 </a>
               </div>
@@ -109,10 +97,9 @@
     }
   }
 
-  // Panggil fetchRooms setelah halaman dimuat
+  // Call the function to fetch rooms on page load
   document.addEventListener("DOMContentLoaded", fetchRooms);
 </script>
-
 
 </body>
 </html>
