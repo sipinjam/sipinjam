@@ -92,7 +92,7 @@
                       </div>`;
                   }).join("")}
                 </div>
-                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
+                <a href="http://localhost/sipinjamfix/sipinjam/web/pages/detailRuangan?id_ruangan=${room.id_ruangan}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
                   Book Now
                 </a>
               </div>
