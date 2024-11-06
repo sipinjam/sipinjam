@@ -72,101 +72,108 @@
     </div>
 
     <script>
-        const id_ruangan = 1; // Ganti dengan ID ruangan yang sesuai
-        let images = [];
-        let currentIndex = 0;
+    // Fungsi untuk mendapatkan parameter dari URL
+    function getParameterByName(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+    }
 
-        // Fungsi untuk mengambil data ruangan dari API
-        async function loadRoomData() {
-            try {
-                const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/ruangan/${id_ruangan}`);
-                const result = await response.json();
+    // Ambil id_ruangan dari URL
+    const id_ruangan = getParameterByName("id_ruangan") || 1; // Gunakan default 1 jika id tidak ada
+    let images = [];
+    let currentIndex = 0;
 
-                if (result.status === "success") {
-                    const data = result.data;
+    // Fungsi untuk mengambil data ruangan dari API
+    async function loadRoomData() {
+        try {
+            const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/ruangan/${id_ruangan}`);
+            const result = await response.json();
 
-                    // Set informasi ruangan
-                    document.getElementById("namaRuangan").innerText = data.nama_ruangan;
-                    document.getElementById("namaGedung").innerText = data.nama_gedung;
-                    document.getElementById("kapasitas").innerText = data.kapasitas;
+            if (result.status === "success") {
+                const data = result.data;
 
-                    // Menampilkan fasilitas
-                    const fasilitasContainer = document.getElementById("fasilitasContainer");
-                    fasilitasContainer.innerHTML = '';
-                    data.nama_fasilitas.split(', ').forEach(fasilitas => {
-                        let icon;
-                        switch (fasilitas.toLowerCase()) {
-                            case 'ac': icon = 'fas fa-snowflake'; break;
-                            case 'proyektor': icon = 'fas fa-tv'; break;
-                            default: icon = 'fas fa-check';
-                        }
-                        fasilitasContainer.innerHTML += `<div class="flex items-center space-x-2 mt-2 text-gray-700">
-                                                            <i class="${icon}"></i>
-                                                            <span>${fasilitas}</span>
-                                                        </div>`;
-                    });
+                // Set informasi ruangan
+                document.getElementById("namaRuangan").innerText = data.nama_ruangan;
+                document.getElementById("namaGedung").innerText = data.nama_gedung;
+                document.getElementById("kapasitas").innerText = data.kapasitas;
 
-                    // Mengatur gambar carousel
-                    images = data.foto_ruangan;
-                    currentIndex = 0;
-                    updateMainImage();
+                // Menampilkan fasilitas
+                const fasilitasContainer = document.getElementById("fasilitasContainer");
+                fasilitasContainer.innerHTML = '';
+                data.nama_fasilitas.split(', ').forEach(fasilitas => {
+                    let icon;
+                    switch (fasilitas.toLowerCase()) {
+                        case 'ac': icon = 'fas fa-snowflake'; break;
+                        case 'proyektor': icon = 'fas fa-tv'; break;
+                        default: icon = 'fas fa-check';
+                    }
+                    fasilitasContainer.innerHTML += `<div class="flex items-center space-x-2 mt-2 text-gray-700">
+                                                        <i class="${icon}"></i>
+                                                        <span>${fasilitas}</span>
+                                                    </div>`;
+                });
 
-                    // Menampilkan thumbnail
-                    const thumbnailContainer = document.getElementById("thumbnailContainer");
-                    thumbnailContainer.innerHTML = "";
-                    images.forEach((image, index) => {
-                        const img = document.createElement("img");
-                        img.src = image;
-                        img.alt = "Thumbnail";
-                        img.classList = "thumbnail w-20 h-20 object-cover rounded-md cursor-pointer";
-                        img.id = `thumbnail-${index}`; // Tambahkan ID untuk thumbnail
-                        img.onclick = () => setImage(index);
-                        thumbnailContainer.appendChild(img);
-                    });
-                    updateThumbnailHighlight(); // Inisialisasi highlight thumbnail pertama
-                } else {
-                    console.error("Gagal mendapatkan data:", result.message);
-                }
-            } catch (error) {
-                console.error("Terjadi kesalahan:", error);
+                // Mengatur gambar carousel
+                images = data.foto_ruangan;
+                currentIndex = 0;
+                updateMainImage();
+
+                // Menampilkan thumbnail
+                const thumbnailContainer = document.getElementById("thumbnailContainer");
+                thumbnailContainer.innerHTML = "";
+                images.forEach((image, index) => {
+                    const img = document.createElement("img");
+                    img.src = image;
+                    img.alt = "Thumbnail";
+                    img.classList = "thumbnail w-20 h-20 object-cover rounded-md cursor-pointer";
+                    img.id = `thumbnail-${index}`; // Tambahkan ID untuk thumbnail
+                    img.onclick = () => setImage(index);
+                    thumbnailContainer.appendChild(img);
+                });
+                updateThumbnailHighlight(); // Inisialisasi highlight thumbnail pertama
+            } else {
+                console.error("Gagal mendapatkan data:", result.message);
             }
+        } catch (error) {
+            console.error("Terjadi kesalahan:", error);
         }
+    }
 
-        function closeModal() {
-            document.getElementById("modal").classList.add("hidden");
-        }
+    function closeModal() {
+        document.getElementById("modal").classList.add("hidden");
+    }
 
-        function setImage(index) {
-            currentIndex = index;
-            updateMainImage();
-            updateThumbnailHighlight();
-        }
+    function setImage(index) {
+        currentIndex = index;
+        updateMainImage();
+        updateThumbnailHighlight();
+    }
 
-        function nextImage() {
-            currentIndex = (currentIndex + 1) % images.length;
-            updateMainImage();
-            updateThumbnailHighlight();
-        }
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateMainImage();
+        updateThumbnailHighlight();
+    }
 
-        function prevImage() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            updateMainImage();
-            updateThumbnailHighlight();
-        }
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateMainImage();
+        updateThumbnailHighlight();
+    }
 
-        function updateMainImage() {
-            document.getElementById("mainImage").src = images[currentIndex];
-        }
+    function updateMainImage() {
+        document.getElementById("mainImage").src = images[currentIndex];
+    }
 
-        function updateThumbnailHighlight() {
-            document.querySelectorAll('.thumbnail').forEach(thumbnail => {
-                thumbnail.classList.remove('active-thumbnail');
-            });
-            document.getElementById(`thumbnail-${currentIndex}`).classList.add('active-thumbnail');
-        }
+    function updateThumbnailHighlight() {
+        document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+            thumbnail.classList.remove('active-thumbnail');
+        });
+        document.getElementById(`thumbnail-${currentIndex}`).classList.add('active-thumbnail');
+    }
 
-        // Panggil fungsi loadRoomData saat halaman dimuat
-        window.onload = loadRoomData;
-    </script>
+    // Panggil fungsi loadRoomData saat halaman dimuat
+    window.onload = loadRoomData;
+</script>
 </body>
 </html>
