@@ -44,7 +44,6 @@
     <div class="p-4 sm:ml-64">
         <h3 class="text-4xl font-bold p-4">Ruangan yang Sedang Dipinjam</h3>
         <!-- Pagination Table -->
-
         <table class="min-w-full bg-white">
             <thead class="bg-biru-500 text-white">
                 <tr>
@@ -65,18 +64,6 @@
                     <td class="border px-4 py-2">GKT Lantai 2</td>
                     <td class="border px-4 py-2">Workshop</td>
                     <td class="border px-4 py-2">1 Oktober 2024</td>
-                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                </tr>
-                <tr>
-                    <td class="border px-4 py-2">GKT Lantai 1</td>
-                    <td class="border px-4 py-2">Rapat Besar</td>
-                    <td class="border px-4 py-2">10 Oktober 2024</td>
-                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                </tr>
-                <tr class="bg-gray-100">
-                    <td class="border px-4 py-2">GKT Lantai 2</td>
-                    <td class="border px-4 py-2">Conference</td>
-                    <td class="border px-4 py-2">18 Oktober 2024</td>
                     <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
                 </tr>
             </tbody>
@@ -100,21 +87,6 @@
                 <a href="#" aria-current="page"
                     class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">1</a>
             </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">
-                    <span class="sr-only">Next</span>
-                    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 9 4-4-4-4" />
-                    </svg>
-                </a>
-            </li>
         </ul>
     </nav>
 </body>
@@ -135,7 +107,7 @@
 
                     // Link container for image
                     const link = document.createElement('a');
-                    link.href = "#";
+                    link.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan?id_gedung=${gedung.id_gedung}`; // Set URL to rooms page with id_gedung parameter
 
                     // Image
                     const img = document.createElement('img');
@@ -152,7 +124,7 @@
                     contentDiv.className = "p-2";
 
                     const nameLink = document.createElement('a');
-                    nameLink.href = "#";
+                    nameLink.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan?id_gedung=${gedung.id_gedung}`; // Set URL for room name link
 
                     const namaGedung = document.createElement('span');
                     namaGedung.className = "mb-2 text-base font-medium text-center block tracking-tight text-gray-800";

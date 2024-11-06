@@ -30,6 +30,7 @@ class RuangansController
             r.id_ruangan,
             r.nama_ruangan,
             g.nama_gedung,
+            g.id_gedung,
             r.deskripsi_ruangan,
             r.kapasitas,
             p.nama_peminjam,
