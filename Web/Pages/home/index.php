@@ -53,23 +53,12 @@
                     <th class="w-1/4 px-4 py-2">Status</th>
                 </tr>
             </thead>
-            <tbody class="text-gray-700">
-                <tr>
-                    <td class="border px-4 py-2">GKT Lantai 2</td>
-                    <td class="border px-4 py-2">Seminar</td>
-                    <td class="border px-4 py-2">28 September 2024</td>
-                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                </tr>
-                <tr class="bg-gray-100">
-                    <td class="border px-4 py-2">GKT Lantai 2</td>
-                    <td class="border px-4 py-2">Workshop</td>
-                    <td class="border px-4 py-2">1 Oktober 2024</td>
-                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                </tr>
+            <tbody class="text-gray-700" id="peminjamanTable">
             </tbody>
         </table>
     </div>
 
+            
     <!-- Page Navigation -->
     <nav aria-label="Page navigation example">
         <ul class="flex items-center justify-center h-20 text-sm">
@@ -92,6 +81,8 @@
 </body>
 
 <script>
+
+    // GET GEDUNG
     async function getGedung() {
         try {
             const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/gedung');
@@ -103,7 +94,7 @@
                 result.data.forEach(gedung => {
                     // Create card container
                     const gedungItem = document.createElement('div');
-                    gedungItem.className = "w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0";
+                    gedungItem.className = "w-[300px] h-[230px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0";
 
                     // Link container for image
                     const link = document.createElement('a');
@@ -111,7 +102,7 @@
 
                     // Image
                     const img = document.createElement('img');
-                    img.className = "gedung w-full h-[230px] rounded-t-[20px]";
+                    img.className = "gedung w-full h-[200px] rounded-t-[20px]";
                     img.src = gedung.foto_gedung ? gedung.foto_gedung : "../../Sources/Img/default.jpg";
                     img.alt = gedung.nama_gedung;
                     link.appendChild(img);
@@ -146,8 +137,42 @@
         }
     }
 
-    // Panggil fungsi getGedung saat halaman dimuat
-    window.onload = getGedung;
+    // GET PEMINJAMAN
+    async function getPeminjaman() {
+            try {
+                const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman');
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    const peminjamanTable = document.getElementById('peminjamanTable');
+                    peminjamanTable.innerHTML = ''; // Kosongkan tabel terlebih dahulu
+
+                    result.data.forEach(item => {
+                        if (item.nama_status.toLowerCase() === 'disetujui') { // Filter data yang disetujui
+                            const row = document.createElement('tr');
+                            row.className = 'bg-white hover:bg-gray-100';
+
+                            row.innerHTML = `
+                                <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                                <td class="border px-4 py-2">${item.nama_kegiatan}</td>
+                                <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
+                                <td class="border px-4 py-2 text-green-600 font-bold">${item.nama_status}</td>
+                            `;
+                            peminjamanTable.appendChild(row);
+                        }
+                    });
+                } else {
+                    console.error('Gagal mengambil data peminjaman:', result.message);
+                }
+            } catch (error) {
+                console.error('Terjadi kesalahan saat mengambil data:', error);
+            }
+        }
+        // Panggil fungsi saat halaman dimuat
+        window.onload = function() {
+        getGedung();
+        getPeminjaman();
+        }
 </script>
 
 </html>
