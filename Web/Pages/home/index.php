@@ -22,12 +22,12 @@
     <!-- Search Bar dengan posisi sticky -->
     <div class="pt-24">
         <form class="flex-grow max-w-md mx-auto">
-            <div class="relative">
+            <div class="flex flex-row gap-2 items-center">
                 <input type="search" id="default-search"
                     class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
                     placeholder="Cari Ruangan" required />
                 <button type="submit"
-                    class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
+                    class="right-2 top-1/2 bg-blue-800 text-white px-4 py-1 rounded-md h-10">
                     Cari
                 </button>
             </div>
@@ -37,106 +37,7 @@
     <!-- Main Menu -->
     <!-- Container for scrolling horizontally -->
     <div class="pt-12 md:pl-[270px] overflow-x-auto">
-        <div class="flex space-x-4 pb-4">
-            <!-- Gedung Card 1 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="#">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
-                        alt="Administrasi Bisnis" />
-                </a>
-                <div class="p-2">
-                    <a href="#">
-                        <span
-                            class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Administrasi
-                            Bisnis</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gedung Card 2 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="../daftarRuangan/index.php">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/gkt-bg.jpeg"
-                        alt="Gedung Kuliah Terpadu" />
-                </a>
-                <div class="p-2">
-                    <a href="../daftarRuangan/index.php">
-                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
-                            Kuliah Terpadu</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gedung Card 3 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="#">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/mst.jpg"
-                        alt="Magister Terapan" />
-                </a>
-                <div class="p-2">
-                    <a href="#">
-                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Magister
-                            Terapan</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gedung Card 4 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="#">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
-                        alt="Gedung Sekolah A" />
-                </a>
-                <div class="p-2">
-                    <a href="#">
-                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
-                            Sekolah A</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gedung Card 5 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="#">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
-                        alt="Gedung Sekolah B" />
-                </a>
-                <div class="p-2">
-                    <a href="#">
-                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
-                            Sekolah B</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gedung Card 6 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="#">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
-                        alt="Gedung Sekolah C" />
-                </a>
-                <div class="p-2">
-                    <a href="#">
-                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
-                            Sekolah C</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gedung Card 7 -->
-            <div class="w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0">
-                <a href="#">
-                    <img class="gedung w-full h-[230px] rounded-t-[20px]" src="../../Sources/Img/AB.jpg"
-                        alt="Gedung Akuntansi" />
-                </a>
-                <div class="p-2">
-                    <a href="#">
-                        <span class="mb-2 text-base font-medium text-center block tracking-tight text-gray-800">Gedung
-                            Akuntansi</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+        <div class="flex space-x-4 pb-4" id="gedungContainer"></div>
     </div>
 
     <!--Ruangan yang Sedang Dipinjam-->
@@ -144,42 +45,42 @@
         <h3 class="text-4xl font-bold p-4">Ruangan yang Sedang Dipinjam</h3>
         <!-- Pagination Table -->
 
-            <table class="min-w-full bg-white">
-                <thead class="bg-biru-500 text-white">
-                    <tr>
-                        <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
-                        <th class="w-1/4 px-4 py-2">Kegiatan</th>
-                        <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
-                        <th class="w-1/4 px-4 py-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-700">
-                    <tr>
-                        <td class="border px-4 py-2">GKT Lantai 2</td>
-                        <td class="border px-4 py-2">Seminar</td>
-                        <td class="border px-4 py-2">28 September 2024</td>
-                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                    </tr>
-                    <tr class="bg-gray-100">
-                        <td class="border px-4 py-2">GKT Lantai 2</td>
-                        <td class="border px-4 py-2">Workshop</td>
-                        <td class="border px-4 py-2">1 Oktober 2024</td>
-                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                    </tr>
-                    <tr>
-                        <td class="border px-4 py-2">GKT Lantai 1</td>
-                        <td class="border px-4 py-2">Rapat Besar</td>
-                        <td class="border px-4 py-2">10 Oktober 2024</td>
-                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                    </tr>
-                    <tr class="bg-gray-100">
-                        <td class="border px-4 py-2">GKT Lantai 2</td>
-                        <td class="border px-4 py-2">Conference</td>
-                        <td class="border px-4 py-2">18 Oktober 2024</td>
-                        <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
-                    </tr>
-                </tbody>
-            </table>
+        <table class="min-w-full bg-white">
+            <thead class="bg-biru-500 text-white">
+                <tr>
+                    <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
+                    <th class="w-1/4 px-4 py-2">Kegiatan</th>
+                    <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
+                    <th class="w-1/4 px-4 py-2">Status</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr>
+                    <td class="border px-4 py-2">GKT Lantai 2</td>
+                    <td class="border px-4 py-2">Seminar</td>
+                    <td class="border px-4 py-2">28 September 2024</td>
+                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                </tr>
+                <tr class="bg-gray-100">
+                    <td class="border px-4 py-2">GKT Lantai 2</td>
+                    <td class="border px-4 py-2">Workshop</td>
+                    <td class="border px-4 py-2">1 Oktober 2024</td>
+                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">GKT Lantai 1</td>
+                    <td class="border px-4 py-2">Rapat Besar</td>
+                    <td class="border px-4 py-2">10 Oktober 2024</td>
+                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                </tr>
+                <tr class="bg-gray-100">
+                    <td class="border px-4 py-2">GKT Lantai 2</td>
+                    <td class="border px-4 py-2">Conference</td>
+                    <td class="border px-4 py-2">18 Oktober 2024</td>
+                    <td class="border px-4 py-2 text-green-600 font-bold">Disetujui</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Page Navigation -->
@@ -217,5 +118,64 @@
         </ul>
     </nav>
 </body>
+
+<script>
+    async function getGedung() {
+        try {
+            const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/gedung');
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                const gedungContainer = document.getElementById('gedungContainer');
+
+                result.data.forEach(gedung => {
+                    // Create card container
+                    const gedungItem = document.createElement('div');
+                    gedungItem.className = "w-[350px] h-[270px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0";
+
+                    // Link container for image
+                    const link = document.createElement('a');
+                    link.href = "#";
+
+                    // Image
+                    const img = document.createElement('img');
+                    img.className = "gedung w-full h-[230px] rounded-t-[20px]";
+                    img.src = gedung.foto_gedung ? gedung.foto_gedung : "../../Sources/Img/default.jpg";
+                    img.alt = gedung.nama_gedung;
+                    link.appendChild(img);
+
+                    // Append image link to card container
+                    gedungItem.appendChild(link);
+
+                    // Name container
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = "p-2";
+
+                    const nameLink = document.createElement('a');
+                    nameLink.href = "#";
+
+                    const namaGedung = document.createElement('span');
+                    namaGedung.className = "mb-2 text-base font-medium text-center block tracking-tight text-gray-800";
+                    namaGedung.textContent = gedung.nama_gedung;
+
+                    // Append name and name link to content div
+                    nameLink.appendChild(namaGedung);
+                    contentDiv.appendChild(nameLink);
+                    gedungItem.appendChild(contentDiv);
+
+                    // Append card to container
+                    gedungContainer.appendChild(gedungItem);
+                });
+            } else {
+                console.error('Gagal mengambil data gedung:', result.message);
+            }
+        } catch (error) {
+            console.error('Terjadi kesalahan saat mengambil data:', error);
+        }
+    }
+
+    // Panggil fungsi getGedung saat halaman dimuat
+    window.onload = getGedung;
+</script>
 
 </html>

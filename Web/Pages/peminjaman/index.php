@@ -72,7 +72,7 @@
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">NP Pembina HM/UKM</label>
+                        <label class="block text-sm font-medium text-gray-700">NIP Pembina HM/UKM</label>
                         <input type="text" value=""
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
                     </div>
@@ -101,12 +101,12 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 my-2">Waktu</label>
-                            <div class="">
-                                <div class=" ">
-                                    <button class="flex-1 py-2 px-4 border border-gray-300 rounded text-gray-600 hover:bg-gray-100 w-32">08:00 - 12:00</button>
-                                    <button class="flex-1 py-2 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32">12:00 - 16:00</button>
+                            <div class="time-selector">
+                                <div class="button-group">
+                                    <button class="time-button flex-1 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32 h-8">08:00 - 12:00</button>
+                                    <button class="time-button flex-1 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32 h-8">12:00 - 16:00</button>
                                 </div>
-                                <button class="mt-1 flex-1 py-2 px-4 border border-gray-300 rounded text-gray-600 hover:bg-gray-100 w-32">16:00 - 18:00</button>
+                                <button class="time-button mt-1 flex-1 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32 h-8">08:00 - 16:00</button>
                             </div>
                         </div>
                         <div>
@@ -114,9 +114,10 @@
                             <input type="text" value=""
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
                         </div>
-                        <div class="flex justify-between mt-6">
-                            <button class="flex-1 mr-2 py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">Daftar Panitia</button>
-                            <button class="flex-1 ml-2 py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">Daftar Peserta</button>
+                        <div class="justify-between mt-2">
+                            <label class="block text-sm font-medium text-gray-900 text-white" for="file_input">Daftar Panitia</label>
+                            <input class="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 cursor-pointer text-gray-400 focus:outline-none border-gray-600 placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+
                         </div>
                     </div>
                 </div>
@@ -131,5 +132,20 @@
 
     </div>
 </body>
+<script>
+    // Pilih semua tombol dengan kelas 'time-button'
+    const timeButtons = document.querySelectorAll('.time-button');
+
+    // Tambahkan event listener untuk setiap tombol
+    timeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Hapus kelas 'selected' dari semua tombol
+            timeButtons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-100', 'text-blue-500'));
+
+            // Tambahkan kelas 'selected' pada tombol yang dipilih
+            button.classList.add('border-blue-500', 'bg-blue-100', 'text-blue-500');
+        });
+    });
+</script>
 
 </html>
