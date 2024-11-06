@@ -50,7 +50,7 @@ class PeminjamansController
 
         if ($stmt->execute()) {
             $peminjamanData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            response('success', 'Peminjaman Data Retrieved Successfully', $peminjamanData);
+            response('success', 'Peminjaman Data Retrieved Successfully', $peminjamanData,'200');
         } else {
             response('error', 'Failed to retrieve peminjaman data', null, 500);
         }

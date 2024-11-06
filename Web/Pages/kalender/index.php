@@ -8,7 +8,7 @@
     <title>Sipinjam</title>
     <style>
         .event-day {
-            background-color: rgb(96 165 250); /* Warna lingkaran untuk menandai kegiatan, bisa disesuaikan */
+            background-color: rgb(96 165 250); /* Warna lingkaran untuk menandai kegiatan */
             color: white;
         }
     </style>
@@ -84,9 +84,30 @@
 
     <script>
         let currentDate = new Date();
+        let eventDays = [];
 
-        // Daftar tanggal yang memiliki kegiatan (contoh: [1, 10, 15])
-        const eventDays = [1, 10, 15];
+        // Fungsi untuk mengambil data peminjaman dari API
+        async function fetchDataPeminjaman() {
+            try {
+                const response = await fetch("http://localhost/sipinjamfix/sipinjam/api/peminjaman");
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    eventDays = data.data.map(item => ({
+                        day: new Date(item.tanggal_kegiatan).getDate(),
+                        month: new Date(item.tanggal_kegiatan).getMonth(),
+                        year: new Date(item.tanggal_kegiatan).getFullYear(),
+                        nama_kegiatan: item.nama_kegiatan,
+                        status: item.nama_status
+                    }));
+                    renderCalendar();
+                } else {
+                    console.error("Gagal mengambil data:", data.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
 
         function renderCalendar() {
             const monthNames = [
@@ -120,8 +141,15 @@
                 dayElement.classList.add("calendar-day", "relative", "px-3.5", "py-1.5", "rounded-full", "hover:bg-gray-200");
 
                 // Cek apakah tanggal tersebut ada dalam daftar eventDays
-                if (eventDays.includes(day)) {
+                const event = eventDays.find(event => 
+                    event.day === day &&
+                    event.month === currentDate.getMonth() &&
+                    event.year === currentDate.getFullYear()
+                );
+
+                if (event) {
                     dayElement.classList.add("event-day"); // Tambahkan kelas khusus untuk menandai kegiatan
+                    dayElement.title = `${event.nama_kegiatan} - Status: ${event.status}`;
                 }
 
                 // Tambahkan event listener untuk klik
@@ -144,8 +172,8 @@
             renderCalendar();
         });
 
-        // Inisialisasi kalender
-        renderCalendar();
+        // Inisialisasi kalender dengan data dari API
+        fetchDataPeminjaman();
     </script>
 </body>
 </html>
