@@ -31,6 +31,7 @@ class FotoController
             // Mengganti nama file dengan format tanggal
             $fileName = date('YmdHis') . '.' . $fileExtension; // Format: YYYYMMDDHHMMSS
             $filePath = $folderPath . $fileName;
+            $relativePath = '../../../api/assets/ruangan/' . $fileName;
 
             // Pindahkan file ke folder tujuan dengan nama baru
             if (move_uploaded_file($_FILES['nama_foto']['tmp_name'], $filePath)) {
@@ -48,11 +49,11 @@ class FotoController
                     $query = "INSERT INTO foto_ruangan (id_ruangan, nama_foto) VALUES (?, ?)";
                     $stmt = $this->conn->prepare($query);
 
-                    if ($stmt->execute([$id_ruangan, $filePath])) {
+                    if ($stmt->execute([$id_ruangan, $relativePath])) {
                         response('success', 'Foto ruangan added successfully', [
                             'id_ruangan' => $id_ruangan,
                             'nama_ruangan' => $nama_ruangan,
-                            'nama_foto' => $filePath
+                            'nama_foto' => $relativePath
                         ], statusCode: 201);
                     } else {
                         response('error', 'Unable to create foto ruangan', null, 400);
