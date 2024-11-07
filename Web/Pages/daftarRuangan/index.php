@@ -33,7 +33,7 @@
 </form>
 
 <!-- Room List Container -->
-<div id="room-list" class="container mx-52 p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div id="room-list" class="container mx-52 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
   <!-- Room cards will be generated here -->
 </div>
 
@@ -48,12 +48,19 @@
       if (result.status === "success") {
         const rooms = result.data;
         const roomList = document.getElementById("room-list");
-        
-        rooms.forEach(room => {
+
+        // Mengambil id_gedung dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const idGedung = urlParams.get('id_gedung');
+
+        // Menyaring ruangan berdasarkan id_gedung yang ada di URL
+        const filteredRooms = idGedung ? rooms.filter(room => room.id_gedung === parseInt(idGedung)) : rooms;
+
+        filteredRooms.forEach(room => {
           const { nama_ruangan, nama_gedung, kapasitas, nama_fasilitas, foto_ruangan, deskripsi_ruangan } = room;
 
           // Set default image if no image is available
-          const imageUrl = foto_ruangan[0] ;
+          const imageUrl = foto_ruangan[0] || "../../Sources/Img/default.jpg"; // Gambar default jika tidak ada
           const features = nama_fasilitas ? nama_fasilitas.split(", ") : [];
 
           const roomCard = `
