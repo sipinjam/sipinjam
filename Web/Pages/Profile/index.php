@@ -20,8 +20,8 @@
         <!-- Profile Card -->
         <div class="container p-8 m-10 ml-60 mt-8 max-w-6xl">
             <!-- Header -->
-            <div class="bg-white ml-20 rounded-lg py-2">
-                <div class="bg-blue-500 rounded-t-lg p-8  h-48 flex">
+            <div class="bg-white ml-20 rounded-lg mt-10">
+                <div class="bg-blue-500 rounded-t-lg p-8 h-48 flex">
                     <h1 class="text-white font-bold text-2xl">PROFILE</h1>
                 </div>
 
