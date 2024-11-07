@@ -7,8 +7,16 @@
     <link rel="stylesheet" href="../../Public/theme.css">
     <title>Sipinjam</title>
     <style>
-        .event-day {
+        .event-pagi {
             background-color: rgb(96 165 250); /* Warna lingkaran untuk menandai kegiatan */
+            color: white;
+        }
+        .event-siang {
+            background-color: rgb(74 222 128); /* Warna lingkaran untuk menandai kegiatan */
+            color: white;
+        }
+        .event-full {
+            background-color: rgb(239 68 68); /* Warna lingkaran untuk menandai kegiatan */
             color: white;
         }
     </style>
@@ -98,7 +106,9 @@
                         month: new Date(item.tanggal_kegiatan).getMonth(),
                         year: new Date(item.tanggal_kegiatan).getFullYear(),
                         nama_kegiatan: item.nama_kegiatan,
-                        status: item.nama_status
+                        status: item.nama_status,
+                        waktuMulai: item.waktu_mulai,
+                        waktuSelesai: item.waktu_selesai,
                     }));
                     renderCalendar();
                 } else {
@@ -148,8 +158,18 @@
                 );
 
                 if (event) {
-                    dayElement.classList.add("event-day"); // Tambahkan kelas khusus untuk menandai kegiatan
-                    dayElement.title = `${event.nama_kegiatan} - Status: ${event.status}`;
+                    const waktuMulai = event.waktuMulai;
+                    const waktuSelesai = event.waktuSelesai;
+
+                    if (waktuMulai === "08:00:00" && waktuSelesai === "12:00:00") {
+                        dayElement.classList.add("event-pagi");
+                    } else if (waktuMulai === "12:00:00" && waktuSelesai === "16:00:00") {
+                        dayElement.classList.add("event-siang");
+                    } else if (waktuMulai === "08:00:00" && waktuSelesai === "16:00:00") {
+                        dayElement.classList.add("event-full");
+                    }
+
+                    dayElement.title = `${event.nama_kegiatan} - Waktu: ${waktuMulai} s/d ${waktuSelesai} - Status: ${event.status}`;
                 }
 
                 // Tambahkan event listener untuk klik
