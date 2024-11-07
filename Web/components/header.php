@@ -6,12 +6,12 @@
             <!-- Add any left-aligned content here -->
         </div>
 
-        <!-- Search Bar (Dimasukkan ke dalam Header) -->
+        <!-- Search Bar -->
         <div class="flex-grow max-w-md mx-auto" id="searchForm">
             <form class="flex flex-row gap-2 items-center">
                 <input type="search" id="default-search"
                     class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
-                    placeholder="Cari Ruangan" required />
+                    placeholder="Cari Gedung atau Ruangan" required />
                 <button type="submit"
                     class="right-2 top-1/2 bg-blue-800 text-white px-4 py-1 rounded-md h-10">
                     Cari
@@ -33,35 +33,80 @@
     </div>
 </div>
 
+<!-- JavaScript untuk Mengontrol Tampilan Search Bar -->
 <script>
-    // Mendefinisikan halaman-halaman di mana search bar akan ditampilkan
+    // Daftar halaman yang diizinkan menampilkan search bar
     const allowedPages = [
-        "http://localhost/sipinjamfix/sipinjam/web/pages/home/",
-        "http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/",
-        "http://localhost/sipinjamfix/sipinjam/web/pages/kalender/"
+        "http://localhost/sipinjamfix/sipinjam/Web/Pages/home/",
+        "http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/",
+        "http://localhost/sipinjamfix/sipinjam/Web/Pages/kalender/"
     ];
 
-    // Memeriksa apakah URL saat ini ada di dalam daftar allowedPages
-    const currentUrl = window.location.href.toLowerCase(); // Mengubah URL saat ini menjadi huruf kecil
-    const isAllowedPage = allowedPages.some(page => currentUrl.startsWith(page)); // Mengecek apakah halaman saat ini termasuk dalam daftar
-
-    if (!isAllowedPage) {
-        // Sembunyikan search bar jika halaman tidak ada dalam daftar allowedPages
+    // Cek apakah URL saat ini ada di daftar halaman yang diizinkan
+    const currentUrl = window.location.href.toLowerCase();
+    
+    // Sembunyikan search bar jika URL mengandung parameter `search` saja (tanpa `id_gedung`)
+    if (currentUrl.includes("daftarruangan") && currentUrl.includes("search=") && !currentUrl.includes("id_gedung=")) {
         document.getElementById("searchForm").style.display = "none";
+    } else {
+        // Tampilkan search bar jika halaman berada di daftar allowedPages
+        const isAllowedPage = allowedPages.some(page => currentUrl.startsWith(page.toLowerCase()));
+        if (!isAllowedPage) {
+            document.getElementById("searchForm").style.display = "none";
+        }
     }
 
     // Menambahkan event listener pada form pencarian
-    document.querySelector('form').addEventListener('submit', function (event) {
+    document.querySelector('form').addEventListener('submit', async function (event) {
         event.preventDefault(); // Menghentikan form submit default
 
         // Ambil nilai pencarian dari input
-        const searchQuery = document.getElementById('default-search').value.trim();
+        const searchQuery = document.getElementById('default-search').value.trim().toLowerCase();
 
-        // Redirect ke halaman daftarRuangan dengan parameter query search
-        if (searchQuery) {
-            window.location.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/?search=${encodeURIComponent(searchQuery)}`;
-        } else {
+        if (!searchQuery) {
             alert("Masukkan nama gedung atau ruangan yang ingin dicari.");
+            return;
+        }
+
+        try {
+            // Fetch data dari API ruangan
+            const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/ruangan');
+            const data = await response.json();
+
+            // Log data dari API untuk debugging
+            console.log("Data dari API:", data);
+
+            // Periksa apakah status dari API sukses
+            if (data.status === "success") {
+                // Cari apakah ada kecocokan berdasarkan nama gedung
+                const gedungMatch = data.data.find(ruangan => ruangan.nama_gedung.toLowerCase() === searchQuery);
+
+                // Cari kecocokan berdasarkan nama ruangan
+                const ruanganMatch = data.data.filter(ruangan => ruangan.nama_ruangan.toLowerCase() === searchQuery);
+
+                // Log hasil pencarian untuk debugging
+                console.log("Gedung Match:", gedungMatch);
+                console.log("Ruangan Match:", ruanganMatch);
+
+                // Cek kecocokan gedung atau ruangan
+                if (gedungMatch) {
+                    // Redirect ke halaman daftarRuangan dengan parameter id_gedung jika gedung ditemukan
+                    window.location.href = `http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/?id_gedung=${gedungMatch.id_gedung}`;
+                } else if (ruanganMatch.length > 0) {
+                    // Redirect ke halaman daftarRuangan dengan query nama_ruangan jika ruangan ditemukan
+                    window.location.href = `http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/?search=${encodeURIComponent(searchQuery)}`;
+                } else {
+                    alert("Gedung atau ruangan yang dicari tidak ditemukan.");
+                }
+
+                // Kosongkan input search setelah submit berhasil
+                document.getElementById('default-search').value = '';
+            } else {
+                alert("Gagal mengambil data dari server.");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            alert("Terjadi kesalahan saat mengakses data. Silakan coba lagi.");
         }
     });
 
