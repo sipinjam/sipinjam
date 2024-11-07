@@ -29,18 +29,6 @@
     <!-- Sidebar -->
     <?php include '../../components/sidebar.php' ?>
     
-    <!-- Search Bar dengan posisi sticky
-    <div class="md:pl-64 z-10 sticky top-10 mt-28">
-        <form class="flex-grow max-w-md mx-auto">
-            <div class="relative">
-                <input type="search" id="default-search" 
-                    class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
-                    placeholder="Cari Ruangan" required />
-                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">Cari</button>
-            </div>
-        </form>
-    </div> -->
-    
     <!-- Wrapper Keterangan dan Kalender -->
     <div class="flex flex-row md:pl-64 mt-28 space-x-4 mx-4">
 
@@ -90,6 +78,17 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-lg w-1/3 p-5">
+            <h2 id="event-title" class="text-2xl font-semibold mb-3"></h2>
+            <p id="event-details" class="text-gray-700 mb-4"></p>
+            <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Close
+            </button>
+        </div>
+    </div>
+
     <script>
         let currentDate = new Date();
         let eventDays = [];
@@ -109,6 +108,7 @@
                         status: item.nama_status,
                         waktuMulai: item.waktu_mulai,
                         waktuSelesai: item.waktu_selesai,
+                        nama_ormawa: item.nama_status // Memastikan data Ormawa tersedia
                     }));
                     renderCalendar();
                 } else {
@@ -127,23 +127,27 @@
 
             const calendarHeader = document.getElementById("calendar-header");
             const calendarDays = document.getElementById("calendar-days");
-            
+            const eventModal = document.getElementById("event-modal");
+            const eventTitle = document.getElementById("event-title");
+            const eventDetails = document.getElementById("event-details");
+            const closeModal = document.getElementById("close-modal");
+
             // Set header bulan dan tahun
             calendarHeader.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-            
+
             // Hitung jumlah hari dalam bulan ini
             const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
             const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-            
+
             // Kosongkan elemen kalender
             calendarDays.innerHTML = "";
-            
+
             // Tambahkan elemen hari kosong sebelum tanggal 1
             for (let i = 0; i < firstDay; i++) {
                 const emptyDay = document.createElement("div");
                 calendarDays.appendChild(emptyDay);
             }
-            
+
             // Tambahkan elemen untuk setiap hari dalam bulan ini
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement("div");
@@ -169,16 +173,25 @@
                         dayElement.classList.add("event-full");
                     }
 
-                    dayElement.title = `${event.nama_kegiatan} - Waktu: ${waktuMulai} s/d ${waktuSelesai} - Status: ${event.status}`;
+                    dayElement.addEventListener("click", () => {
+                        eventTitle.textContent = `Kegiatan: ${event.nama_kegiatan}`;
+                        eventDetails.innerHTML = `
+                            Ormawa: ${event.status}<br>
+                            Tanggal: ${day} ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}<br>
+                            Waktu: ${waktuMulai} - ${waktuSelesai}<br>
+                            Status: ${event.status}
+                        `;
+                        eventModal.classList.remove("hidden");
+                    });
                 }
-
-                // Tambahkan event listener untuk klik
-                dayElement.addEventListener("click", () => {
-                    alert(`Tanggal yang Anda klik: ${day} ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`);
-                });
 
                 calendarDays.appendChild(dayElement);
             }
+
+            // Tutup modal
+            closeModal.addEventListener("click", () => {
+                eventModal.classList.add("hidden");
+            });
         }
 
         // Navigasi bulan
