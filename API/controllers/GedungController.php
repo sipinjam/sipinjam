@@ -26,7 +26,7 @@ class GedungsController
             while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
                 $data[] = $row;
             }
-            response('success', 'List of Gedungs Retrieved Successfully', $data);
+            response('success', 'List of Gedungs Retrieved Successfully', $data, 200);
         } else {
             response('error', 'Failed to Retrieve Gedungs', null, [
                 'code' => 500,
