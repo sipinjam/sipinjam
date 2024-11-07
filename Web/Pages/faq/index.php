@@ -19,7 +19,7 @@
 </div>
 <div class="bg-gray-100 p-6">
 
-    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg mt-20 shadow-md">
+    <div class="ml-64 max-w-9xl bg-white p-6 rounded-lg mt-20 shadow-md">
     <span class=" gap-5 items-center text-lg">
         <p class="text-2xl flex font-bold text-gray-800 mb-4">FAQ</p>
 
@@ -57,7 +57,7 @@
             ],
             [
                 "question" => "Bagaimana Saya Tahu Bahwa Peminjaman Saya Sudah Berhasil Dikonfirmasi?",
-                "answer" => "Anda akan menerima notifikasi atau email konfirmasi setelah peminjaman disetujui."
+                "answer" => "Anda akan menerima notifikasi atau konfirmasi pada menu home setelah peminjaman disetujui."
             ]
         ];
 
