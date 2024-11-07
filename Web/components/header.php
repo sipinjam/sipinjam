@@ -7,7 +7,7 @@
         </div>
 
         <!-- Search Bar (Dimasukkan ke dalam Header) -->
-        <div class="flex-grow max-w-md mx-auto">
+        <div class="flex-grow max-w-md mx-auto" id="searchForm">
             <form class="flex flex-row gap-2 items-center">
                 <input type="search" id="default-search"
                     class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
@@ -32,3 +32,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Mendefinisikan halaman di mana search bar akan ditampilkan
+    const allowedPages = [
+        "http://localhost/sipinjamfix/sipinjam/Web/Pages/home/",
+        "http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/",
+        "http://localhost/sipinjamfix/sipinjam/Web/Pages/kalender/"
+    ];
+
+    // Memeriksa apakah URL saat ini ada dalam daftar allowedPages
+    if (!allowedPages.includes(window.location.href)) {
+        // Sembunyikan search bar jika halaman tidak ada di allowedPages
+        document.getElementById("searchForm").style.display = "none";
+    }
+
+    // Event listener untuk form pencarian
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Menghentikan form submit default
+
+        // Ambil nilai pencarian dari input
+        const searchQuery = document.getElementById('default-search').value.trim();
+
+        // Redirect ke halaman daftarRuangan dengan parameter query search
+        if (searchQuery) {
+            window.location.href = `http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/?search=${encodeURIComponent(searchQuery)}`;
+        } else {
+            alert("Masukkan nama gedung atau ruangan yang ingin dicari.");
+        }
+    });
+</script>
