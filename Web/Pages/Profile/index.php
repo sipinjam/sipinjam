@@ -21,7 +21,7 @@
         <div class="container p-6 ml-64 mt-8 max-w-9xl">
             <!-- Header -->
             <div class="bg-white rounded-lg mt-10">
-                <div class="bg-indigo-700 rounded-t-lg p-8 h-48 flex">
+                <div class="bg-indigo-500 rounded-t-lg p-8 h-48 flex">
                     <h1 class="text-white font-bold text-3xl">PROFILE</h1>
                 </div>
 
@@ -46,7 +46,7 @@
 
                 <!-- Options -->
                 <div class="divide-y divide-gray-300 m-10">
-                    <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-100" onclick="window.location.href='../editprofile/index.php'" >
+                    <div class="flex items-center justify-between p-6 cursor-pointer rounded-lg hover:bg-gray-100" onclick="window.location.href='../editprofile/index.php'" >
                         <span class="flex gap-5 items-center text-lg">
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -70,7 +70,7 @@
                         <span class="text-gray-500">></span>
                     </div>
 
-                    <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-100">
+                    <div class="flex items-center justify-between p-6 cursor-pointer rounded-lg hover:bg-gray-100">
                         <span class="flex gap-5 items-center text-lg">
                         <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg fill="#000000" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +82,7 @@
                     </div>
 
                     <!-- FAQ Section -->
-        <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-100" onclick="window.location.href='../faq/index.php'">
+        <div class="flex items-center justify-between p-6 cursor-pointer rounded-lg hover:bg-gray-100" onclick="window.location.href='../faq/index.php'">
             <span class="flex gap-5 items-center text-lg">
             <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
             <path d="M1662.178 0v1359.964h-648.703l-560.154 560.154v-560.154H0V0h1662.178ZM1511.07 151.107H151.107v1057.75h453.321v346.488l346.489-346.488h560.154V151.107ZM906.794 755.55v117.53H453.32V755.55h453.473Zm302.063-302.365v117.529H453.32V453.185h755.536Z" fill-rule="evenodd"/>
