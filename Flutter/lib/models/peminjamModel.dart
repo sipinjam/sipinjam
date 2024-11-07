@@ -3,7 +3,7 @@ class PeminjamModel {
   String namaPeminjam;
   String password;
   String? namaLengkap;
-  String? email;
+  String email;
   String? noTelpon;
   int? idJenisPeminjam;
 
@@ -12,7 +12,7 @@ class PeminjamModel {
     required this.namaPeminjam,
     required this.password,
     this.namaLengkap,
-    this.email,
+    required this.email,
     this.noTelpon,
     this.idJenisPeminjam,
   });
@@ -24,7 +24,7 @@ class PeminjamModel {
         password: json["password"] ??
             '', // Pastikan selalu ada nilai default jika null
         namaLengkap: json["nama_lengkap"],
-        email: json["email"],
+        email: json["email"] ?? '',
         noTelpon: json["no_telpon"],
         idJenisPeminjam: json["id_jenis_peminjam"] != null
             ? json["id_jenis_peminjam"]

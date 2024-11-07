@@ -18,104 +18,105 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
-<!-- Search Bar -->
-<form class="max-w-md mx-auto mt-4 pt-20">  
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Ruangan" required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+    <!-- Room List Container -->
+    <div id="room-list" class="container mx-52 my-24 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Room cards will be generated here -->
     </div>
-</form>
 
-<!-- Room List Container -->
-<div id="room-list" class="container mx-52 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  <!-- Room cards will be generated here -->
-</div>
+    <script>
+        const apiUrl = "http://localhost/sipinjamfix/sipinjam/api/ruangan";
 
-<script>
-  const apiUrl = "http://localhost/sipinjamfix/sipinjam/api/ruangan";
+        async function fetchRooms() {
+            try {
+                const response = await fetch(apiUrl);
+                const result = await response.json();
 
-  async function fetchRooms() {
-    try {
-      const response = await fetch(apiUrl);
-      const result = await response.json();
+                if (result.status === "success") {
+                    const rooms = result.data;
+                    const roomList = document.getElementById("room-list");
 
-      if (result.status === "success") {
-        const rooms = result.data;
-        const roomList = document.getElementById("room-list");
+                    // Mengambil id_gedung dari URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const idGedung = urlParams.get('id_gedung');
+                    const searchQuery = urlParams.get('search'); // Ambil query pencarian
 
-        // Mengambil id_gedung dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const idGedung = urlParams.get('id_gedung');
+                    // Menyaring ruangan berdasarkan id_gedung yang ada di URL
+                    const filteredRooms = idGedung ? rooms.filter(room => room.id_gedung === parseInt(idGedung)) : rooms;
 
-        // Menyaring ruangan berdasarkan id_gedung yang ada di URL
-        const filteredRooms = idGedung ? rooms.filter(room => room.id_gedung === parseInt(idGedung)) : rooms;
+                    // Jika ada pencarian, filter juga berdasarkan nama_ruangan
+                    const searchedRooms = searchQuery ? filteredRooms.filter(room => room.nama_ruangan.toLowerCase().includes(searchQuery.toLowerCase())) : filteredRooms;
 
-        filteredRooms.forEach(room => {
-          const { nama_ruangan, nama_gedung, kapasitas, nama_fasilitas, foto_ruangan, deskripsi_ruangan } = room;
+                    searchedRooms.forEach(room => {
+                        const { nama_ruangan, nama_gedung, kapasitas, nama_fasilitas, foto_ruangan, deskripsi_ruangan } = room;
 
-          // Set default image if no image is available
-          const imageUrl = foto_ruangan[0] || "../../Sources/Img/default.jpg"; // Gambar default jika tidak ada
-          const features = nama_fasilitas ? nama_fasilitas.split(", ") : [];
+                        // Set default image if no image is available
+                        const imageUrl = foto_ruangan[0] || "../../Sources/Img/default.jpg"; // Gambar default jika tidak ada
+                        const features = nama_fasilitas ? nama_fasilitas.split(", ") : [];
 
-          const roomCard = `
-            <div class="flex max-w-[700px] h-[235px] bg-white border border-gray-200 rounded-lg shadow">
-              <a href="#">
-                <img class="rounded-l-lg w-[180px] h-[235px] object-cover" src="${imageUrl}" alt="${nama_ruangan}" />
-              </a>
-              <div class="p-5 flex-1">
-                <h5 class="mb-2 text-xl font-bold tracking-tight">${nama_ruangan}</h5>
-                <p class="text-gray-600 mb-1">${nama_gedung}</p>
-                <p class="text-gray-700 mb-3">${deskripsi_ruangan || "Deskripsi tidak tersedia"}</p>
-                <p class="text-gray-700 mb-3">Kapasitas: ${kapasitas} orang</p>
-                <div class="flex items-center space-x-2 mb-3">
-                  ${features.map(feature => {
-                    let icon;
-                    switch (feature) {
-                      case "Wi-Fi":
-                        icon = "fa-wifi";
-                        break;
-                      case "AC":
-                        icon = "fa-snowflake";
-                        break;
-                      case "LCD":
-                        icon = "fa-tv";
-                        break;
-                      default:
-                        icon = "fa-check"; // Default icon
-                    }
-                    return `
-                      <div class="flex items-center space-x-1">
-                        <i class="fas ${icon} text-gray-700"></i>
-                        <span class="text-gray-700">${feature}</span>
-                      </div>`;
-                  }).join("")}
-                </div>
-                <a href="http://localhost/sipinjamfix/sipinjam/web/pages/detailRuangan?id_ruangan=${room.id_ruangan}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-                  Book Now
-                </a>
-              </div>
-            </div>
-          `;
-          
-          roomList.innerHTML += roomCard;
+                        const roomCard = `
+                            <div class="flex max-w-[700px] h-[235px] bg-white border border-gray-200 rounded-lg shadow">
+                                <a href="#">
+                                    <img class="rounded-l-lg w-[180px] h-[235px] object-cover" src="${imageUrl}" alt="${nama_ruangan}" />
+                                </a>
+                                <div class="p-5 flex-1">
+                                    <h5 class="mb-2 text-xl font-bold tracking-tight">${nama_ruangan}</h5>
+                                    <p class="text-gray-600 mb-1">${nama_gedung}</p>
+                                    <p class="text-gray-700 mb-3">${deskripsi_ruangan || "Deskripsi tidak tersedia"}</p>
+                                    <p class="text-gray-700 mb-3">Kapasitas: ${kapasitas} orang</p>
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        ${features.map(feature => {
+                                            let icon;
+                                            switch (feature) {
+                                                case "Wi-Fi":
+                                                    icon = "fa-wifi";
+                                                    break;
+                                                case "AC":
+                                                    icon = "fa-snowflake";
+                                                    break;
+                                                case "LCD":
+                                                    icon = "fa-tv";
+                                                    break;
+                                                default:
+                                                    icon = "fa-check"; // Default icon
+                                            }
+                                            return `
+                                                <div class="flex items-center space-x-1">
+                                                    <i class="fas ${icon} text-gray-700"></i>
+                                                    <span class="text-gray-700">${feature}</span>
+                                                </div>`;
+                                        }).join("")}
+                                    </div>
+                                    <a href="http://localhost/sipinjamfix/sipinjam/web/pages/detailRuangan?id_ruangan=${room.id_ruangan}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                        
+                        roomList.innerHTML += roomCard;
+                    });
+                } else {
+                    console.error("Failed to retrieve rooms:", result.message);
+                }
+            } catch (error) {
+                console.error("Error fetching rooms:", error);
+            }
+        }
+
+        // Event listener untuk pencarian
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Mencegah form submit default
+
+            const searchQuery = document.getElementById('default-search').value.trim();
+            const idGedung = new URLSearchParams(window.location.search).get('id_gedung'); // Ambil id_gedung
+
+            // Redirect dengan query pencarian
+            window.location.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?search=${encodeURIComponent(searchQuery)}&id_gedung=${idGedung}`;
         });
-      } else {
-        console.error("Failed to retrieve rooms:", result.message);
-      }
-    } catch (error) {
-      console.error("Error fetching rooms:", error);
-    }
-  }
 
-  // Call the function to fetch rooms on page load
-  document.addEventListener("DOMContentLoaded", fetchRooms);
-</script>
+        // Panggil fungsi fetchRooms saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", fetchRooms);
+    </script>
 
 </body>
 </html>
