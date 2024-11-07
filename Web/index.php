@@ -86,14 +86,30 @@
                     }),
                 })
                 .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // Save relevant data to cookies
+                        document.cookie = `nama_peminjam=${nama_peminjam}; path=/`; // Example of saving the username
+                        // You can save other data as needed
+                        document.cookie = `id_peminjam=${data.data.id_peminjam}; path=/`;
+                        document.cookie = `id_jenis_peminjam=${data.data.id_jenis_peminjam}; path=/`;
 
+                        // Redirect to home page
+                        const currentLocation = window.location.origin + window.location.pathname; // Get the current URL
+                        window.location.href = `${currentLocation}/pages/home`;
+                    } else {
+                        // Handle other responses (e.g., error messages)
+                        document.getElementById('error-message').innerText = data.message || "Login failed";
+                        document.getElementById('error-message').style.display = 'block';
+                    }
+                    console.log(response);
+                })
                 .catch(error => {
                     console.error('Error:', error);
+                    document.getElementById('error-message').innerText = "An error occurred. Please try again.";
                     document.getElementById('error-message').style.display = 'block';
                 });
         }
-
-        // Cek apakah sudah login
     </script>
 </body>
 
