@@ -19,24 +19,9 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
-    <!-- Search Bar dengan posisi sticky -->
-    <div class="pt-24">
-        <form class="flex-grow max-w-md mx-auto">
-            <div class="flex flex-row gap-2 items-center">
-                <input type="search" id="default-search"
-                    class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
-                    placeholder="Cari Ruangan" required />
-                <button type="submit"
-                    class="right-2 top-1/2 bg-blue-800 text-white px-4 py-1 rounded-md h-10">
-                    Cari
-                </button>
-            </div>
-        </form>
-    </div>
-
     <!-- Main Menu -->
     <!-- Container for scrolling horizontally -->
-    <div class="pt-12 md:pl-[270px] overflow-x-auto">
+    <div class="pt-24 md:pl-[270px] overflow-x-auto">
         <div class="flex space-x-4 pb-4" id="gedungContainer"></div>
     </div>
 
@@ -57,38 +42,6 @@
             </tbody>
         </table>
     </div>
-
-            
-    <!-- Page Navigation -->
-    <nav aria-label="Page navigation example">
-        <ul class="flex items-center justify-center h-20 text-sm">
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">
-                    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 1 1 5l4 4" />
-                    </svg>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-current="page"
-                    class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">1</a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">
-                    <span class="sr-only">Next</span>
-                    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                    </svg>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </body>
 
 <script>
@@ -109,7 +62,7 @@
 
                     // Link container for image
                     const link = document.createElement('a');
-                    link.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan?id_gedung=${gedung.id_gedung}`; // Set URL to rooms page with id_gedung parameter
+                    link.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
 
                     // Image
                     const img = document.createElement('img');
@@ -126,7 +79,7 @@
                     contentDiv.className = "p-2";
 
                     const nameLink = document.createElement('a');
-                    nameLink.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan?id_gedung=${gedung.id_gedung}`; // Set URL for room name link
+                    nameLink.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
 
                     const namaGedung = document.createElement('span');
                     namaGedung.className = "mb-2 text-base font-medium text-center block tracking-tight text-gray-800";
@@ -147,6 +100,7 @@
             console.error('Terjadi kesalahan saat mengambil data:', error);
         }
     }
+
 
     // GET PEMINJAMAN
     async function getPeminjaman() {

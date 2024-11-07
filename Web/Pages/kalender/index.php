@@ -29,7 +29,7 @@
     <!-- Sidebar -->
     <?php include '../../components/sidebar.php' ?>
     
-    <!-- Search Bar dengan posisi sticky -->
+    <!-- Search Bar dengan posisi sticky
     <div class="md:pl-64 z-10 sticky top-10 mt-28">
         <form class="flex-grow max-w-md mx-auto">
             <div class="relative">
@@ -39,10 +39,10 @@
                 <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">Cari</button>
             </div>
         </form>
-    </div>
+    </div> -->
     
     <!-- Wrapper Keterangan dan Kalender -->
-    <div class="flex flex-row md:pl-64 mt-10 space-x-4 mx-4">
+    <div class="flex flex-row md:pl-64 mt-28 space-x-4 mx-4">
 
         <!-- Kalender -->
         <div class="flex-1 p-6 bg-white rounded-lg shadow">
