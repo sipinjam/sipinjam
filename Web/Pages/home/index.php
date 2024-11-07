@@ -19,24 +19,9 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
-    <!-- Search Bar dengan posisi sticky -->
-    <div class="pt-24">
-        <form class="flex-grow max-w-md mx-auto">
-            <div class="flex flex-row gap-2 items-center">
-                <input type="search" id="default-search"
-                    class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
-                    placeholder="Cari Ruangan" required />
-                <button type="submit"
-                    class="right-2 top-1/2 bg-blue-800 text-white px-4 py-1 rounded-md h-10">
-                    Cari
-                </button>
-            </div>
-        </form>
-    </div>
-
     <!-- Main Menu -->
     <!-- Container for scrolling horizontally -->
-    <div class="pt-12 md:pl-[270px] overflow-x-auto">
+    <div class="pt-24 md:pl-[270px] overflow-x-auto">
         <div class="flex space-x-4 pb-4" id="gedungContainer"></div>
     </div>
 
@@ -92,6 +77,22 @@
 </body>
 
 <script>
+
+    // Menambahkan event listener pada form pencarian
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Menghentikan form submit default
+
+        // Ambil nilai pencarian dari input
+        const searchQuery = document.getElementById('default-search').value.trim();
+
+        // Redirect ke halaman daftarRuangan dengan parameter query nama_gedung
+        if (searchQuery) {
+            window.location.href = `http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/index.php?search=${encodeURIComponent(searchQuery)}`;
+        } else {
+            alert("Masukkan nama gedung atau ruangan yang ingin dicari.");
+        }
+    });
+
 
     // GET GEDUNG
     async function getGedung() {
