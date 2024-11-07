@@ -34,20 +34,23 @@
 </div>
 
 <script>
-    // Mendefinisikan halaman di mana search bar akan ditampilkan
+    // Mendefinisikan halaman-halaman di mana search bar akan ditampilkan
     const allowedPages = [
-        "http://localhost/sipinjamfix/sipinjam/Web/Pages/home/",
-        "http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/",
-        "http://localhost/sipinjamfix/sipinjam/Web/Pages/kalender/"
+        "http://localhost/sipinjamfix/sipinjam/web/pages/home/",
+        "http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/",
+        "http://localhost/sipinjamfix/sipinjam/web/pages/kalender/"
     ];
 
-    // Memeriksa apakah URL saat ini ada dalam daftar allowedPages
-    if (!allowedPages.includes(window.location.href)) {
-        // Sembunyikan search bar jika halaman tidak ada di allowedPages
+    // Memeriksa apakah URL saat ini ada di dalam daftar allowedPages
+    const currentUrl = window.location.href.toLowerCase(); // Mengubah URL saat ini menjadi huruf kecil
+    const isAllowedPage = allowedPages.some(page => currentUrl.startsWith(page)); // Mengecek apakah halaman saat ini termasuk dalam daftar
+
+    if (!isAllowedPage) {
+        // Sembunyikan search bar jika halaman tidak ada dalam daftar allowedPages
         document.getElementById("searchForm").style.display = "none";
     }
 
-    // Event listener untuk form pencarian
+    // Menambahkan event listener pada form pencarian
     document.querySelector('form').addEventListener('submit', function (event) {
         event.preventDefault(); // Menghentikan form submit default
 
@@ -56,9 +59,10 @@
 
         // Redirect ke halaman daftarRuangan dengan parameter query search
         if (searchQuery) {
-            window.location.href = `http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/?search=${encodeURIComponent(searchQuery)}`;
+            window.location.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/?search=${encodeURIComponent(searchQuery)}`;
         } else {
             alert("Masukkan nama gedung atau ruangan yang ingin dicari.");
         }
     });
+
 </script>
