@@ -116,7 +116,7 @@ class RuangansController
             // Pecah foto_ruangan menjadi array untuk hasil yang lebih terstruktur
             $result['foto_ruangan'] = explode(', ', $result['foto_ruangan']);
 
-            response('success', 'Ruangan found', $result);
+            response('success', 'Ruangan found', $result, 200);
         } else {
             response('error', 'Ruangan not found', null, 404);
         }
