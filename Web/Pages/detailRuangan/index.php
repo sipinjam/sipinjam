@@ -24,8 +24,13 @@
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
 
+    <!-- Tombol untuk membuka modal -->
+    <button onclick="openModal()" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+        Buka Detail Ruangan
+    </button>
+
     <!-- Overlay Popup -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <!-- Konten Popup -->
         <div class="bg-white rounded-lg shadow-lg max-w-6xl w-full mx-4 p-6 relative">
             <!-- Tombol Close -->
@@ -148,14 +153,14 @@
         }
     }
 
+    // Fungsi menutup modal
     function closeModal() {
-        window.history.back();
+        document.getElementById("modal").classList.add("hidden");
     }
 
-    // Fungsi untuk mendapatkan parameter dari URL
-    function getParameterByName(name) {
-        const url = new URL(window.location.href);
-        return url.searchParams.get(name);
+    // Fungsi untuk membuka modal
+    function openModal() {
+        document.getElementById("modal").classList.remove("hidden");
     }
 
     function setImage(index) {
@@ -189,6 +194,6 @@
 
     // Panggil fungsi loadRoomData saat halaman dimuat
     window.onload = loadRoomData;
-</script>
+    </script>
 </body>
 </html>
