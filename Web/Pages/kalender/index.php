@@ -79,14 +79,16 @@
     </div>
 
     <!-- Modal -->
-    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg shadow-lg w-1/3 p-5">
-            <h2 id="event-title" class="text-2xl font-semibold mb-3"></h2>
-            <p id="event-details" class="text-gray-700 mb-4"></p>
-            <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                Close
-            </button>
-        </div>
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 relative transform transition-transform duration-300 scale-95">
+            <h2 id="event-title" class="text-2xl font-bold mb-3"></h2>
+            <div class="border-t border-gray-400 mt-2 pt-3">
+                <p id="event-details" class="text-black leading-relaxed whitespace-pre-line text-left">Event details go here.</p>
+                <br>
+                <button id="close-modal" class="inline-flex w-full justify-center rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 sm:ml-3 sm:w-auto">Close</button>
+            </div>
+            
+    </div>
     </div>
 
     <script>
@@ -108,7 +110,7 @@
                         status: item.nama_status,
                         waktuMulai: item.waktu_mulai,
                         waktuSelesai: item.waktu_selesai,
-                        nama_ormawa: item.nama_status // Memastikan data Ormawa tersedia
+                        nama_ormawa: item.nama_ormawa // Memastikan data Ormawa tersedia
                     }));
                     renderCalendar();
                 } else {
@@ -176,7 +178,7 @@
                     dayElement.addEventListener("click", () => {
                         eventTitle.textContent = `Kegiatan: ${event.nama_kegiatan}`;
                         eventDetails.innerHTML = `
-                            Ormawa: ${event.status}<br>
+                            Ormawa: ${event.nama_ormawa}<br>
                             Tanggal: ${day} ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}<br>
                             Waktu: ${waktuMulai} - ${waktuSelesai}<br>
                             Status: ${event.status}
