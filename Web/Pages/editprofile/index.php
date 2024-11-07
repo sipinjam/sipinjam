@@ -81,8 +81,8 @@
                     
 
                     <div class="flex justify-end">
-                        <button type="button" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 mr-2">No, cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Yes, confirm</button>
+                        <button type="button" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 mr-2">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Konfirmasi</button>
                     </div>
                 </form>
             </div>
