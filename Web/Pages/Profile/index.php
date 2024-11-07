@@ -21,7 +21,7 @@
         <div class="container p-6 ml-64 mt-8 max-w-9xl">
             <!-- Header -->
             <div class="bg-white rounded-lg mt-10">
-                <div class="bg-blue-600 rounded-t-lg p-8 h-48 flex">
+                <div class="bg-indigo-700 rounded-t-lg p-8 h-48 flex">
                     <h1 class="text-white font-bold text-3xl">PROFILE</h1>
                 </div>
 
@@ -34,7 +34,8 @@
                             <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z"/>
                     </svg>
                     </div>
-                    <div class="w-full p-6 flex justify-between = -mt-8">
+                    <div class="w-full  p-6 items-center text-lg flex justify-between = -mt-8">
+                    
                         <div>
                             <p class="text-4xl font-bold" id="namaLengkap">PENGGUNA SIPINJAM</p>
                             <p class="text-base text-gray-500" id="email">sipitmataku@gmail.com</p>
