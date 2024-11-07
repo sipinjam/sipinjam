@@ -95,19 +95,35 @@
 
     <!-- Script for fetching user data from API -->
     <script>
-        function fetchUserProfile() {
-            fetch("http://localhost/sipinjamfix/sipinjam/api/users/{id_user}")
-                .then(response => response.json())
-                .then(data => {
-                    const userData = data.data;
-                    document.getElementById("namaLengkap").textContent = userData.nama_lengkap;
-                    document.getElementById("email").textContent = userData.email;
-                    document.getElementById("noTelpon").textContent = userData.no_telpon;
-                })
-                .catch(error => console.error("Error fetching user data:", error));
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function fetchUser() {
+        // Get the id_user from the cookie
+        const idUser  = getCookie('id_peminjam');
+
+        // Check if id_user exists
+        if (!idUser ) {
+            console.error("User  ID not found in cookies.");
+            return; // Exit the function if id_user is not found
         }
 
-        window.onload = fetchUserProfile;
-    </script>
+        // Fetch user profile using the id_user
+        fetch(`http://localhost/sipinjamfix/sipinjam/api/users/${idUser }`)
+            .then(response => response.json())
+            .then(data => {
+                const userData = data.data;
+                document.getElementById("namaLengkap").textContent = userData.nama_lengkap;
+                document.getElementById("email").textContent = userData.email;
+                document.getElementById("noTelpon").textContent = userData.no_telpon;
+            })
+            .catch(error => console.error("Error fetching user data:", error));
+    }
+
+    window.onload = fetchUser;
+</script>
 </body>
 </html>
