@@ -39,7 +39,6 @@
     const allowedPages = [
         "http://localhost/sipinjamfix/sipinjam/Web/Pages/home/",
         "http://localhost/sipinjamfix/sipinjam/Web/Pages/daftarRuangan/",
-        "http://localhost/sipinjamfix/sipinjam/Web/Pages/kalender/"
     ];
 
     // Cek apakah URL saat ini ada di daftar halaman yang diizinkan
