@@ -29,7 +29,6 @@
                         <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
                         <th class="w-1/4 px-4 py-2">Kegiatan</th>
                         <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
-                        <th class="w-1/4 px-4 py-2">Nama Peminjam</th>
                         <th class="w-1/4 px-4 py-2">Status</th>
                     </tr>
                 </thead>
@@ -128,7 +127,6 @@ async function getPeminjaman() {
                         <td class="border px-4 py-2">${item.nama_ruangan}</td>
                         <td class="border px-4 py-2">${item.nama_kegiatan}</td>
                         <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
-                        <td class="border px-4 py-2">${item.nama_peminjam}</td>
                         <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
                     `;
                     peminjamanTable.appendChild(row);
