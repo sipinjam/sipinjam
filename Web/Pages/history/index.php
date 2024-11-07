@@ -38,36 +38,7 @@
         </div>
         <!-- Pagination Controls -->
         <nav aria-label="Page navigation example">
-            <ul class="flex items-center justify-center h-20 text-sm">
-                <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">
-                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 1 1 5l4 4" />
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" aria-current="page"
-                        class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">1</a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">
-                        <span class="sr-only">Next</span>
-                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 9 4-4-4-4" />
-                        </svg>
-                    </a>
-                </li>
+            <ul class="flex items-center justify-center h-20 text-sm" id="paginationControls">
             </ul>
         </nav>
     </div>
@@ -75,6 +46,70 @@
 </body>
 
 <script>
+const itemsPerPage = 10;
+let currentPage = 1;
+let totalPages = 1;
+
+function renderPaginationControls(totalItems) {
+    const paginationControls = document.getElementById('paginationControls');
+    paginationControls.innerHTML = '';
+
+    totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    if (totalPages <= 1) return;
+
+    const createPageItem = (page, isActive = false) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight ${isActive ? 'text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}">${page}</a>
+            `;
+        li.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = page;
+            getPeminjaman();
+        });
+        return li;
+    };
+
+    if (currentPage > 1) {
+        const prevLi = document.createElement('li');
+        prevLi.innerHTML = `
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">
+                    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                    </svg>
+                </a>
+            `;
+        prevLi.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage--;
+            getPeminjaman();
+        });
+        paginationControls.appendChild(prevLi);
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginationControls.appendChild(createPageItem(i, i === currentPage));
+    }
+
+    if (currentPage < totalPages) {
+        const nextLi = document.createElement('li');
+        nextLi.innerHTML = `
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">
+                    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    </svg>
+                </a>
+            `;
+        nextLi.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage++;
+            getPeminjaman();
+        });
+        paginationControls.appendChild(nextLi);
+    }
+}
+
 function getCookies(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -98,13 +133,16 @@ async function getPeminjaman() {
             peminjamanTable.innerHTML = '';
 
             if (result.data.length === 0) {
-                peminjamanTable.innerHTML = '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
+                peminjamanTable.innerHTML =
+                    '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
             } else {
                 const filteredData = result.data
                     .filter(item => item.nama_peminjam === loggedInUserName)
                     .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
 
-                filteredData.forEach(item => {
+                const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+                paginatedData.forEach(item => {
                     const row = document.createElement('tr');
                     row.className = 'bg-white hover:bg-gray-100';
 
@@ -133,8 +171,11 @@ async function getPeminjaman() {
                 });
 
                 if (filteredData.length === 0) {
-                    peminjamanTable.innerHTML = '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
+                    peminjamanTable.innerHTML =
+                        '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
                 }
+
+                renderPaginationControls(filteredData.length);
             }
         } else {
             console.error('Gagal mengambil data peminjaman:', result.message);
@@ -147,7 +188,6 @@ async function getPeminjaman() {
 window.onload = function() {
     getPeminjaman();
 }
-
 </script>
 
 </html>
