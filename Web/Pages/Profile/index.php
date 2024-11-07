@@ -27,7 +27,7 @@
 
                 <!-- Profile Section -->
                 <div class="flex items-center m-6 space-x-6 border-b">
-                    <div class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center -mt-5 ml-5">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center -mt-5 ml-5">
                         <!-- Avatar Icon -->
                         <svg class= "w-12 h-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                             <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
@@ -46,7 +46,7 @@
 
                 <!-- Options -->
                 <div class="divide-y divide-gray-300 m-10">
-                    <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-100">
+                    <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-100" onclick="window.location.href='../editprofile/index.php'" >
                         <span class="flex gap-5 items-center text-lg">
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
