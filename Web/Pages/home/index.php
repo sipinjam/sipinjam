@@ -109,7 +109,7 @@
 
                     // Link container for image
                     const link = document.createElement('a');
-                    link.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan?id_gedung=${gedung.id_gedung}`; // Set URL to rooms page with id_gedung parameter
+                    link.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
 
                     // Image
                     const img = document.createElement('img');
@@ -126,7 +126,7 @@
                     contentDiv.className = "p-2";
 
                     const nameLink = document.createElement('a');
-                    nameLink.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan?id_gedung=${gedung.id_gedung}`; // Set URL for room name link
+                    nameLink.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
 
                     const namaGedung = document.createElement('span');
                     namaGedung.className = "mb-2 text-base font-medium text-center block tracking-tight text-gray-800";
@@ -147,6 +147,7 @@
             console.error('Terjadi kesalahan saat mengambil data:', error);
         }
     }
+
 
     // GET PEMINJAMAN
     async function getPeminjaman() {

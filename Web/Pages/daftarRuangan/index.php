@@ -4,13 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../../Public/theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Daftar Ruangan</title>
 </head>
 <body class="bg-gray-100">
 
+    <!-- Sidebar -->
+    <?php include '../../components/sidebar.php' ?>
+    <!-- End Sidebar -->
+
+    <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
+
 <!-- Search Bar -->
-<form class="max-w-md mx-auto mt-4">  
+<form class="max-w-md mx-auto mt-4 pt-20">  
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -24,7 +33,7 @@
 </form>
 
 <!-- Room List Container -->
-<div id="room-list" class="container mx-auto p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div id="room-list" class="container mx-52 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
   <!-- Room cards will be generated here -->
 </div>
 
@@ -39,12 +48,19 @@
       if (result.status === "success") {
         const rooms = result.data;
         const roomList = document.getElementById("room-list");
-        
-        rooms.forEach(room => {
+
+        // Mengambil id_gedung dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const idGedung = urlParams.get('id_gedung');
+
+        // Menyaring ruangan berdasarkan id_gedung yang ada di URL
+        const filteredRooms = idGedung ? rooms.filter(room => room.id_gedung === parseInt(idGedung)) : rooms;
+
+        filteredRooms.forEach(room => {
           const { nama_ruangan, nama_gedung, kapasitas, nama_fasilitas, foto_ruangan, deskripsi_ruangan } = room;
 
           // Set default image if no image is available
-          const imageUrl = foto_ruangan[0] ;
+          const imageUrl = foto_ruangan[0] || "../../Sources/Img/default.jpg"; // Gambar default jika tidak ada
           const features = nama_fasilitas ? nama_fasilitas.split(", ") : [];
 
           const roomCard = `
