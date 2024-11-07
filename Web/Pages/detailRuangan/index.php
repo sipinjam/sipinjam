@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Ruangan</title>
+    <link rel="stylesheet" href="../../Public/theme.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
@@ -14,6 +15,14 @@
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
+
+    <!-- Sidebar -->
+    <?php include '../../components/sidebar.php' ?>
+    <!-- End Sidebar -->
+
+    <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
 
     <!-- Overlay Popup -->
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -140,7 +149,13 @@
     }
 
     function closeModal() {
-        document.getElementById("modal").classList.add("hidden");
+        window.history.back();
+    }
+
+    // Fungsi untuk mendapatkan parameter dari URL
+    function getParameterByName(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
     }
 
     function setImage(index) {
