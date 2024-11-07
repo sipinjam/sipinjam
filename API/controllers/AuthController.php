@@ -39,7 +39,7 @@ class AuthController
                 $_SESSION['nama_peminjam'] = $result['nama_peminjam'];
                 $_SESSION['id_jenis_peminjam'] = $result['id_jenis_peminjam'];
 
-                echo json_encode(['status' => 'success', 'message' => 'Login berhasil.'], JSON_PRETTY_PRINT);
+                echo json_encode(['status' => 'success', 'message' => 'Login berhasil.', 'data' =>['id_peminjam'=>$result['id_peminjam'],'id_jenis_peminjam'=>$result['id_jenis_peminjam']] ], JSON_PRETTY_PRINT);
             } else {
                 header("HTTP/1.0 401 Unauthorized");
                 echo json_encode(['status' => 'error', 'message' => 'Password salah.'], JSON_PRETTY_PRINT);

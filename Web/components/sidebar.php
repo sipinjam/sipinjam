@@ -90,12 +90,36 @@ $current_page = basename($_SERVER['REQUEST_URI']);
 </aside>
 
 <script>
-function logout() {
-    // Hapus data di localStorage
-    localStorage.removeItem('nama_peminjam');
-    localStorage.removeItem('loggedIn');
+    function checkCookie() {
+        // Function to get a specific cookie by name
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
 
-    // Alihkan pengguna ke halaman login
-    window.location.href = '/sipinjamfix/sipinjam/web/pages/login';
-}
+        // Check if the 'nama_peminjam' cookie exists
+        const namaPeminjamCookie = getCookie('nama_peminjam');
+
+        if (!namaPeminjamCookie) {
+            // If the cookie does not exist, redirect to the login page
+            window.location.href = '/sipinjamfix/sipinjam/web'; // Adjust the path as necessary
+        }
+    }
+
+    // Call the function to check the cookie when the page loads
+    checkCookie();
+
+    function logout() {
+        // Clear the specific cookie by setting its expiration date to the past
+        document.cookie = "nama_peminjam=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = `id_peminjam=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+        document.cookie = `id_jenis_peminjam=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+
+        // Optionally, clear other cookies if needed
+        // document.cookie = "otherCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        // Redirect to the login page
+        window.location.href = '/pages/login'; // Adjust the path as necessary
+    }
 </script>

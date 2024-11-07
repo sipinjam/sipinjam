@@ -1,9 +1,25 @@
 <!-- Header -->
-<div class="md:pl-64 w-full h-auto bg-biru-800 px-4 py-2 shadow-md fixed top-0">
+<div class="md:pl-64 w-full h-auto bg-biru-800 px-4 py-2 shadow-md fixed top-0 z-10">
     <div class="flex items-center justify-between max-w-screen-xl mx-auto gap-x-3 flex-wrap md:flex-nowrap">
+        <!-- Bagian Kiri (bisa diisi dengan logo atau menu lainnya) -->
         <div class="flex items-center space-x-3">
             <!-- Add any left-aligned content here -->
         </div>
+
+        <!-- Search Bar (Dimasukkan ke dalam Header) -->
+        <div class="flex-grow max-w-md mx-auto">
+            <form class="flex flex-row gap-2 items-center">
+                <input type="search" id="default-search"
+                    class="w-full p-2 md:p-3 pl-10 text-sm md:text-base text-gray-900 rounded-lg bg-gray-300 placeholder-gray-500"
+                    placeholder="Cari Ruangan" required />
+                <button type="submit"
+                    class="right-2 top-1/2 bg-blue-800 text-white px-4 py-1 rounded-md h-10">
+                    Cari
+                </button>
+            </form>
+        </div>
+
+        <!-- Bagian Kanan (ikon dan username) -->
         <div class="ml-auto p-5 flex items-center space-x-3">
             <svg class="w-5 h-5 transition duration-75 group-hover:text-white <?php echo $current_page == 'Profile' ? 'text-white' : 'text-gray-400'; ?>"
                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
