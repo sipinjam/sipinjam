@@ -93,6 +93,7 @@
                         // You can save other data as needed
                         document.cookie = `id_peminjam=${data.data.id_peminjam}; path=/`;
                         document.cookie = `id_jenis_peminjam=${data.data.id_jenis_peminjam}; path=/`;
+                        document.cookie = `nama_lengkap=${data.data.nama_lengkap}; path=/`;
 
                         // Redirect to home page
                         const currentLocation = window.location.origin + window.location.pathname; // Get the current URL

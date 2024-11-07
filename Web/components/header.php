@@ -27,7 +27,7 @@
                     d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
             </svg>
             <div class="text-white">
-                <p class="text-sm md:text-base">Username</p>
+                <p class="text-sm md:text-base" id="nama_lengkap"></p>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
     }
 
     // Menambahkan event listener pada form pencarian
-    document.querySelector('form').addEventListener('submit', function (event) {
+    document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // Menghentikan form submit default
 
         // Ambil nilai pencarian dari input
@@ -64,5 +64,19 @@
             alert("Masukkan nama gedung atau ruangan yang ingin dicari.");
         }
     });
+    function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
 
+        // Mengambil cookie 'nama_lengkap'
+        const namaLengkap = getCookie('nama_lengkap');
+
+        // Memasukkan nilai cookie ke dalam elemen HTML
+        if (namaLengkap) {
+            document.getElementById('nama_lengkap').textContent = namaLengkap;
+        } else {
+            document.getElementById('nama_lengkap').textContent = 'Nama lengkap tidak ditemukan';
+        }
 </script>

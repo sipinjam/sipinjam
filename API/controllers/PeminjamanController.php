@@ -25,6 +25,7 @@ class PeminjamansController
             k.daftar_panitia,
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
+            m.nama_ormawa,
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
             pe.nama_peminjam,
             s.nama_status
@@ -121,7 +122,7 @@ class PeminjamansController
             $folderPath = '../assets/daftar_panitia/';
             $fileName = date('YmdHis') . '_' . basename($_FILES['daftar_panitia']['name']);
             $filePath = $folderPath . $fileName;
-            $relativePath = '../../../api/assets/daftar_panitia' . $fileName;
+            $relativePath = '../../../api/assets/daftar_panitia/' . $fileName;
             if (!move_uploaded_file($_FILES['daftar_panitia']['tmp_name'], $filePath)) {
                 response('error', 'Failed to upload daftar_panitia file', null, 500);
                 return;
