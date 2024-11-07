@@ -29,6 +29,7 @@
                         <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
                         <th class="w-1/4 px-4 py-2">Kegiatan</th>
                         <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
+                        <th class="w-1/4 px-4 py-2">Nama Peminjam</th>
                         <th class="w-1/4 px-4 py-2">Status</th>
                     </tr>
                 </thead>
@@ -75,29 +76,68 @@
 </body>
 
 <script>
+function getCookies(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 async function getPeminjaman() {
+    const loggedInUserName = getCookies('nama_peminjam'); // Ambil nama pengguna dari cookie
+
+    if (!loggedInUserName) {
+        console.error("Nama peminjam tidak ditemukan dalam cookie.");
+        return;
+    }
+
     try {
-        const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman');
+        const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman/');
         const result = await response.json();
 
         if (result.status === 'success') {
             const peminjamanTable = document.getElementById('peminjamanTable');
-            peminjamanTable.innerHTML = ''; // Kosongkan tabel terlebih dahulu
+            peminjamanTable.innerHTML = '';
 
-            result.data.forEach(item => {
-                if (item.nama_status.toLowerCase() === 'disetujui') { // Filter data yang disetujui
+            if (result.data.length === 0) {
+                peminjamanTable.innerHTML = '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
+            } else {
+                const filteredData = result.data
+                    .filter(item => item.nama_peminjam === loggedInUserName)
+                    .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
+
+                filteredData.forEach(item => {
                     const row = document.createElement('tr');
                     row.className = 'bg-white hover:bg-gray-100';
 
+                    let statusColor;
+                    switch (item.nama_status.toLowerCase()) {
+                        case 'proses':
+                            statusColor = 'text-yellow-600';
+                            break;
+                        case 'disetujui':
+                            statusColor = 'text-green-600';
+                            break;
+                        case 'ditolak':
+                            statusColor = 'text-red-600';
+                            break;
+                        default:
+                            statusColor = 'text-gray-600';
+                    }
+
                     row.innerHTML = `
-                                    <td class="border px-4 py-2">${item.nama_ruangan}</td>
-                                    <td class="border px-4 py-2">${item.nama_kegiatan}</td>
-                                    <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
-                                    <td class="border px-4 py-2 text-green-600 font-bold">${item.nama_status}</td>
-                                `;
+                        <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                        <td class="border px-4 py-2">${item.nama_kegiatan}</td>
+                        <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
+                        <td class="border px-4 py-2">${item.nama_peminjam}</td>
+                        <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
+                    `;
                     peminjamanTable.appendChild(row);
+                });
+
+                if (filteredData.length === 0) {
+                    peminjamanTable.innerHTML = '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
                 }
-            });
+            }
         } else {
             console.error('Gagal mengambil data peminjaman:', result.message);
         }
@@ -105,10 +145,11 @@ async function getPeminjaman() {
         console.error('Terjadi kesalahan saat mengambil data:', error);
     }
 }
-// Panggil fungsi saat halaman dimuat
+
 window.onload = function() {
     getPeminjaman();
 }
+
 </script>
 
 </html>
