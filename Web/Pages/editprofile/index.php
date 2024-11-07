@@ -34,7 +34,7 @@
                     </div>
                     <p class="text-gray-600 mt-2 cursor-pointer">Ganti Foto</p>
                 </div>
-                <form>
+                <form action="../Profile/index.php" method="POST">
                     <div class="grid grid-cols-1 gap-4 mb-6">
                         <div>
                             <label class="text-gray-700">Username</label>
@@ -79,11 +79,10 @@
                         </div>
                     </div>
                     
-
                     <div class="flex justify-end">
-                        <button type="button" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 mr-2">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Konfirmasi</button>
-                    </div>
+        <button type="button" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 mr-2" onclick="window.location.href='../Profile/index.php'">Batal</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Konfirmasi</button>
+    </div>
                 </form>
             </div>
         </div>
