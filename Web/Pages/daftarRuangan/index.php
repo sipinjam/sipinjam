@@ -19,7 +19,7 @@
     <!-- End Header -->
 
     <!-- Room List Container -->
-    <div id="room-list" class="container mx-auto my-24 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div id="room-list" class="container ml-44 my-24 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Room cards will be generated here -->
     </div>
 
