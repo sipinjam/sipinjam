@@ -81,19 +81,24 @@
         </div>
     </div>
 
-    <!-- Modal -->
+<!-- Elemen Kalender atau Tombol untuk Memicu Modal -->
+<button id="open-modal" class="p-2 bg-blue-600 text-white rounded-lg">Buka Modal Kalender</button>
+
+<!-- Modal -->
 <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300">
     <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 relative transform transition-transform duration-300 scale-95">
         
-        <!-- Close Icon -->
-        <button id="close-modal" class="absolute top-4 right-4 text-gray-700 hover:text-red-500" style="font-size:24px; z-index:10;">
-            <i class="fas fa-times"></i>
+        <!-- Close Icon (SVG) -->
+        <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
         </button>
         
         <!-- Icon and Title -->
         <div class="flex items-center mb-3">
             <i class="fa fa-calendar-check-o text-black mr-2" style="font-size:24px;"></i>
-            <h2 id="event-title" class="text-2xl font-bold">Kegiatan: Techcomfest</h2>
+            <h2 id="event-title" class="text-2xl font-bold">Event Title</h2>
         </div>
         
         <!-- Event Details -->
@@ -104,11 +109,30 @@
 </div>
 
 <script>
-    // JavaScript to close the modal
-    document.getElementById('close-modal').addEventListener('click', function() {
-        document.getElementById('event-modal').classList.add('hidden');
+    // Ambil elemen tombol untuk membuka modal dan elemen modal itu sendiri
+    const openModalButton = document.getElementById('open-modal');
+    const eventModal = document.getElementById('event-modal');
+    const closeModalButton = document.getElementById('close-modal');
+
+    // Tambahkan event listener untuk menampilkan modal saat tombol diklik
+    openModalButton.addEventListener('click', function() {
+        eventModal.classList.remove('hidden');
+    });
+
+    // Event listener untuk menutup modal saat tombol "X" diklik
+    closeModalButton.addEventListener('click', function() {
+        eventModal.classList.add('hidden');
+    });
+
+    // Tutup modal jika pengguna mengklik di luar konten modal
+    window.addEventListener('click', function(event) {
+        if (event.target === eventModal) {
+            eventModal.classList.add('hidden');
+        }
     });
 </script>
+
+
 
     <script>
         let currentDate = new Date();
