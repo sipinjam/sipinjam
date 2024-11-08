@@ -28,11 +28,11 @@
             [
                 "question" => "Bagaimana Cara Pengajuan Peminjaman Ruangan?",
                 "answer" => "<ol class='list-decimal list-inside'>
-                                <li>Membuat surat peminjaman tempat.</li>
-                                <li>Meminta disposisi helper.</li>
-                                <li>Meminta memo ke BEM.</li>
-                                <li>Surat peminjaman tempat asli dan memo dari BEM diserahkan kepada Bapak Unggul.</li>
-                                <li>Kemudian ormawa memberikan surat disposisi tersebut kepada helper.</li>
+                                <li>Memilih gedung yang akan dipinjam pada page home.</li>
+                                <li>Memilih ruangan dan pinjam.</li>
+                                <li>Mengisi form untuk peminjaman.</li>
+                                <li>Tekan tombol pinjam.</li>
+                                <li>Cek status peminjaman pada page riwayat.</li>
                              </ol>"
             ],
             [
@@ -46,10 +46,6 @@
             [
                 "question" => "Apakah Ada Biaya Tambahan Selain Biaya Sewa Tempat?",
                 "answer" => "Tergantung pada acara dan fasilitas yang digunakan, mungkin ada biaya tambahan."
-            ],
-            [
-                "question" => "Apa Yang Harus Dilakukan Jika Saya Mengalami Masalah Saat Proses Peminjaman?",
-                "answer" => "Anda dapat menghubungi bagian administrasi atau bantuan untuk mendapatkan dukungan."
             ],
             [
                 "question" => "Apakah Saya Bisa Memodifikasi Peminjaman Setelah Dikonfirmasi?",
