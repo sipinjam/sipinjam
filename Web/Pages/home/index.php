@@ -130,9 +130,14 @@ async function getPeminjaman() {
                 peminjamanTable.innerHTML =
                     '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
             } else {
+                const today = new Date();
                 const filteredData = result.data
-                    .filter(item => item.nama_peminjam === loggedInUserName && item.nama_status.toLowerCase() ===
-                        'disetujui')
+                    .filter(item => {
+                        const itemDate = new Date(item.tanggal_kegiatan);
+                        return item.nama_peminjam === loggedInUserName &&
+                            item.nama_status.toLowerCase() === 'disetujui' &&
+                            itemDate > today;
+                    })
                     .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
 
                 filteredData.forEach(item => {
