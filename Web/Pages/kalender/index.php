@@ -11,7 +11,7 @@
     <title>Sipinjam</title>
     <style>
         .event-pagi {
-            background-color: rgb(96 165 250); /* Warna lingkaran untuk menandai kegiatan */
+            background-color: rgb(241 207 77); /* Warna lingkaran untuk menandai kegiatan */
             color: white;
         }
         .event-siang {
@@ -66,7 +66,7 @@
                 <h2 class="text-lg font-bold mb-2">Keterangan</h2>
                 <div class="space-y-2">
                     <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi sudah penuh</div>
-                    <div class="bg-blue-400 text-white px-4 py-2 rounded-md">Sesi 1</div>
+                    <div class="bg-yellow-500 text-white px-4 py-2 rounded-md">Sesi 1</div>
                     <div class="bg-green-400 text-white px-4 py-2 rounded-md">Sesi 2</div>
                 </div>
             </div>
