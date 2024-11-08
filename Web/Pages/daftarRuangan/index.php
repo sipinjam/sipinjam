@@ -186,69 +186,75 @@
 
                     const fasilitasContainer = document.getElementById("fasilitasContainer");
                     fasilitasContainer.innerHTML = '';
+
+                    // Pastikan data fasilitas ada dan dipisahkan dengan benar
                     if (data.nama_fasilitas) {
-                        data.nama_fasilitas.split(', ').forEach(fasilitas => {
-                            const div = document.createElement("div");
-                            div.classList.add("text-gray-700");
-                            div.innerText = fasilitas;
-                            fasilitasContainer.appendChild(div);
+                        const fasilitasList = data.nama_fasilitas.split(', ').map(fasilitas => fasilitas.trim());
+
+                        fasilitasList.forEach(fasilitas => {
+                            let icon;
+                            switch (fasilitas.toLowerCase()) {
+                                case 'ac': icon = 'fas fa-snowflake'; break;
+                                case 'wifi': icon = 'fas fa-wifi'; break;
+                                default: icon = 'fas fa-check'; break;
+                            }
+                            fasilitasContainer.innerHTML += `
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="${icon} text-gray-600"></i>
+                                    <span class="text-gray-600">${fasilitas}</span>
+                                </div>`;
                         });
+                    } else {
+                        fasilitasContainer.innerHTML = '<div class="text-gray-600">Fasilitas tidak tersedia</div>';
                     }
 
-                    images = data.foto_ruangan || []; // Mengatur daftar gambar
-                    currentIndex = 0; // Reset indeks gambar saat membuka modal
-                    updateMainImage(); // Memperbarui gambar utama
-                    updateThumbnails(); // Memperbarui thumbnail gambar
+                    // Gambar ruangan
+                    images = data.foto_ruangan || [];
+                    currentIndex = 0;
+                    loadThumbnails();
+                    updateMainImage();
                 } else {
-                    console.error("Failed to load room data:", result.message);
+                    console.error("Failed to retrieve room data:", result.message);
                 }
             } catch (error) {
                 console.error("Error loading room data:", error);
             }
         }
 
-        // Update gambar utama berdasarkan indeks
-        function updateMainImage() {
-            const mainImage = document.getElementById("mainImage");
-            const imageUrl = images[currentIndex] || "../../Sources/Img/default.jpg";
-            mainImage.src = imageUrl;
-        }
-
-        // Update thumbnail gambar
-        function updateThumbnails() {
+        function loadThumbnails() {
             const thumbnailContainer = document.getElementById("thumbnailContainer");
             thumbnailContainer.innerHTML = '';
-            images.forEach((imageUrl, index) => {
-                const imgElement = document.createElement("img");
-                imgElement.src = imageUrl;
-                imgElement.alt = `Thumbnail ${index + 1}`;
-                imgElement.classList.add("w-20", "h-20", "rounded-lg", "cursor-pointer", "object-cover");
-                imgElement.onclick = () => {
-                    currentIndex = index;
-                    updateMainImage();
-                };
-                thumbnailContainer.appendChild(imgElement);
+            images.forEach((image, index) => {
+                thumbnailContainer.innerHTML += `
+                    <img src="${image}" class="w-20 h-20 object-cover rounded-lg cursor-pointer" onclick="setMainImage(${index})">
+                `;
             });
         }
 
-        // Fungsi untuk gambar sebelumnya
-        function prevImage() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateMainImage();
+        function setMainImage(index) {
+            currentIndex = index;
+            updateMainImage();
+        }
+
+        function updateMainImage() {
+            if (images.length > 0) {
+                document.getElementById("mainImage").src = images[currentIndex];
             }
         }
 
-        // Fungsi untuk gambar berikutnya
         function nextImage() {
-            if (currentIndex < images.length - 1) {
-                currentIndex++;
-                updateMainImage();
-            }
+            currentIndex = (currentIndex + 1) % images.length;
+            updateMainImage();
         }
 
-        // Inisialisasi daftar ruangan saat halaman dimuat
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateMainImage();
+        }
+
+        // Load data saat halaman dimuat
         fetchRooms();
     </script>
+
 </body>
 </html>
