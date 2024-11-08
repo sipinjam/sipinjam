@@ -18,15 +18,15 @@
         <!-- End Sidebar -->
 
         <!-- Profile Card -->
-        <div class="container p-6 ml-64 mt-8 max-w-9xl">
+        <div class="container p-6 ml-64 max-w-9xl">
             <!-- Header -->
-            <div class="bg-white rounded-lg mt-10">
-                <div class="bg-indigo-500 rounded-t-lg p-8 h-48 flex">
+            <div class="bg-white rounded-lg mt-10 py-5">
+                <div class="bg-indigo-500 rounded-t-lg pl-8 pt-10 h-40 flex">
                     <h1 class="text-white font-bold text-3xl">PROFILE</h1>
                 </div>
 
                 <!-- Profile Section -->
-                <div class="flex items-center m-6 space-x-6 border-b">
+                <div class="flex items-center mx-10 p-6 space-x-6 border-b">
                     <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center -mt-5 ml-5">
                         <!-- Avatar Icon -->
                         <svg class= "w-12 h-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -45,7 +45,7 @@
                 </div>
 
                 <!-- Options -->
-                <div class="divide-y divide-gray-300 m-10">
+                <div class="divide-y divide-gray-300 mx-10">
                     <div class="flex items-center justify-between p-6 cursor-pointer rounded-lg hover:bg-gray-100" onclick="window.location.href='../editprofile/index.php'" >
                         <span class="flex gap-5 items-center text-lg">
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -60,7 +60,7 @@
                                 <g id="icons" transform="translate(56.000000, 160.000000)">
                                     <path d="M86.4570767,2175.58276 L99.6296259,2161.94876 L101.053522,2163.42214 L87.8809728,2177.05714 L86.4570767,2175.58276 Z M99.8259906,2159 L84,2175.58276 L84,2179 L87.8809728,2179 L104,2162.91969 L99.8259906,2159 Z" id="pen-[#1320]">
 
-                    </path>
+                                    </path>
                                 </g>
                             </g>
                         </g>
@@ -90,7 +90,7 @@
                 <p class="text-base font-bold" id="namaLengkap">FAQ</p>
             </span>
             <span class="text-gray-500">></span>
-        </div>
+            </div>
 
                 </div>
             </div>
