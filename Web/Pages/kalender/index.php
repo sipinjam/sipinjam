@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../Public/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqSfb8WXG4z9Y6rf8eKFL1RvH6Zj5qJbm7dbpFW1ld9YPC6szgZiY" crossorigin="anonymous">
+
     <title>Sipinjam</title>
     <style>
         .event-pagi {
@@ -70,26 +73,42 @@
 
             <div class="w-full h-32">
                 <button
-                    class="mt-5 tracking-wide font-semibold bg-yellow-400 text-white-500 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    class="mt-5 tracking-wide font-semibold bg-blue-800 text-white w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                     onclick="window.location.href='../peminjaman/index.php'">
-                    <span class="ml-">BOOKING</span>
+                    <span class="ml-">PINJAM</span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300">
+<div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300">
     <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 relative transform transition-transform duration-300 scale-95">
-            <h2 id="event-title" class="text-2xl font-bold mb-3"></h2>
-            <div class="border-t border-gray-400 mt-2 pt-3">
-                <p id="event-details" class="text-black leading-relaxed whitespace-pre-line text-left">Event details go here.</p>
-                <br>
-                <button id="close-modal" class="inline-flex w-full justify-center rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 sm:ml-3 sm:w-auto">Close</button>
-            </div>
-            
+        
+        <!-- Close Icon -->
+        <button id="close-modal" class="absolute top-4 right-4 text-gray-700 hover:text-red-500" style="font-size:24px; z-index:10;">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- Icon and Title -->
+        <div class="flex items-center mb-3">
+            <i class="fa fa-calendar-check-o text-black mr-2" style="font-size:24px;"></i>
+            <h2 id="event-title" class="text-2xl font-bold">Kegiatan: Techcomfest</h2>
+        </div>
+        
+        <!-- Event Details -->
+        <div class="border-t border-gray-400 mt-2 pt-3">
+            <p id="event-details" class="text-black leading-relaxed whitespace-pre-line text-left">Event details go here.</p>
+        </div>
     </div>
-    </div>
+</div>
+
+<script>
+    // JavaScript to close the modal
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('event-modal').classList.add('hidden');
+    });
+</script>
 
     <script>
         let currentDate = new Date();
