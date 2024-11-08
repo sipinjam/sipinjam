@@ -45,99 +45,141 @@
 </body>
 
 <script>
+// GET GEDUNG
+async function getGedung() {
+    try {
+        const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/gedung');
+        const result = await response.json();
 
-    // GET GEDUNG
-    async function getGedung() {
-        try {
-            const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/gedung');
-            const result = await response.json();
+        if (result.status === 'success') {
+            const gedungContainer = document.getElementById('gedungContainer');
 
-            if (result.status === 'success') {
-                const gedungContainer = document.getElementById('gedungContainer');
+            result.data.forEach(gedung => {
+                // Create card container
+                const gedungItem = document.createElement('div');
+                gedungItem.className =
+                    "w-[300px] h-[230px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0";
 
-                result.data.forEach(gedung => {
-                    // Create card container
-                    const gedungItem = document.createElement('div');
-                    gedungItem.className = "w-[300px] h-[230px] rounded-[20px] shadow dark:bg-gray-200 dark:border-gray-700 flex-shrink-0";
+                // Link container for image
+                const link = document.createElement('a');
+                link.href =
+                    `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
 
-                    // Link container for image
-                    const link = document.createElement('a');
-                    link.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
+                // Image
+                const img = document.createElement('img');
+                img.className = "gedung w-full h-[200px] rounded-t-[20px]";
+                img.src = gedung.foto_gedung ? gedung.foto_gedung : "../../Sources/Img/default.jpg";
+                img.alt = gedung.nama_gedung;
+                link.appendChild(img);
 
-                    // Image
-                    const img = document.createElement('img');
-                    img.className = "gedung w-full h-[200px] rounded-t-[20px]";
-                    img.src = gedung.foto_gedung ? gedung.foto_gedung : "../../Sources/Img/default.jpg";
-                    img.alt = gedung.nama_gedung;
-                    link.appendChild(img);
+                // Append image link to card container
+                gedungItem.appendChild(link);
 
-                    // Append image link to card container
-                    gedungItem.appendChild(link);
+                // Name container
+                const contentDiv = document.createElement('div');
+                contentDiv.className = "p-2";
 
-                    // Name container
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = "p-2";
+                const nameLink = document.createElement('a');
+                nameLink.href =
+                    `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
 
-                    const nameLink = document.createElement('a');
-                    nameLink.href = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_gedung=${gedung.id_gedung}`; // Mengarahkan ke daftarRuangan dengan parameter id_gedung
+                const namaGedung = document.createElement('span');
+                namaGedung.className =
+                    "mb-2 text-base font-medium text-center block tracking-tight text-gray-800";
+                namaGedung.textContent = gedung.nama_gedung;
 
-                    const namaGedung = document.createElement('span');
-                    namaGedung.className = "mb-2 text-base font-medium text-center block tracking-tight text-gray-800";
-                    namaGedung.textContent = gedung.nama_gedung;
+                // Append name and name link to content div
+                nameLink.appendChild(namaGedung);
+                contentDiv.appendChild(nameLink);
+                gedungItem.appendChild(contentDiv);
 
-                    // Append name and name link to content div
-                    nameLink.appendChild(namaGedung);
-                    contentDiv.appendChild(nameLink);
-                    gedungItem.appendChild(contentDiv);
-
-                    // Append card to container
-                    gedungContainer.appendChild(gedungItem);
-                });
-            } else {
-                console.error('Gagal mengambil data gedung:', result.message);
-            }
-        } catch (error) {
-            console.error('Terjadi kesalahan saat mengambil data:', error);
+                // Append card to container
+                gedungContainer.appendChild(gedungItem);
+            });
+        } else {
+            console.error('Gagal mengambil data gedung:', result.message);
         }
+    } catch (error) {
+        console.error('Terjadi kesalahan saat mengambil data:', error);
+    }
+}
+
+function getCookies(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+async function getPeminjaman() {
+    const loggedInUserName = getCookies('nama_peminjam'); // Ambil nama pengguna dari cookie
+
+    if (!loggedInUserName) {
+        console.error("Nama peminjam tidak ditemukan dalam cookie.");
+        return;
     }
 
+    try {
+        const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman/');
+        const result = await response.json();
 
-    // GET PEMINJAMAN
-    async function getPeminjaman() {
-            try {
-                const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman');
-                const result = await response.json();
+        if (result.status === 'success') {
+            const peminjamanTable = document.getElementById('peminjamanTable');
+            peminjamanTable.innerHTML = '';
 
-                if (result.status === 'success') {
-                    const peminjamanTable = document.getElementById('peminjamanTable');
-                    peminjamanTable.innerHTML = ''; // Kosongkan tabel terlebih dahulu
+            if (result.data.length === 0) {
+                peminjamanTable.innerHTML =
+                    '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
+            } else {
+                const filteredData = result.data
+                    .filter(item => item.nama_peminjam === loggedInUserName && item.nama_status.toLowerCase() ===
+                        'disetujui')
+                    .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
 
-                    result.data.forEach(item => {
-                        if (item.nama_status.toLowerCase() === 'disetujui') { // Filter data yang disetujui
-                            const row = document.createElement('tr');
-                            row.className = 'bg-white hover:bg-gray-100';
+                filteredData.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white hover:bg-gray-100';
 
-                            row.innerHTML = `
-                                <td class="border px-4 py-2">${item.nama_ruangan}</td>
-                                <td class="border px-4 py-2">${item.nama_kegiatan}</td>
-                                <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
-                                <td class="border px-4 py-2 text-green-600 font-bold">${item.nama_status}</td>
-                            `;
-                            peminjamanTable.appendChild(row);
-                        }
-                    });
-                } else {
-                    console.error('Gagal mengambil data peminjaman:', result.message);
+                    let statusColor;
+                    switch (item.nama_status.toLowerCase()) {
+                        case 'proses':
+                            statusColor = 'text-yellow-600';
+                            break;
+                        case 'disetujui':
+                            statusColor = 'text-green-600';
+                            break;
+                        case 'ditolak':
+                            statusColor = 'text-red-600';
+                            break;
+                        default:
+                            statusColor = 'text-gray-600';
+                    }
+
+                    row.innerHTML = `
+                        <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                        <td class="border px-4 py-2">${item.nama_kegiatan}</td>
+                        <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
+                        <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
+                    `;
+                    peminjamanTable.appendChild(row);
+                });
+
+                if (filteredData.length === 0) {
+                    peminjamanTable.innerHTML =
+                        '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
                 }
-            } catch (error) {
-                console.error('Terjadi kesalahan saat mengambil data:', error);
             }
+        } else {
+            console.error('Gagal mengambil data peminjaman:', result.message);
         }
-        // Panggil fungsi saat halaman dimuat
-        window.onload = function() {
-        getGedung();
-        getPeminjaman();
-        }
+    } catch (error) {
+        console.error('Terjadi kesalahan saat mengambil data:', error);
+    }
+}
+// Panggil fungsi saat halaman dimuat
+window.onload = function() {
+    getGedung();
+    getPeminjaman();
+}
 </script>
 
 </html>
