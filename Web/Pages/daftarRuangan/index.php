@@ -6,7 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../../Public/theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <title>Daftar Ruangan</title>
+  <title>Sipinjam - Daftar Ruangan</title>
 </head>
 <body class="bg-gray-100">
 
@@ -19,7 +19,7 @@
     <!-- End Header -->
 
     <!-- Room List Container -->
-    <div id="room-list" class="container mx-52 my-24 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div id="room-list" class="container ml-44 my-24 p-5 grid grid-cols-1 pl-24 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Room cards will be generated here -->
     </div>
 
@@ -82,7 +82,9 @@
         const apiUrl = "http://localhost/sipinjamfix/sipinjam/api/ruangan";
         let images = [];
         let currentIndex = 0;
+        let previousUrl = window.location.href; // Menyimpan URL saat ini sebelum membuka modal
 
+        // Fetch ruangan untuk menampilkan daftar ruangan
         async function fetchRooms() {
             try {
                 const response = await fetch(apiUrl);
@@ -109,21 +111,22 @@
 
                         const roomCard = `
                             <div class="flex max-w-[700px] h-[235px] bg-white border border-gray-200 rounded-lg shadow">
-                                <a href="#">
+                                <a href="#" onclick="openModalAndRedirect(${id_ruangan})">
                                     <img class="rounded-l-lg w-[180px] h-[235px] object-cover" src="${imageUrl}" alt="${nama_ruangan}" />
                                 </a>
                                 <div class="p-5 flex-1">
                                     <h5 class="mb-2 text-xl font-bold tracking-tight">${nama_ruangan}</h5>
                                     <p class="text-gray-600 mb-1">${nama_gedung}</p>
-                                    <p class="text-gray-700 mb-3">${deskripsi_ruangan || "Deskripsi tidak tersedia"}</p>
+                                    <p class="text-gray-700 mb-3">${deskripsi_ruangan}</p>
                                     <p class="text-gray-700 mb-3">Kapasitas: ${kapasitas} orang</p>
                                     <div class="flex items-center space-x-2 mb-3">
                                         ${features.map(feature => {
                                             let icon;
                                             switch (feature) {
-                                                case "Wi-Fi": icon = "fa-wifi"; break;
-                                                case "AC": icon = "fa-snowflake"; break;
-                                                case "LCD": icon = "fa-tv"; break;
+                                                case "wifi": icon = "fa-wifi"; break;
+                                                case "ac": icon = "fa-snowflake"; break;
+                                                case "proyektor": icon = "fa-tv"; break;
+                                                case "seat": icon = "fa-chair"; break;
                                                 default: icon = "fa-check";
                                             }
                                             return `
@@ -133,7 +136,7 @@
                                                 </div>`;
                                         }).join("")}
                                     </div>
-                                    <button onclick="openModal(${id_ruangan})" class="bg-blue-600 text-white py-1 px-2 rounded-lg hover:bg-blue-700">
+                                    <button onclick="openModalAndRedirect(${id_ruangan})" class="bg-blue-600 text-white py-1 px-2 rounded-lg hover:bg-blue-700">
                                         Pinjam
                                     </button>
                                 </div>
@@ -150,44 +153,24 @@
             }
         }
 
-        // Function to close the modal
+        // Fungsi untuk membuka modal dan mengganti URL tanpa memuat ulang halaman
+        async function openModalAndRedirect(id_ruangan) {
+            previousUrl = window.location.href; // Simpan URL sebelum diubah
+            await openModal(id_ruangan); // Buka modal dengan data ruangan
+            const newUrl = `http://localhost/sipinjamfix/sipinjam/web/pages/daftarRuangan/index.php?id_ruangan=${id_ruangan}`;
+            window.history.pushState({ path: newUrl }, '', newUrl); // Mengganti URL tanpa reload
+        }
+
+        // Fungsi untuk membuka modal dan memuat data ruangan
+        async function openModal(id_ruangan) {
+            document.getElementById("modal").classList.remove("hidden"); // Menampilkan modal
+            await loadRoomData(id_ruangan); // Memuat data ruangan ke dalam modal
+        }
+
+        // Fungsi untuk menutup modal dan mengembalikan URL ke sebelumnya
         function closeModal() {
-            document.getElementById("modal").classList.add("hidden");
-        }
-
-        // Function to open the modal and load room data based on the selected id_ruangan
-        function openModal(id_ruangan) {
-            loadRoomData(id_ruangan);  // Pass the id_ruangan to loadRoomData
-            document.getElementById("modal").classList.remove("hidden");
-        }
-
-        function setImage(index) {
-            currentIndex = index;
-            updateMainImage();
-            updateThumbnailHighlight();
-        }
-
-        function nextImage() {
-            currentIndex = (currentIndex + 1) % images.length;
-            updateMainImage();
-            updateThumbnailHighlight();
-        }
-
-        function prevImage() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            updateMainImage();
-            updateThumbnailHighlight();
-        }
-
-        function updateMainImage() {
-            document.getElementById("mainImage").src = images[currentIndex];
-        }
-
-        function updateThumbnailHighlight() {
-            document.querySelectorAll('.thumbnail').forEach(thumbnail => {
-                thumbnail.classList.remove('active-thumbnail');
-            });
-            document.getElementById(`thumbnail-${currentIndex}`).classList.add('active-thumbnail');
+            document.getElementById("modal").classList.add("hidden"); // Menyembunyikan modal
+            window.history.replaceState({ path: previousUrl }, '', previousUrl); // Mengembalikan URL ke sebelumnya
         }
 
         async function loadRoomData(id_ruangan) {
@@ -204,45 +187,78 @@
 
                     const fasilitasContainer = document.getElementById("fasilitasContainer");
                     fasilitasContainer.innerHTML = '';
-                    data.nama_fasilitas.split(', ').forEach(fasilitas => {
-                        let icon;
-                        switch (fasilitas.toLowerCase()) {
-                            case 'ac': icon = 'fas fa-snowflake'; break;
-                            case 'proyektor': icon = 'fas fa-tv'; break;
-                            default: icon = 'fas fa-check';
-                        }
-                        fasilitasContainer.innerHTML += `<div class="flex items-center space-x-2 mt-2 text-gray-700">
-                                                            <i class="${icon}"></i>
-                                                            <span>${fasilitas}</span>
-                                                        </div>`;
-                    });
 
-                    images = data.foto_ruangan.length > 0 ? data.foto_ruangan : ["../../Sources/Img/default.jpg"];
+                    // Pastikan data fasilitas ada dan dipisahkan dengan benar
+                    if (data.nama_fasilitas) {
+                        const fasilitasList = data.nama_fasilitas.split(', ').map(fasilitas => fasilitas.trim());
+
+                        fasilitasList.forEach(fasilitas => {
+                            let icon;
+                            switch (fasilitas.toLowerCase()) {
+                                case 'ac': icon = 'fas fa-snowflake'; break;
+                                case 'wifi': icon = 'fas fa-wifi'; break;
+                                case 'proyektor' : icon = 'fas fa-tv'; break;
+                                case 'seat' : icon = 'fas fa-chair'; break;
+
+                                default: icon = 'fas fa-check'; break;
+                            }
+                            fasilitasContainer.innerHTML += `
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="${icon} text-gray-600"></i>
+                                    <span class="text-gray-600">${fasilitas}</span>
+                                </div>`;
+                        });
+                    } else {
+                        fasilitasContainer.innerHTML = '<div class="text-gray-600">Fasilitas tidak tersedia</div>';
+                    }
+
+                    // Gambar ruangan
+                    images = data.foto_ruangan || [];
                     currentIndex = 0;
+                    loadThumbnails();
                     updateMainImage();
-
-                    const thumbnailContainer = document.getElementById("thumbnailContainer");
-                    thumbnailContainer.innerHTML = "";
-                    images.forEach((image, index) => {
-                        const img = document.createElement("img");
-                        img.src = image;
-                        img.alt = "Thumbnail";
-                        img.classList = "thumbnail w-20 h-20 object-cover rounded-md cursor-pointer";
-                        img.id = `thumbnail-${index}`;
-                        img.onclick = () => setImage(index);
-                        thumbnailContainer.appendChild(img);
-                    });
-                    updateThumbnailHighlight();
                 } else {
-                    console.error("Failed to load room data:", result.message);
+                    console.error("Failed to retrieve room data:", result.message);
                 }
             } catch (error) {
                 console.error("Error loading room data:", error);
             }
         }
 
-        // Fetch room data when the page loads
-        window.onload = fetchRooms;
+        function loadThumbnails() {
+            const thumbnailContainer = document.getElementById("thumbnailContainer");
+            thumbnailContainer.innerHTML = '';
+            images.forEach((image, index) => {
+                thumbnailContainer.innerHTML += `
+                    <img src="${image}" class="w-20 h-20 object-cover rounded-lg cursor-pointer" onclick="setMainImage(${index})">
+                `;
+            });
+        }
+
+        function setMainImage(index) {
+            currentIndex = index;
+            updateMainImage();
+        }
+
+        function updateMainImage() {
+            if (images.length > 0) {
+                document.getElementById("mainImage").src = images[currentIndex];
+            }
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateMainImage();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateMainImage();
+        }
+
+        // Load data saat halaman dimuat
+        fetchRooms();
     </script>
+
 </body>
 </html>

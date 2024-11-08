@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../Public/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqSfb8WXG4z9Y6rf8eKFL1RvH6Zj5qJbm7dbpFW1ld9YPC6szgZiY" crossorigin="anonymous">
+
     <title>Sipinjam</title>
     <style>
         .event-pagi {
-            background-color: rgb(96 165 250); /* Warna lingkaran untuk menandai kegiatan */
+            background-color: rgb(241 207 77); /* Warna lingkaran untuk menandai kegiatan */
             color: white;
         }
         .event-siang {
@@ -63,33 +66,73 @@
                 <h2 class="text-lg font-bold mb-2">Keterangan</h2>
                 <div class="space-y-2">
                     <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi sudah penuh</div>
-                    <div class="bg-blue-400 text-white px-4 py-2 rounded-md">Sesi 1</div>
+                    <div class="bg-yellow-400 text-white px-4 py-2 rounded-md">Sesi 1</div>
                     <div class="bg-green-400 text-white px-4 py-2 rounded-md">Sesi 2</div>
                 </div>
             </div>
 
             <div class="w-full h-32">
                 <button
-                    class="mt-5 tracking-wide font-semibold bg-yellow-400 text-white-500 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    class="mt-5 tracking-wide font-semibold bg-blue-800 text-white w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                     onclick="window.location.href='../peminjaman/index.php'">
-                    <span class="ml-">BOOKING</span>
+                    <span class="ml-">PINJAM</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300">
+<!-- Elemen Kalender atau Tombol untuk Memicu Modal -->
+<button id="open-modal" class="p-2 bg-blue-600 text-white rounded-lg">Buka Modal Kalender</button>
+
+<!-- Modal -->
+<div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300">
     <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 relative transform transition-transform duration-300 scale-95">
-            <h2 id="event-title" class="text-2xl font-bold mb-3"></h2>
-            <div class="border-t border-gray-400 mt-2 pt-3">
-                <p id="event-details" class="text-black leading-relaxed whitespace-pre-line text-left">Event details go here.</p>
-                <br>
-                <button id="close-modal" class="inline-flex w-full justify-center rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 sm:ml-3 sm:w-auto">Close</button>
-            </div>
-            
+        
+        <!-- Close Icon (SVG) -->
+        <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        
+        <!-- Icon and Title -->
+        <div class="flex items-center mb-3">
+            <i class="fa fa-calendar-check-o text-black mr-2" style="font-size:24px;"></i>
+            <h2 id="event-title" class="text-2xl font-bold">Event Title</h2>
+        </div>
+        
+        <!-- Event Details -->
+        <div class="border-t border-gray-400 mt-2 pt-3">
+            <p id="event-details" class="text-black leading-relaxed whitespace-pre-line text-left">Event details go here.</p>
+        </div>
     </div>
-    </div>
+</div>
+
+<script>
+    // Ambil elemen tombol untuk membuka modal dan elemen modal itu sendiri
+    const openModalButton = document.getElementById('open-modal');
+    const eventModal = document.getElementById('event-modal');
+    const closeModalButton = document.getElementById('close-modal');
+
+    // Tambahkan event listener untuk menampilkan modal saat tombol diklik
+    openModalButton.addEventListener('click', function() {
+        eventModal.classList.remove('hidden');
+    });
+
+    // Event listener untuk menutup modal saat tombol "X" diklik
+    closeModalButton.addEventListener('click', function() {
+        eventModal.classList.add('hidden');
+    });
+
+    // Tutup modal jika pengguna mengklik di luar konten modal
+    window.addEventListener('click', function(event) {
+        if (event.target === eventModal) {
+            eventModal.classList.add('hidden');
+        }
+    });
+</script>
+
+
 
     <script>
         let currentDate = new Date();

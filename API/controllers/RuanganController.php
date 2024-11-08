@@ -63,7 +63,7 @@ class RuangansController
                 // Tambahkan setiap hasil ruangan ke dalam array data
                 $data[] = $row;
             }
-            response('success', 'List of Ruangans Retrieved Successfully', $data);
+            response('success', 'List of Ruangans Retrieved Successfully', $data, 200);
         } else {
             response('error', 'Failed to Retrieve Ruangans', null, [
                 'code' => 500,
