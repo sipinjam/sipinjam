@@ -6,7 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../../Public/theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <title>Daftar Ruangan</title>
+  <title>Sipinjam - Daftar Ruangan</title>
 </head>
 <body class="bg-gray-100">
 
@@ -117,15 +117,16 @@
                                 <div class="p-5 flex-1">
                                     <h5 class="mb-2 text-xl font-bold tracking-tight">${nama_ruangan}</h5>
                                     <p class="text-gray-600 mb-1">${nama_gedung}</p>
-                                    <p class="text-gray-700 mb-3">${deskripsi_ruangan || "Deskripsi tidak tersedia"}</p>
+                                    <p class="text-gray-700 mb-3">${deskripsi_ruangan}</p>
                                     <p class="text-gray-700 mb-3">Kapasitas: ${kapasitas} orang</p>
                                     <div class="flex items-center space-x-2 mb-3">
                                         ${features.map(feature => {
                                             let icon;
                                             switch (feature) {
-                                                case "Wi-Fi": icon = "fa-wifi"; break;
-                                                case "AC": icon = "fa-snowflake"; break;
-                                                case "PROYEKTOR": icon = "fa-tv"; break;
+                                                case "wifi": icon = "fa-wifi"; break;
+                                                case "ac": icon = "fa-snowflake"; break;
+                                                case "proyektor": icon = "fa-tv"; break;
+                                                case "seat": icon = "fa-chair"; break;
                                                 default: icon = "fa-check";
                                             }
                                             return `
