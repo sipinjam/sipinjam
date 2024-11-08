@@ -125,7 +125,7 @@
                                             switch (feature) {
                                                 case "Wi-Fi": icon = "fa-wifi"; break;
                                                 case "AC": icon = "fa-snowflake"; break;
-                                                case "LCD": icon = "fa-tv"; break;
+                                                case "PROYEKTOR": icon = "fa-tv"; break;
                                                 default: icon = "fa-check";
                                             }
                                             return `
@@ -196,6 +196,9 @@
                             switch (fasilitas.toLowerCase()) {
                                 case 'ac': icon = 'fas fa-snowflake'; break;
                                 case 'wifi': icon = 'fas fa-wifi'; break;
+                                case 'proyektor' : icon = 'fas fa-tv'; break;
+                                case 'seat' : icon = 'fas fa-chair'; break;
+
                                 default: icon = 'fas fa-check'; break;
                             }
                             fasilitasContainer.innerHTML += `
