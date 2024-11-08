@@ -66,7 +66,7 @@
                 <h2 class="text-lg font-bold mb-2">Keterangan</h2>
                 <div class="space-y-2">
                     <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi sudah penuh</div>
-                    <div class="bg-yellow-500 text-white px-4 py-2 rounded-md">Sesi 1</div>
+                    <div class="bg-yellow-400 text-white px-4 py-2 rounded-md">Sesi 1</div>
                     <div class="bg-green-400 text-white px-4 py-2 rounded-md">Sesi 2</div>
                 </div>
             </div>
