@@ -17,19 +17,21 @@ class PeminjamModel {
     this.idJenisPeminjam,
   });
 
-  factory PeminjamModel.fromJson(Map<String, dynamic> json) => PeminjamModel(
-        idPeminjam: json["id_peminjam"] != null ? json["id_peminjam"] : null,
-        namaPeminjam: json["nama_peminjam"] ??
-            '', // Pastikan selalu ada nilai default jika null
-        password: json["password"] ??
-            '', // Pastikan selalu ada nilai default jika null
-        namaLengkap: json["nama_lengkap"],
-        email: json["email"] ?? '',
-        noTelpon: json["no_telpon"],
-        idJenisPeminjam: json["id_jenis_peminjam"] != null
-            ? json["id_jenis_peminjam"]
-            : null,
-      );
+  factory PeminjamModel.fromJson(Map<String, dynamic> json) {
+    print(json);
+    return PeminjamModel(
+      idPeminjam: json["id_peminjam"] ?? 0,
+      namaPeminjam: json["nama_peminjam"] ??
+          '', // Pastikan selalu ada nilai default jika null
+      password:
+          json["password"] ?? '', // Pastikan selalu ada nilai default jika null
+      namaLengkap: json["nama_lengkap"],
+      email: json["email"] ?? '',
+      noTelpon: json["no_telpon"],
+      idJenisPeminjam:
+          json["id_jenis_peminjam"] != null ? json["id_jenis_peminjam"] : null,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id_peminjam": idPeminjam,

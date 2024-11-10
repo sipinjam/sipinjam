@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:sipit_app/config/app_constant.dart';
+import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:http/http.dart' as http;
 
 class PeminjamDatasource {
-  Uri loginUrl = Uri.parse('${AppConstants.baseUrl}/authentications.php');
+  Uri loginUrl = Uri.parse('${AppConstants.baseUrl}/authentications');
 
   Future<PeminjamModel> login(
     String namaPeminjam,
@@ -23,13 +24,38 @@ class PeminjamDatasource {
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-      if (jsonResponse.containsKey("peminjam")) {
-        return PeminjamModel.fromJson(jsonResponse["peminjam"]);
+      // Ambil data dari objek `data`
+      final data = jsonResponse['data'];
+
+      // Cek apakah `data` tidak null dan berisi `id_peminjam`
+      if (data != null &&
+          data.containsKey('id_peminjam') &&
+          data['id_peminjam'] != null) {
+        final int idPeminjam = data['id_peminjam'];
+
+        // Panggil fetchPeminjam menggunakan `id_peminjam`
+        return await fetchPeminjam(idPeminjam);
       } else {
-        return PeminjamModel.fromJson(jsonResponse);
+        throw Exception("id_peminjam tidak ditemukan dalam respons");
       }
     } else {
       throw Exception("Login Failed");
+    }
+  }
+
+  Future<PeminjamModel> fetchPeminjam(int idPeminjam) async {
+    // Gunakan `id_peminjam` untuk mengambil data pengguna tertentu
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/users?id=$idPeminjam'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      PeminjamModel peminjam = PeminjamModel.fromJson(jsonResponse);
+      await AppSession.savePeminjam(peminjam);
+      return peminjam;
+    } else {
+      throw Exception("Failed to fetch profile data");
     }
   }
 }

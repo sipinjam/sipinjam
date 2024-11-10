@@ -2,6 +2,7 @@ import 'package:d_button/d_button.dart';
 import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
@@ -19,6 +20,9 @@ class ProfilePage extends StatelessWidget {
         .then((yes) {
       if (yes ?? false) {
         AppSession.removePeminjam();
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setBool('is_logged_in', false);
+        });
         Nav.replace(context, const LoginPage());
       }
     });
@@ -26,11 +30,22 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<PeminjamModel?>(
         future: AppSession.getPeminjam(),
         builder: (context, snapshot) {
-          if (snapshot.data == null) return DView.loadingCircle();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return DView.loadingCircle();
+          }
+
+          if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(child: Text("No profile data available."));
+          }
+
           PeminjamModel peminjam = snapshot.data!;
+
+          print("Nama Peminjam: ${peminjam.namaPeminjam}");
+          print("Email: ${peminjam.email}");
+
           return Scaffold(
             backgroundColor: Colors.grey[200],
             body: Column(

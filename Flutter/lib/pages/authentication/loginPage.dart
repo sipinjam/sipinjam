@@ -1,6 +1,7 @@
 import 'package:d_button/d_button.dart';
 import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/datasources/peminjam_datasource.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
@@ -54,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
         // Simpan status login
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('is_logged_in', true);
+
+        await AppSession.savePeminjam(peminjamData);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Login successful")),
