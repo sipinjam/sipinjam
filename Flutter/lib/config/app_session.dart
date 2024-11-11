@@ -10,20 +10,24 @@ class AppSession {
     await pref.setString('peminjamData', peminjamString);
   }
 
+  static Future<bool> removePeminjam() async {
+    final pref = await SharedPreferences.getInstance();
+    bool success = await pref.remove('peminjamData');
+    return success;
+  }
+
   static Future<PeminjamModel?> getPeminjam() async {
     final pref = await SharedPreferences.getInstance();
     String? peminjamString = pref.getString('peminjamData');
+    print("Data diambil dari SharedPreferences: $peminjamString");
+
     if (peminjamString == null) {
       return null;
     }
 
     var peminjamMap = jsonDecode(peminjamString);
-    return PeminjamModel.fromJson(peminjamMap);
-  }
+    print("Decoded peminjamMap: $peminjamMap");
 
-  static Future<bool> removePeminjam() async {
-    final pref = await SharedPreferences.getInstance();
-    bool success = await pref.remove('peminjamData');
-    return success;
+    return PeminjamModel.fromJson(peminjamMap);
   }
 }

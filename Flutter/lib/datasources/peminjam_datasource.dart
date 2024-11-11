@@ -44,16 +44,23 @@ class PeminjamDatasource {
   }
 
   Future<PeminjamModel> fetchPeminjam(int idPeminjam) async {
-    // Gunakan `id_peminjam` untuk mengambil data pengguna tertentu
     final response = await http.get(
       Uri.parse('${AppConstants.baseUrl}/users?id=$idPeminjam'),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      PeminjamModel peminjam = PeminjamModel.fromJson(jsonResponse);
-      await AppSession.savePeminjam(peminjam);
-      return peminjam;
+      print("fetchPeminjam jsonResponse: $jsonResponse");
+
+      if (jsonResponse['data'] != null) {
+        final peminjam = PeminjamModel.fromJson(jsonResponse['data']);
+        print("Peminjam yang akan disimpan: ${peminjam.toJson()}");
+
+        await AppSession.savePeminjam(peminjam); // Pastikan ini dijalankan
+        return peminjam;
+      } else {
+        throw Exception("Data peminjam tidak ditemukan dalam respons");
+      }
     } else {
       throw Exception("Failed to fetch profile data");
     }

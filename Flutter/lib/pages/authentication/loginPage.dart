@@ -13,7 +13,6 @@ void _checkLoginStatus(BuildContext context) async {
   final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
 
   if (isLoggedIn) {
-    // Jika sudah login, langsung ke halaman HomePage
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const Dashboardpage()),
@@ -56,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('is_logged_in', true);
 
+        // Simpan data peminjam ke SharedPreferences
         await AppSession.savePeminjam(peminjamData);
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -73,6 +73,18 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(content: Text("Username atau Password tidak cocok")),
       );
       print(e);
+    }
+  }
+
+  // Fungsi untuk memuat data profil dari SharedPreferences
+  void loadProfileData() async {
+    final peminjam = await AppSession.getPeminjam();
+    if (peminjam != null) {
+      setState(() {
+        _peminjamModel = peminjam;
+      });
+    } else {
+      print("Data peminjam tidak ditemukan di profil.");
     }
   }
 
@@ -152,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                 input == '' ? "Don't leave this empty" : null,
                             maxLine: 1,
                             hint: 'nama_peminjam',
-                            label: 'Nama Peminjam', // Label yang sesuai
+                            label: 'Nama Peminjam',
                             radius: BorderRadius.circular(10),
                           ),
                         ),
