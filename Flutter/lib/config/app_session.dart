@@ -19,15 +19,11 @@ class AppSession {
   static Future<PeminjamModel?> getPeminjam() async {
     final pref = await SharedPreferences.getInstance();
     String? peminjamString = pref.getString('peminjamData');
-    print("Data diambil dari SharedPreferences: $peminjamString");
-
     if (peminjamString == null) {
       return null;
     }
 
     var peminjamMap = jsonDecode(peminjamString);
-    print("Decoded peminjamMap: $peminjamMap");
-
     return PeminjamModel.fromJson(peminjamMap);
   }
 }

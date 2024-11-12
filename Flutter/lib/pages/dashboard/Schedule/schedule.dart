@@ -1,22 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class SchedulePage extends StatelessWidget {
+class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
+
+  @override
+  State<SchedulePage> createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  DateTime _focusedDay = DateTime.now();
+  Set<DateTime> _markedDates = {};
+  final TextEditingController _searchController = TextEditingController();
+  final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
+
+  Future<void> fetchAndSetMarkedDates(String roomName) async {
+    try {
+      final dates = await _peminjamanDatasource.fetchMarkedDates(roomName);
+      setState(() {
+        _markedDates = dates;
+      });
+      print(_markedDates);
+    } catch (e) {
+      print('Error fetching marked dates: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Schedule',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Schedule',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -28,20 +58,70 @@ class SchedulePage extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
+                      controller: _searchController,
                       decoration: InputDecoration(
                         hintText: 'Cari ruangan',
                         border: InputBorder.none,
-                        icon: Icon(Icons.search, color: Colors.grey.shade600),
+                        prefixIcon:
+                            Icon(Icons.search, color: Colors.grey.shade600),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search, color: Colors.blue),
+                          onPressed: () async {
+                            final roomName = _searchController.text;
+                            final dates = await _peminjamanDatasource
+                                .fetchMarkedDates(roomName);
+                            setState(() {
+                              _markedDates = dates
+                                  .map((date) =>
+                                      DateTime(date.year, date.month, date.day))
+                                  .toSet();
+                            });
+                          },
+                        ),
                       ),
+                      onSubmitted: (value) async {
+                        final dates =
+                            await _peminjamanDatasource.fetchMarkedDates(value);
+                        setState(() {
+                          _markedDates = dates
+                              .map((date) =>
+                                  DateTime(date.year, date.month, date.day))
+                              .toSet();
+                        });
+                      },
                     ),
                     TableCalendar(
                       headerStyle: const HeaderStyle(
                         formatButtonVisible: false,
                         titleCentered: true,
                       ),
-                      focusedDay: DateTime.now(),
+                      focusedDay: _focusedDay,
                       firstDay: DateTime.utc(1978),
                       lastDay: DateTime.utc(9999),
+                      calendarBuilders: CalendarBuilders(
+                          defaultBuilder: (context, day, focusedDay) {
+                        if (_markedDates.contains(day)) {
+                          return Container(
+                            margin: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.redAccent,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${day.day}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+                        }
+                        return null;
+                      }),
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _focusedDay = focusedDay;
+                        });
+                      },
                     ),
                   ],
                 ),

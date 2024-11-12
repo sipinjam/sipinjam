@@ -18,7 +18,6 @@ class PeminjamModel {
   });
 
   factory PeminjamModel.fromJson(Map<String, dynamic> json) {
-    print(json);
     return PeminjamModel(
       idPeminjam: json["id_peminjam"] ?? 0,
       namaPeminjam: json["nama_peminjam"] ??
