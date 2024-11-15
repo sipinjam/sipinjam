@@ -11,25 +11,34 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   DateTime _focusedDay = DateTime.now();
-  Set<DateTime> _markedDates = {};
+  Map<DateTime, Color> _markedDates = {};
   final TextEditingController _searchController = TextEditingController();
   final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
+  bool _isLoading = false;
 
   Future<void> fetchAndSetMarkedDates(String roomName) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final dates = await _peminjamanDatasource.fetchMarkedDates(roomName);
       setState(() {
         _markedDates = dates;
       });
-      print(_markedDates);
     } catch (e) {
       print('Error fetching marked dates: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
+    fetchAndSetMarkedDates(
+        'defaultRoom'); // Inisialisasi dengan ruangan default
   }
 
   @override
@@ -54,7 +63,7 @@ class _SchedulePageState extends State<SchedulePage> {
               elevation: 2,
               margin: const EdgeInsets.only(top: 6),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
                     TextField(
@@ -62,67 +71,58 @@ class _SchedulePageState extends State<SchedulePage> {
                       decoration: InputDecoration(
                         hintText: 'Cari ruangan',
                         border: InputBorder.none,
-                        prefixIcon:
-                            Icon(Icons.search, color: Colors.grey.shade600),
                         suffixIcon: IconButton(
                           icon: Icon(Icons.search, color: Colors.blue),
                           onPressed: () async {
                             final roomName = _searchController.text;
-                            final dates = await _peminjamanDatasource
-                                .fetchMarkedDates(roomName);
-                            setState(() {
-                              _markedDates = dates
-                                  .map((date) =>
-                                      DateTime(date.year, date.month, date.day))
-                                  .toSet();
-                            });
+                            await fetchAndSetMarkedDates(roomName);
                           },
                         ),
                       ),
                       onSubmitted: (value) async {
-                        final dates =
-                            await _peminjamanDatasource.fetchMarkedDates(value);
-                        setState(() {
-                          _markedDates = dates
-                              .map((date) =>
-                                  DateTime(date.year, date.month, date.day))
-                              .toSet();
-                        });
+                        await fetchAndSetMarkedDates(value);
                       },
                     ),
-                    TableCalendar(
-                      headerStyle: const HeaderStyle(
-                        formatButtonVisible: false,
-                        titleCentered: true,
-                      ),
-                      focusedDay: _focusedDay,
-                      firstDay: DateTime.utc(1978),
-                      lastDay: DateTime.utc(9999),
-                      calendarBuilders: CalendarBuilders(
-                          defaultBuilder: (context, day, focusedDay) {
-                        if (_markedDates.contains(day)) {
-                          return Container(
-                            margin: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.redAccent,
-                              shape: BoxShape.circle,
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : TableCalendar(
+                            headerStyle: const HeaderStyle(
+                              formatButtonVisible: false,
+                              titleCentered: true,
                             ),
-                            child: Center(
-                              child: Text(
-                                '${day.day}',
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                            focusedDay: _focusedDay,
+                            firstDay: DateTime.utc(1978),
+                            lastDay: DateTime.utc(9999),
+                            calendarBuilders: CalendarBuilders(
+                              defaultBuilder: (context, day, focusedDay) {
+                                if (_markedDates.containsKey(
+                                    DateTime(day.year, day.month, day.day))) {
+                                  final color = _markedDates[
+                                      DateTime(day.year, day.month, day.day)];
+                                  return Container(
+                                    margin: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: color,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${day.day}',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return null;
+                              },
                             ),
-                          );
-                        }
-                        return null;
-                      }),
-                      onDaySelected: (selectedDay, focusedDay) {
-                        setState(() {
-                          _focusedDay = focusedDay;
-                        });
-                      },
-                    ),
+                            onDaySelected: (selectedDay, focusedDay) {
+                              setState(() {
+                                _focusedDay = focusedDay;
+                              });
+                            },
+                          ),
                   ],
                 ),
               ),
@@ -149,7 +149,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: Color.fromRGBO(239, 68, 68, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
@@ -166,13 +166,13 @@ class _SchedulePageState extends State<SchedulePage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.yellow,
+                        color: Color.fromRGBO(241, 207, 77, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
                         'Sesi 1',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -183,13 +183,13 @@ class _SchedulePageState extends State<SchedulePage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: Color.fromRGBO(74, 222, 128, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
                         'Sesi 2',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
