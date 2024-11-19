@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -11,7 +12,7 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   DateTime _focusedDay = DateTime.now();
-  Map<DateTime, Color> _markedDates = {};
+  Map<DateTime, Map<String, dynamic>> _markedDates = {};
   final TextEditingController _searchController = TextEditingController();
   final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
   bool _isLoading = false;
@@ -39,6 +40,33 @@ class _SchedulePageState extends State<SchedulePage> {
     super.initState();
     fetchAndSetMarkedDates(
         'defaultRoom'); // Inisialisasi dengan ruangan default
+  }
+
+  void _showEventDetails(DateTime date, Map<String, dynamic> eventDetails) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Detail Kegiatan'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Nama Kegiatan: ${eventDetails['nama_kegiatan']}'),
+                Text('Waktu: ${eventDetails['waktu']}'),
+                Text('Nama Ormawa: ${eventDetails['nama_ormawa']}'),
+                Text('Status: ${eventDetails['status']}'),
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Tutup'))
+            ],
+          );
+        });
   }
 
   @override
@@ -95,21 +123,26 @@ class _SchedulePageState extends State<SchedulePage> {
                             lastDay: DateTime.utc(9999),
                             calendarBuilders: CalendarBuilders(
                               defaultBuilder: (context, day, focusedDay) {
-                                if (_markedDates.containsKey(
-                                    DateTime(day.year, day.month, day.day))) {
-                                  final color = _markedDates[
-                                      DateTime(day.year, day.month, day.day)];
-                                  return Container(
-                                    margin: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: color,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '${day.day}',
-                                        style: const TextStyle(
-                                            color: Colors.white),
+                                final dayKey =
+                                    DateTime(day.year, day.month, day.day);
+                                if (_markedDates.containsKey(dayKey)) {
+                                  final eventDetails = _markedDates[dayKey]!;
+                                  final color = eventDetails['color'] as Color;
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        _showEventDetails(day, eventDetails),
+                                    child: Container(
+                                      margin: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: color,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${day.day}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   );
