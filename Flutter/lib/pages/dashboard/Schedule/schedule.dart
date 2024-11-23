@@ -1,6 +1,9 @@
+import 'package:d_button/d_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/peminjaman_datasource.dart';
+import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
+import 'package:sipit_app/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -12,7 +15,7 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   DateTime _focusedDay = DateTime.now();
-  Map<DateTime, Map<String, dynamic>> _markedDates = {};
+  Map<DateTime, List<Map<String, dynamic>>> _markedDates = {};
   final TextEditingController _searchController = TextEditingController();
   final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
   bool _isLoading = false;
@@ -42,28 +45,37 @@ class _SchedulePageState extends State<SchedulePage> {
         'defaultRoom'); // Inisialisasi dengan ruangan default
   }
 
-  void _showEventDetails(DateTime date, Map<String, dynamic> eventDetails) {
+  void _showEventDetails(
+      DateTime date, List<Map<String, dynamic>> eventDetails) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Detail Kegiatan'),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Nama Kegiatan: ${eventDetails['nama_kegiatan']}'),
-                Text('Waktu: ${eventDetails['waktu']}'),
-                Text('Nama Ormawa: ${eventDetails['nama_ormawa']}'),
-                Text('Status: ${eventDetails['status']}'),
-              ],
+            content: Container(
+              width: 200,
+              height: 100,
+              child: PageView.builder(
+                  itemCount: eventDetails.length,
+                  itemBuilder: (context, index) {
+                    final event = eventDetails[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Nama Kegiatan: ${event['nama_kegiatan']}'),
+                        Text('Waktu: ${event['waktu']}'),
+                        Text('Nama Ormawa: ${event['nama_ormawa']}'),
+                        Text('Status: ${event['status']}'),
+                      ],
+                    );
+                  }),
             ),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Tutup'))
+                  child: const Text('Tutup'))
             ],
           );
         });
@@ -100,7 +112,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         hintText: 'Cari ruangan',
                         border: InputBorder.none,
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.search, color: Colors.blue),
+                          icon: const Icon(Icons.search, color: Colors.blue),
                           onPressed: () async {
                             final roomName = _searchController.text;
                             await fetchAndSetMarkedDates(roomName);
@@ -112,7 +124,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       },
                     ),
                     _isLoading
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : TableCalendar(
                             headerStyle: const HeaderStyle(
                               formatButtonVisible: false,
@@ -127,7 +139,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                     DateTime(day.year, day.month, day.day);
                                 if (_markedDates.containsKey(dayKey)) {
                                   final eventDetails = _markedDates[dayKey]!;
-                                  final color = eventDetails['color'] as Color;
+                                  final color =
+                                      eventDetails[0]['color'] as Color;
                                   return GestureDetector(
                                     onTap: () =>
                                         _showEventDetails(day, eventDetails),
@@ -231,6 +244,22 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
               ),
             ),
+
+            // button ke form peminjaman
+            const SizedBox(
+              height: 10,
+            ),
+            DButtonElevation(
+              radius: 10,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              mainColor: biruTua,
+              onClick: () => {Nav.push(context, peminjamanPage())},
+              child: const Text(
+                'Pinjam',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            )
           ],
         ),
       ),
