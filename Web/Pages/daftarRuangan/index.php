@@ -137,7 +137,7 @@
                                         }).join("")}
                                     </div>
                                     <button onclick="openModalAndRedirect(${id_ruangan})" class="bg-blue-600 text-white py-1 px-2 rounded-lg hover:bg-blue-700">
-                                        Pinjam
+                                        Lihat Detail
                                     </button>
                                 </div>
                             </div>
