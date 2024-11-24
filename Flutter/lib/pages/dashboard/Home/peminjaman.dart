@@ -287,53 +287,6 @@ class _peminjamanPageState extends State<peminjamanPage> {
                 ),
               ),
 
-              // Daftar Peserta
-              Card(
-                color: Colors.white, // Warna abu-abu
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Sudut membulat
-                ),
-                elevation: 4, // Efek bayangan
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Peserta',
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Tambahkan aksi untuk daftar peserta
-                        },
-                        icon: const Icon(Icons.add,
-                            size: 24, color: Colors.black),
-                        label: const Text(
-                          'DAFTAR PESERTA',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[300],
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20), // Tinggi tombol
-                          minimumSize: Size(screenWidth * 1,
-                              50), // Lebar menyesuaikan layar, tinggi minimum 50
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
               // Submit Button
               const SizedBox(height: 16),
               ElevatedButton(

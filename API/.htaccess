@@ -5,3 +5,5 @@ RewriteRule ^(authentications|users|gedung|ruangan|fasilitas|fotoruangan|peminja
 
 # Rute dengan parameter ID
 RewriteRule ^(authentications|users|gedung|ruangan|fasilitas|fotoruangan|peminjaman)/([0-9]+)/?$ routes/$1.php?id=$2 [NC,L]
+
+Header set Access-Control-Allow-Origin "*"
