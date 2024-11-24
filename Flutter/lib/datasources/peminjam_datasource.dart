@@ -50,11 +50,9 @@ class PeminjamDatasource {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      print("fetchPeminjam jsonResponse: $jsonResponse");
 
       if (jsonResponse['data'] != null) {
         final peminjam = PeminjamModel.fromJson(jsonResponse['data']);
-        print("Peminjam yang akan disimpan: ${peminjam.toJson()}");
 
         await AppSession.savePeminjam(peminjam); // Pastikan ini dijalankan
         return peminjam;

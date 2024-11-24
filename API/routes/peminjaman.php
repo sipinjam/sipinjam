@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../controllers/PeminjamanController.php';
 require_once __DIR__ . '/../config/db.php';
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PATCH");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 $db = new Database();
 $conn = $db->getConnection();
 $PeminjamanController = new PeminjamansController($conn);

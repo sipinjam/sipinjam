@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="../../Public/theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Sipinjam - Daftar Ruangan</title>
+  <style>
+    .thumbnail-active {
+        border: 2px solid blue; /* Border biru untuk thumbnail aktif */
+        opacity: 1; /* Thumbnail aktif terlihat jelas */
+    }
+    .thumbnail-inactive {
+        opacity: 0.5; /* Thumbnail yang tidak aktif */
+    }
+  </style>
 </head>
 <body class="bg-gray-100">
 
@@ -186,79 +195,73 @@
                     document.getElementById("kapasitas").innerText = data.kapasitas;
 
                     const fasilitasContainer = document.getElementById("fasilitasContainer");
-                    fasilitasContainer.innerHTML = '';
-
-                    // Pastikan data fasilitas ada dan dipisahkan dengan benar
+                    fasilitasContainer.innerHTML = "";
                     if (data.nama_fasilitas) {
-                        const fasilitasList = data.nama_fasilitas.split(', ').map(fasilitas => fasilitas.trim());
-
-                        fasilitasList.forEach(fasilitas => {
-                            let icon;
-                            switch (fasilitas.toLowerCase()) {
-                                case 'ac': icon = 'fas fa-snowflake'; break;
-                                case 'wifi': icon = 'fas fa-wifi'; break;
-                                case 'proyektor' : icon = 'fas fa-tv'; break;
-                                case 'seat' : icon = 'fas fa-chair'; break;
-
-                                default: icon = 'fas fa-check'; break;
-                            }
-                            fasilitasContainer.innerHTML += `
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <i class="${icon} text-gray-600"></i>
-                                    <span class="text-gray-600">${fasilitas}</span>
-                                </div>`;
+                        const fasilitas = data.nama_fasilitas.split(", ");
+                        fasilitas.forEach(item => {
+                            fasilitasContainer.innerHTML += `<p class="text-gray-500 flex items-center space-x-2">
+                                <i class="fas fa-check-circle"></i>
+                                <span>${item}</span>
+                            </p>`;
                         });
                     } else {
-                        fasilitasContainer.innerHTML = '<div class="text-gray-600">Fasilitas tidak tersedia</div>';
+                        fasilitasContainer.innerHTML = `<p class="text-gray-500">Tidak ada fasilitas yang tersedia.</p>`;
                     }
 
-                    // Gambar ruangan
-                    images = data.foto_ruangan || [];
+                    // Memuat gambar ruangan
+                    images = data.foto_ruangan.length > 0 ? data.foto_ruangan : ["../../Sources/Img/default.jpg"];
                     currentIndex = 0;
-                    loadThumbnails();
-                    updateMainImage();
-                } else {
-                    console.error("Failed to retrieve room data:", result.message);
+                    updateMainImage(); // Tampilkan gambar utama
+                    loadThumbnails(); // Tampilkan semua thumbnail
                 }
             } catch (error) {
                 console.error("Error loading room data:", error);
             }
         }
 
+        // Fungsi untuk menampilkan gambar utama
+        function updateMainImage() {
+            document.getElementById("mainImage").src = images[currentIndex];
+        }
+
+        // Fungsi untuk memuat thumbnail
         function loadThumbnails() {
             const thumbnailContainer = document.getElementById("thumbnailContainer");
-            thumbnailContainer.innerHTML = '';
+            thumbnailContainer.innerHTML = ''; // Bersihkan kontainer thumbnail
+
             images.forEach((image, index) => {
+                const isActive = index === currentIndex; // Periksa apakah ini gambar aktif
                 thumbnailContainer.innerHTML += `
-                    <img src="${image}" class="w-20 h-20 object-cover rounded-lg cursor-pointer" onclick="setMainImage(${index})">
+                    <img src="${image}" 
+                        class="w-20 h-20 object-cover rounded-lg cursor-pointer ${isActive ? 'thumbnail-active' : 'thumbnail-inactive'}" 
+                        onclick="setMainImage(${index})">
                 `;
             });
         }
 
+        // Fungsi untuk mengatur gambar utama berdasarkan thumbnail yang dipilih
         function setMainImage(index) {
-            currentIndex = index;
+            currentIndex = index; // Set gambar yang dipilih sebagai aktif
             updateMainImage();
+            loadThumbnails(); // Perbarui thumbnail
         }
 
-        function updateMainImage() {
-            if (images.length > 0) {
-                document.getElementById("mainImage").src = images[currentIndex];
-            }
-        }
-
+        // Fungsi untuk berpindah ke gambar berikutnya
         function nextImage() {
-            currentIndex = (currentIndex + 1) % images.length;
+            currentIndex = (currentIndex + 1) % images.length; // Pindah ke gambar berikutnya
             updateMainImage();
+            loadThumbnails(); // Perbarui thumbnail
         }
 
+        // Fungsi untuk berpindah ke gambar sebelumnya
         function prevImage() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            currentIndex = (currentIndex - 1 + images.length) % images.length; // Pindah ke gambar sebelumnya
             updateMainImage();
+            loadThumbnails(); // Perbarui thumbnail
         }
 
-        // Load data saat halaman dimuat
+        // Panggil fetchRooms saat halaman dimuat
         fetchRooms();
     </script>
-
 </body>
 </html>

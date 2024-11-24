@@ -26,10 +26,14 @@
             <table class="min-w-full bg-white">
                 <thead class="bg-biru-500 text-white">
                     <tr>
-                        <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
-                        <th class="w-1/4 px-4 py-2">Kegiatan</th>
-                        <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
-                        <th class="w-1/4 px-4 py-2">Status</th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer" data-sort="nama_ruangan">Nama Ruangan <span
+                                id="sort-nama_ruangan"></span></th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer" data-sort="nama_kegiatan">Kegiatan <span
+                                id="sort-nama_kegiatan"></span></th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer" data-sort="tanggal_kegiatan">Tanggal Pinjam <span
+                                id="sort-tanggal_kegiatan"></span></th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer" data-sort="nama_status">Status <span
+                                id="sort-nama_status"></span></th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-700" id="peminjamanTable">
@@ -49,6 +53,8 @@
 const itemsPerPage = 10;
 let currentPage = 1;
 let totalPages = 1;
+let sortColumn = '';
+let sortDirection = 'asc';
 
 function renderPaginationControls(totalItems) {
     const paginationControls = document.getElementById('paginationControls');
@@ -137,10 +143,20 @@ async function getPeminjaman() {
                     '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
             } else {
                 const filteredData = result.data
-                    .filter(item => item.nama_peminjam === loggedInUserName)
-                    .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
+                    .filter(item => item.nama_peminjam === loggedInUserName);
 
-                const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+                if (sortColumn) {
+                    filteredData.sort((a, b) => {
+                        if (sortDirection === 'asc') {
+                            return a[sortColumn].localeCompare(b[sortColumn]);
+                        } else {
+                            return b[sortColumn].localeCompare(a[sortColumn]);
+                        }
+                    });
+                }
+
+                const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage *
+                    itemsPerPage);
 
                 paginatedData.forEach(item => {
                     const row = document.createElement('tr');
@@ -185,8 +201,35 @@ async function getPeminjaman() {
     }
 }
 
+function updateSortIcons() {
+    document.querySelectorAll('th[data-sort]').forEach(header => {
+        const column = header.getAttribute('data-sort');
+        const icon = document.getElementById(`sort-${column}`);
+        if (sortColumn === column) {
+            icon.innerHTML = sortDirection === 'asc' ? '▲' : '▼';
+        } else {
+            icon.innerHTML = '';
+        }
+    });
+}
+
+document.querySelectorAll('th[data-sort]').forEach(header => {
+    header.addEventListener('click', () => {
+        const column = header.getAttribute('data-sort');
+        if (sortColumn === column) {
+            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortColumn = column;
+            sortDirection = 'asc';
+        }
+        updateSortIcons();
+        getPeminjaman();
+    });
+});
+
 window.onload = function() {
     getPeminjaman();
+    updateSortIcons();
 }
 </script>
 
