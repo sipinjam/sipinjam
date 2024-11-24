@@ -16,11 +16,11 @@ class FaqPage extends StatelessWidget {
     Faq(
       question: 'Bagaimana Cara Pengajuan Peminjaman Ruangan?',
       answer:
-          '1. Membuat surat peminjaman tempat.\n2. Meminta disposisi helper.\n3. Meminta memo ke BEM.\n4. Surat diserahkan ke Bapak Unggul.',
+          '1. Memilih gedung yang akan dipinjam pada page home.\n2. Memilih ruangan dan pinjam.\n3. Mengisi form untuk peminjaman.\n4. Tekan tombol pinjam. \n5. Cek status peminjaman pada page riwayat.',
     ),
     Faq(
       question: 'Apakah ada batasan waktu dalam peminjaman tempat?',
-      answer: 'Batasan waktu tergantung ketersediaan ruangan.',
+      answer: 'Ya, batasan waktu peminjaman ditentukan berdasarkan peraturan yang berlaku.',
     ),
     Faq(
       question: 'Apakah saya bisa memodifikasi peminjaman setelah dikonfirmasi?',
@@ -28,7 +28,15 @@ class FaqPage extends StatelessWidget {
     ),
     Faq(
       question: 'Apakah ada biaya tambahan selain biaya sewa tempat?',
-      answer: 'Tidak ada biaya tambahan.',
+      answer: 'Tergantung pada acara dan fasilitas yang digunakan, mungkin ada biaya tambahan.',
+    ),
+    Faq(
+      question: 'Bagaimana Saya Tahu Bahwa Peminjaman Saya Sudah Berhasil Dikonfirmasi?',
+      answer: 'Anda akan menerima notifikasi atau konfirmasi pada menu home setelah peminjaman disetujui.',
+    ),
+    Faq(
+      question: 'Bagaimana Cara Mengganti Password?',
+      answer: 'Anda dapat mengganti password melalui halaman profil pengguna.',
     ),
   ];
 

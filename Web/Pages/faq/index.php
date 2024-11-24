@@ -33,7 +33,7 @@
                                 <li>Mengisi form untuk peminjaman.</li>
                                 <li>Tekan tombol pinjam.</li>
                                 <li>Cek status peminjaman pada page riwayat.</li>
-                             </ol>"
+                            </ol>"
             ],
             [
                 "question" => "Apakah Ada Batasan Waktu Dalam Peminjaman Tempat?",
