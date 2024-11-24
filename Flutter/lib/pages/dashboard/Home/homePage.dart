@@ -5,7 +5,7 @@ import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:sipit_app/config/app_session.dart';  // Pastikan ini sudah ada di project Anda
+import 'package:sipit_app/config/app_session.dart'; // Pastikan ini sudah ada di project Anda
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,7 +26,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchGedungs() async {
-    final response = await http.get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/gedung/'));
+    final response = await http
+        .get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/gedung/'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['status'] == 'success') {
@@ -38,10 +39,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchBookings() async {
-    // Ambil id_peminjam yang sedang login dari session
     int idPeminjam = await AppSession.getUserId();
-
-    final response = await http.get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/peminjaman?id_peminjam=$idPeminjam'));
+    final response = await http
+        .get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/peminjaman'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -53,14 +53,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Fungsi untuk memfilter peminjaman berdasarkan kriteria
   List<Map<String, dynamic>> getFilteredBookings() {
     DateTime now = DateTime.now();
     return bookingList.where((booking) {
       DateTime bookingDate = DateTime.parse(booking['tanggal_kegiatan']);
-      return
-          (booking['nama_status'] == 'proses' || booking['nama_status'] == 'disetujui') &&
-          now.isBefore(bookingDate.add(Duration(days: 1))); // Tanggal kegiatan belum lewat
+      return (booking['nama_status'] == 'proses' ||
+              booking['nama_status'] == 'disetujui') &&
+          now.isBefore(bookingDate.add(Duration(days: 1)));
     }).toList();
   }
 
@@ -74,13 +73,12 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 // SEARCH BAR
                 Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30), // Membulatkan sisi card
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  elevation: 2, // Memberi efek bayangan
+                  elevation: 2,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: TextField(
@@ -96,30 +94,36 @@ class _HomePageState extends State<HomePage> {
 
                 // DAFTAR GEDUNG
                 const SizedBox(
-                  height: 200, // Tinggi kontainer untuk daftar gedung
+                  height: 0,
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal, // Mengaktifkan scroll horizontal
+                    scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: [
-                        GedungCard(
-                          imageUrl: 'assets/images/AB.jpg',
-                          buildingName: 'Administrasi Bisnis',
-                        ),
-                        GedungCard(
-                          imageUrl: 'assets/images/gkt-bg.jpeg',
-                          buildingName: 'Gedung Kuliah Terpadu',
-                        ),
-                        GedungCard(
-                          imageUrl: 'assets/images/mst.jpg',
-                          buildingName: 'Magister Terapan',
-                        ),
-                      ],
+                      children: [],
                     ),
+                  ),
+                ),
+                // Menampilkan GedungCard secara dinamis
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 220, // Tinggi kontainer untuk daftar gedung
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: gedungList.length,
+                    itemBuilder: (context, index) {
+                      final gedung = gedungList[index];
+                      String imageUrl =
+                          'http://localhost/sipinjamfix/sipinjam/api/assets/gedung/${gedung['foto_gedung'].split('/').last}';
+                      return GedungCard(
+                        imageUrl: imageUrl,
+                        buildingName: gedung['nama_gedung'],
+                        buildingId: gedung['id_gedung'],
+                      );
+                    },
                   ),
                 ),
 
                 // DAFTAR RUANGAN
-                const SizedBox(height: 10),                
+                const SizedBox(height: 10),
                 const Text(
                   "RUANGAN YANG DIPINJAM",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -140,8 +144,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
 
 class BookingCard extends StatelessWidget {
   final String buildingName;
@@ -220,10 +222,12 @@ class BookingCard extends StatelessWidget {
 class GedungCard extends StatelessWidget {
   final String imageUrl;
   final String buildingName;
+  final int buildingId; // Tambahkan ID gedung
 
   const GedungCard({
     required this.imageUrl,
     required this.buildingName,
+    required this.buildingId, // Tambahkan parameter ini
     super.key,
   });
 
@@ -234,7 +238,13 @@ class GedungCard extends StatelessWidget {
       height: 200,
       child: InkWell(
         onTap: () {
-          Nav.push(context, const daftarRuanganPage());
+          // Kirim ID gedung saat menavigasi ke daftar ruangan
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DaftarRuanganPage(buildingId: buildingId),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.only(left: 10),
@@ -248,7 +258,7 @@ class GedungCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: AssetImage(imageUrl),
+                      image: NetworkImage(imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),

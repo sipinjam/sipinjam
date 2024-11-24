@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
 import 'dart:convert';
-import '../../../models/ruanganModel.dart';
+import '../../../models/daftarRuanganModel.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: DaftarRuanganPage(),
-  ));
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false));
 }
 
 class DaftarRuanganPage extends StatefulWidget {
-  const DaftarRuanganPage({super.key});
+  final int buildingId; // Tambahkan parameter ini
+
+  const DaftarRuanganPage({super.key, required this.buildingId});
+
   @override
   State<DaftarRuanganPage> createState() => _DaftarRuanganPageState();
 }
 
 class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
-  List<RuanganModel> _allRuanganData = [];
-  List<RuanganModel> _pagedRuanganData = [];
+  List<daftarRuanganModel> _allRuanganData = [];
+  List<daftarRuanganModel> _filteredRuanganData = [];
   bool _isLoading = true;
   int _page = 1;
   final int _pageSize = 10;
@@ -30,6 +31,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   }
 
   Future<void> _fetchRuanganData() async {
+    // Ambil semua data ruangan
     const url = 'http://localhost/sipinjamfix/sipinjam/api/ruangan/';
     try {
       final response = await http.get(Uri.parse(url));
@@ -44,8 +46,14 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                       'http://localhost/sipinjamfix/sipinjam/api/assets/ruangan/${photo.split('/').last}')
                   .toList();
             }
-            return RuanganModel.fromJson(item);
+            return daftarRuanganModel.fromJson(item);
           }).toList();
+
+          // Filter ruangan berdasarkan buildingId
+          _filteredRuanganData = _allRuanganData
+              .where((ruangan) => ruangan.buildingId == widget.buildingId)
+              .toList();
+
           _loadPage();
           _isLoading = false;
         });
@@ -64,9 +72,11 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
     int startIndex = (_page - 1) * _pageSize;
     int endIndex = startIndex + _pageSize;
     setState(() {
-      _pagedRuanganData = _allRuanganData.sublist(
+      _filteredRuanganData = _filteredRuanganData.sublist(
         startIndex,
-        endIndex > _allRuanganData.length ? _allRuanganData.length : endIndex,
+        endIndex > _filteredRuanganData.length
+            ? _filteredRuanganData.length
+            : endIndex,
       );
     });
   }
@@ -100,7 +110,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : _pagedRuanganData.isEmpty
+                  : _filteredRuanganData.isEmpty
                       ? const Center(
                           child: Text(
                             'No data available',
@@ -108,21 +118,22 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                           ),
                         )
                       : GridView.builder(
-                          itemCount: _pagedRuanganData.length,
+                          itemCount: _filteredRuanganData.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2, // Jumlah kolom dalam grid
                             childAspectRatio: 0.75, // Rasio aspek item
                           ),
                           itemBuilder: (context, index) {
-                            final ruangan = _pagedRuanganData[index];
+                            final ruangan = _filteredRuanganData[index];
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailRuanganPage(ruangan: ruangan),
+                                    builder: (context) => detailRuanganPage(
+                                        ruanganId:
+                                            ruangan.id), // Kirim ID ruangan
                                   ),
                                 );
                               },
@@ -183,7 +194,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
 }
 
 class DetailRuanganPage extends StatelessWidget {
-  final RuanganModel ruangan;
+  final daftarRuanganModel ruangan;
 
   const DetailRuanganPage({super.key, required this.ruangan});
 

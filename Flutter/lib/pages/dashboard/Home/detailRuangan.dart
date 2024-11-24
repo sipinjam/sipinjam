@@ -3,11 +3,14 @@ import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
 import 'package:sipit_app/config/widget.dart';
-import 'package:sipit_app/datasources/ruangan_datasource.dart';
+import 'package:http/http.dart' as http;
 import 'package:sipit_app/models/ruanganModel.dart';
+import 'dart:convert';
 
 class detailRuanganPage extends StatefulWidget {
-  const detailRuanganPage({super.key});
+  final int ruanganId;
+
+  const detailRuanganPage({super.key, required this.ruanganId});
 
   @override
   _detailRuanganPageState createState() => _detailRuanganPageState();
@@ -16,15 +19,22 @@ class detailRuanganPage extends StatefulWidget {
 class _detailRuanganPageState extends State<detailRuanganPage> {
   late Future<Ruangan> futureRuangan;
 
-  @override
+  @ override
   void initState() {
     super.initState();
     futureRuangan = fetchRuangan();
   }
 
   Future<Ruangan> fetchRuangan() async {
-    final ruanganService = RuanganService();
-    return await ruanganService.getRuanganById(1);
+    final response = await http.get(Uri.parse(
+        'http://localhost/sipinjamfix/sipinjam/api/ruangan/${widget.ruanganId}'));
+
+    if (response.statusCode == 200) {
+      final ruanganModel = ruanganModelFromJson(response.body);
+      return ruanganModel.data; // Return the Ruangan object directly
+    } else {
+      throw Exception('Failed to load ruangan');
+    }
   }
 
   @override
@@ -42,13 +52,11 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                     Icons.keyboard_arrow_left_rounded,
                     size: 25,
                   )),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               const Text(
                 'Detail Ruangan',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )
+              ),
             ],
           ),
           Expanded(
@@ -67,7 +75,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Card untuk gambar utama dan deskripsi gedung
+                          // Card for main image and building description
                           Card(
                             elevation: 4,
                             shape: RoundedRectangleBorder(
@@ -79,7 +87,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    ruangan.fotoRuangan[0], // Gambar ruangan
+                                    ruangan.fotoRuangan[0],
                                     height: 400,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -115,8 +123,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                       ),
                                       Row(
                                         children: [
-                                          Icon(Icons.people,
-                                              color: Colors.white, size: 16),
+                                          Icon(Icons.people, color: Colors.white, size: 16),
                                           SizedBox(width: 4),
                                           Text(
                                             '${ruangan.kapasitas}',
@@ -131,12 +138,12 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                             ),
                           ),
 
-                          // Bagian untuk fasilitas
+                          // Section for facilities
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: ruangan.namaFasilitas?.split(', ').map((fasilitas) {
+                              children: (ruangan.namaFasilitas?.split(', ') ?? []).map((fasilitas) {
                                 IconData icon;
                                 switch (fasilitas.toLowerCase()) {
                                   case 'wifi':
@@ -155,13 +162,13 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                     icon = Icons.device_unknown;
                                 }
                                 return FacilityIcon(icon: icon, label: fasilitas.toUpperCase());
-                              }).toList() ?? [],
+                              }).toList(),
                             ),
                           ),
 
-                          // GridView gambar gedung lainnya
+                          // GridView for other building images
                           SizedBox(
-                            height: 125, // Ukuran lebih besar
+                            height: 125,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: ruangan.fotoRuangan.length,
@@ -170,10 +177,10 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius .circular(10),
                                     child: Image.network(
-                                      foto, // Path gambar
-                                      width: 135, // Ukuran lebih besar
+                                      foto,
+                                      width: 135,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -182,11 +189,11 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                             ),
                           ),
 
-                          const SizedBox(height: 20), // Spacer untuk memberi jarak
+                          const SizedBox(height: 20),
 
-                          // Tombol Book Now
+                          // Book Now button
                           SizedBox(
-                            width: MediaQuery.sizeOf(context).width,
+                            width: MediaQuery.of(context).size.width,
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {

@@ -1,81 +1,79 @@
 import 'dart:convert';
 
-RuanganModel ruanganModelFromJson(String str) => RuanganModel.fromJson(json.decode(str));
+// Function to parse JSON string into RuanganModel
+RuanganModel ruanganModelFromJson(String str) =>
+    RuanganModel.fromJson(json.decode(str));
 
+// Function to convert RuanganModel to JSON string
 String ruanganModelToJson(RuanganModel data) => json.encode(data.toJson());
 
 class RuanganModel {
-    String status;
-    String message;
-    List<Ruangan> data;
-    int code;
+  String status;
+  String message;
+  Ruangan data; // Contains a single Ruangan object
+  int code;
 
-    RuanganModel({
-        required this.status,
-        required this.message,
-        required this.data,
-        required this.code,
-    });
+  RuanganModel({
+    required this.status,
+    required this.message,
+    required this.data,
+    required this.code,
+  });
 
-    factory RuanganModel.fromJson(Map<String, dynamic> json) => RuanganModel(
+  factory RuanganModel.fromJson(Map<String, dynamic> json) => RuanganModel(
         status: json["status"],
         message: json["message"],
-        data: List<Ruangan>.from(json["data"].map((x) => Ruangan.fromJson(x))),
+        data: Ruangan.fromJson(json["data"]), // Parse the single Ruangan object
         code: json["code"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data.toJson(),
         "code": code,
-    };
+      };
 }
 
 class Ruangan {
-    int idRuangan;
-    String namaRuangan;
-    String namaGedung;
-    int idGedung;
-    String deskripsiRuangan;
-    int kapasitas;
-    String namaPeminjam;
-    String? namaFasilitas;
-    List<String> fotoRuangan;
+  String namaRuangan;
+  String namaGedung;
+  String deskripsiRuangan;
+  int kapasitas;
+  String namaPeminjam;
+  String? namaFasilitas; // This can be null
+  List<String> fotoRuangan;
 
-    Ruangan({
-        required this.idRuangan,
-        required this.namaRuangan,
-        required this.namaGedung,
-        required this.idGedung,
-        required this.deskripsiRuangan,
-        required this.kapasitas,
-        required this.namaPeminjam,
-        required this.namaFasilitas,
-        required this.fotoRuangan,
-    });
+  Ruangan({
+    required this.namaRuangan,
+    required this.namaGedung,
+    required this.deskripsiRuangan,
+    required this.kapasitas,
+    required this.namaPeminjam,
+    this.namaFasilitas,
+    required this.fotoRuangan,
+  });
 
-    factory Ruangan.fromJson(Map<String, dynamic> json) => Ruangan(
-        idRuangan: json["id_ruangan"],
+  factory Ruangan.fromJson(Map<String, dynamic> json) => Ruangan(
         namaRuangan: json["nama_ruangan"],
         namaGedung: json["nama_gedung"],
-        idGedung: json["id_gedung"],
         deskripsiRuangan: json["deskripsi_ruangan"],
         kapasitas: json["kapasitas"],
         namaPeminjam: json["nama_peminjam"],
         namaFasilitas: json["nama_fasilitas"],
-        fotoRuangan: List<String>.from(json["foto_ruangan"].map((x) => x)),
-    );
+        fotoRuangan: List<String>.from(json["foto_ruangan"].map((x) {
+          // Prepend the base URL to each photo path
+          return 'http://localhost/sipinjamfix/sipinjam/api/assets/ruangan/$x';
+        })), // Ensure correct type
+      );
 
-    Map<String, dynamic> toJson() => {
-        "id_ruangan": idRuangan,
+  Map<String, dynamic> toJson() => {
         "nama_ruangan": namaRuangan,
         "nama_gedung": namaGedung,
-        "id_gedung": idGedung,
         "deskripsi_ruangan": deskripsiRuangan,
         "kapasitas": kapasitas,
         "nama_peminjam": namaPeminjam,
         "nama_fasilitas": namaFasilitas,
         "foto_ruangan": List<dynamic>.from(fotoRuangan.map((x) => x)),
-    };
+      };
 }
