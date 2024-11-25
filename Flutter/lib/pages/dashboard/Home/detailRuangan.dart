@@ -186,10 +186,30 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        foto,
-                                        width: 135,
-                                        fit: BoxFit.cover,
+                                      child: Stack(
+                                        children: [
+                                          Image.network(
+                                            foto,
+                                            width: 135,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          if (selectedImage == foto)
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              right: 0,
+                                              bottom: 0,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.blueAccent,
+                                                    width: 4,
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
                                     ),
                                   ),
