@@ -34,7 +34,10 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
     // Ambil semua data ruangan
     const url = 'http://localhost/sipinjamfix/sipinjam/api/ruangan/';
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+      );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {

@@ -33,9 +33,9 @@ class PeminjamanDatasource {
             color = const Color(0xff615EFC);
           } else if (startTime == '08:00:00' && endTime == '12:00:00') {
             color = const Color.fromRGBO(241, 207, 77, 1);
-          } else if (startTime == '08:00:00' && endTime == '12:00:00') {
+          } else if (startTime == '12:00:00' && endTime == '16:00:00') {
             color = const Color.fromRGBO(74, 222, 128, 1);
-          } else if (startTime == '08:00:00' && endTime == '12:00:00') {
+          } else if (startTime == '08:00:00' && endTime == '16:00:00') {
             color = const Color.fromRGBO(239, 68, 68, 1);
           } else {
             null;

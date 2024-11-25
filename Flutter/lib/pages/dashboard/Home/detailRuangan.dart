@@ -19,7 +19,7 @@ class detailRuanganPage extends StatefulWidget {
 class _detailRuanganPageState extends State<detailRuanganPage> {
   late Future<Ruangan> futureRuangan;
 
-  @ override
+  @override
   void initState() {
     super.initState();
     futureRuangan = fetchRuangan();
@@ -46,7 +46,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
             children: [
               IconButton(
                   onPressed: () {
-                    Nav.replace(context, const Dashboardpage());
+                    Navigator.pop(context);
                   },
                   icon: const Icon(
                     Icons.keyboard_arrow_left_rounded,
@@ -104,7 +104,8 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                     ),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         ruangan.namaGedung,
@@ -123,11 +124,13 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                       ),
                                       Row(
                                         children: [
-                                          Icon(Icons.people, color: Colors.white, size: 16),
+                                          Icon(Icons.people,
+                                              color: Colors.white, size: 16),
                                           SizedBox(width: 4),
                                           Text(
                                             '${ruangan.kapasitas}',
-                                            style: TextStyle(color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         ],
                                       ),
@@ -143,7 +146,9 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: (ruangan.namaFasilitas?.split(', ') ?? []).map((fasilitas) {
+                              children:
+                                  (ruangan.namaFasilitas?.split(', ') ?? [])
+                                      .map((fasilitas) {
                                 IconData icon;
                                 switch (fasilitas.toLowerCase()) {
                                   case 'wifi':
@@ -161,7 +166,8 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                   default:
                                     icon = Icons.device_unknown;
                                 }
-                                return FacilityIcon(icon: icon, label: fasilitas.toUpperCase());
+                                return FacilityIcon(
+                                    icon: icon, label: fasilitas.toUpperCase());
                               }).toList(),
                             ),
                           ),
@@ -175,9 +181,10 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                               itemBuilder: (context, index) {
                                 final foto = ruangan.fotoRuangan[index];
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius .circular(10),
+                                    borderRadius: BorderRadius.circular(10),
                                     child: Image.network(
                                       foto,
                                       width: 135,

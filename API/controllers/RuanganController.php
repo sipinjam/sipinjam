@@ -58,7 +58,9 @@ class RuangansController
         if ($stmt) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 // Pecah foto_ruangan menjadi array untuk setiap ruangan
-                $row['foto_ruangan'] = explode(', ', $row['foto_ruangan']);
+                $row['foto_ruangan'] = !empty($row['foto_ruangan']) 
+                    ? explode(', ', $row['foto_ruangan']) 
+                    : [];
 
                 // Tambahkan setiap hasil ruangan ke dalam array data
                 $data[] = $row;
