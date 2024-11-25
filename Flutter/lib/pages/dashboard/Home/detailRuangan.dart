@@ -18,6 +18,7 @@ class detailRuanganPage extends StatefulWidget {
 
 class _detailRuanganPageState extends State<detailRuanganPage> {
   late Future<Ruangan> futureRuangan;
+  String? selectedImage;
 
   @override
   void initState() {
@@ -69,6 +70,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
                   final ruangan = snapshot.data!;
+                  selectedImage ??= ruangan.fotoRuangan[0]; // Set default image
                   return SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
@@ -87,7 +89,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    ruangan.fotoRuangan[0],
+                                    selectedImage!,
                                     height: 400,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -180,15 +182,43 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                               itemCount: ruangan.fotoRuangan.length,
                               itemBuilder: (context, index) {
                                 final foto = ruangan.fotoRuangan[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      foto,
-                                      width: 135,
-                                      fit: BoxFit.cover,
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedImage = foto;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Stack(
+                                        children: [
+                                          Image.network(
+                                            foto,
+                                            width: 135,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          if (selectedImage == foto)
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              right: 0,
+                                              bottom: 0,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.blueAccent,
+                                                    width: 4,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
