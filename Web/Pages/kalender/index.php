@@ -21,9 +21,44 @@
     <!-- Wrapper Keterangan dan Kalender -->
     <div class="flex flex-row md:pl-64 mt-28 space-x-4 mx-4">
         <div class="flex flex-col">
-            <div class="mb-4 flex flex-row justify-between">
-                <input type="text" id="roomName" placeholder="Enter room name" class="border p-2 rounded w-4/6 h-10">
-                <button onclick="searchRoom()" class="bg-blue-500 text-white p-2 rounded w-1/4 h-10">Search</button>
+            <div class="mb-4 flex flex-row gap-2">
+                <div class="relative" id="dropdownGedungButton">
+                    <div id="buttonGedung" onclick="toggleDropdown('dropdownGedung')" class="flex justify-between items-center w-[300px] border-solid border-gray-300 border-[1px] px-5 py-2 rounded cursor-pointer bg-white shadow-sm">
+                        --Gedung--
+
+                        <svg fill="#000000" height="10px" width="10px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 330 330" xml:space="preserve">
+                            <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
+                            c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393
+                            s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z" />
+                        </svg>
+                    </div>
+
+                    <div id="dropdownGedung" class="rounded border-[1px] border-gray-300 bg-white absolute top-[50px] w-[300px] shadow-rd hidden z-50">
+                    </div>
+                </div>
+                <div class="relative" id="dropdownRuanganButton">
+                    <div id="buttonRuangan" onclick="toggleDropdown('dropdownRuangan')" class="flex justify-between items-center w-[300px] border-solid border-gray-300 border-[1px] px-5 py-2 rounded cursor-pointer bg-white shadow-sm">
+                        --Ruangan--
+
+                        <svg fill="#000000" height="10px" width="10px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 330 330" xml:space="preserve">
+                            <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
+                            c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393
+                            s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z" />
+                        </svg>
+                    </div>
+
+                    <div id="dropdownRuangan" class="rounded border-[1px] border-gray-300 bg-white absolute top-[50px] w-[300px] shadow-rd hidden z-50">
+                    </div>
+                </div>
+                <div class="w-full">
+                    <button
+                        class="px-5 py-2 w-full rounded tracking-wide font-semibold bg-blue-800 text-white w-fullrounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                        onclick="window.location.href='../peminjaman/index.php'">
+                        <span class="ml-">CEK KETERSEDIAN</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Kalender -->
@@ -89,6 +124,79 @@
     </div>
 
     <script>
+        let ruanganData = [];
+        // api gedung
+        async function gedungApiItems() {
+            const apiURL = 'http://localhost/sipinjamfix/sipinjam/api/gedung';
+            try {
+                const response = await fetch(apiURL);
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    const gedungList = data.data.map(item => item.nama_gedung);
+                    populateDropdown('dropdownGedung', gedungList, 'buttonGedung');
+                } else {
+                    console.error("API error: ", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching dropdown items:", error);
+            }
+        }
+
+        // api ruangan
+        async function ruanganApiItems() {
+            const apiURL = 'http://localhost/sipinjamfix/sipinjam/api/ruangan';
+            try {
+                const response = await fetch(apiURL);
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    ruanganData = data.data;
+                } else {
+                    console.error("API error: ", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching dropdown items:", error);
+            }
+        }
+
+        function populateDropdown(dropdownId, item, buttonId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.innerHTML = "";
+
+            item.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "cursor-pointer hover:bg-gray-300 p-3";
+                div.textContent = item;
+                div.onclick = () => selectItem(buttonId, dropdownId, item);
+                dropdown.appendChild(div);
+            });
+        }
+
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.classList.toggle("hidden");
+        }
+
+        function selectItem(buttonId, dropdownId, name) {
+            const button = document.getElementById(buttonId);
+            button.firstChild.textContent = name;
+            toggleDropdown(dropdownId);
+
+            if (dropdownId === 'dropdownGedung') {
+                const filteredRuangan = ruanganData
+                    .filter(item => item.nama_gedung === name)
+                    .map(item => item.nama_ruangan);
+                populateDropdown('dropdownRuangan', filteredRuangan, 'buttonRuangan')
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            gedungApiItems();
+            ruanganApiItems();
+        });
+
+        // api for peminjaman calendar
         let currentDate = new Date();
         let eventDays = [];
 
@@ -167,7 +275,7 @@
                 calendarDays.appendChild(emptyDay);
             }
 
-            // Tambahkan elemen untuk setiap hari dalam bulan ini 
+            // Tambahkan elemen untuk setiap hari dalam bulan ini
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement("div");
                 dayElement.textContent = day;
@@ -209,11 +317,11 @@
                         document.getElementById('event-modal').classList.remove('hidden');
                         document.getElementById('event-title').textContent = event.nama_kegiatan;
                         document.getElementById('event-details').textContent = `
-                            Nama Ruangan: ${event.nama_ruangan}
-                            Waktu: ${event.waktuMulai} - ${event.waktuSelesai}
-                            Ormawa: ${event.nama_ormawa}
-                            Status: ${event.status}
-                        `
+        Nama Ruangan: ${event.nama_ruangan}
+        Waktu: ${event.waktuMulai} - ${event.waktuSelesai}
+        Ormawa: ${event.nama_ormawa}
+        Status: ${event.status}
+        `
                     });
                 } else {
                     // Reset style jika tidak ada event
