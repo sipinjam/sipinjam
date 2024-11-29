@@ -52,13 +52,7 @@
                     <div id="dropdownRuangan" class="rounded border-[1px] border-gray-300 bg-white absolute top-[50px] w-[300px] shadow-rd hidden z-50">
                     </div>
                 </div>
-                <div class="w-full">
-                    <button
-                        class="px-5 py-2 w-full rounded tracking-wide font-semibold bg-blue-800 text-white w-fullrounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                        onclick="window.location.href='../peminjaman/index.php'">
-                        <span class="ml-">CEK KETERSEDIAN</span>
-                    </button>
-                </div>
+                <button onclick="searchRoom()" class="w-full bg-blue-500 text-white p-2 rounded w-1/4 h-10">Search</button>
             </div>
 
             <!-- Kalender -->
@@ -125,6 +119,7 @@
 
     <script>
         let ruanganData = [];
+        let selectedRoomName = "";
         // api gedung
         async function gedungApiItems() {
             const apiURL = 'http://localhost/sipinjamfix/sipinjam/api/gedung';
@@ -187,7 +182,9 @@
                 const filteredRuangan = ruanganData
                     .filter(item => item.nama_gedung === name)
                     .map(item => item.nama_ruangan);
-                populateDropdown('dropdownRuangan', filteredRuangan, 'buttonRuangan')
+                populateDropdown('dropdownRuangan', filteredRuangan, 'buttonRuangan');
+            } else if (dropdownId === 'dropdownRuangan') {
+                selectedRoomName = name;
             }
         }
 
@@ -298,6 +295,7 @@
 
         function updateCalendarColors(events) {
             const calendarDays = document.getElementById('calendar-days').children;
+            const today = new Date();
 
             for (let dayElement of calendarDays) {
                 const dateString = dayElement.dataset.date;
@@ -308,7 +306,8 @@
                 );
 
                 if (event) {
-                    const color = getColor(event.waktuMulai, event.waktuSelesai);
+                    const eventDate = new Date(`${event.year}-${event.month}-${event.day}`)
+                    const color = eventDate < today ? "rgb(30, 64, 175)" : getColor(event.waktuMulai, event.waktuSelesai);
                     dayElement.style.backgroundColor = color;
 
                     dayElement.style.cursor = 'pointer';
@@ -331,21 +330,24 @@
         }
 
         async function searchRoom() {
-            const roomName = document.getElementById('roomName').value;
-            await fetchDataPeminjaman(roomName);
+            if (selectedRoomName) {
+                await fetchDataPeminjaman(selectedRoomName);
+            } else {
+                alert("Pilih ruangan terlebih dahulu");
+            }
         }
 
         // Navigasi bulan
         document.getElementById("prev-month").addEventListener("click", () => {
             currentDate.setMonth(currentDate.getMonth() - 1);
             renderCalendar();
-            searchRoom();
+            if (selectedRoomName) searchRoom();
         });
 
         document.getElementById("next-month").addEventListener("click", () => {
             currentDate.setMonth(currentDate.getMonth() + 1);
             renderCalendar();
-            searchRoom();
+            if (selectedRoomName) searchRoom();
         });
 
         // Inisialisasi kalender
