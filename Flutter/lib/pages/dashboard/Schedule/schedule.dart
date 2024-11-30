@@ -1,7 +1,9 @@
 import 'package:d_button/d_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/datasources/gedung_datasource.dart';
 import 'package:sipit_app/datasources/peminjaman_datasource.dart';
+import 'package:sipit_app/models/gedungModel.dart';
 import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -19,6 +21,20 @@ class _SchedulePageState extends State<SchedulePage> {
   final TextEditingController _searchController = TextEditingController();
   final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
   bool _isLoading = false;
+  final GedungDatasource _gedungDatasource = GedungDatasource();
+  List<GedungModel> _gedungs = [];
+  GedungModel? _selectedGedung;
+
+  Future<void> fetchGedungs() async {
+    try {
+      final gedungs = await _gedungDatasource.fetchGedungList();
+      setState(() {
+        _gedungs = gedungs;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   Future<void> fetchAndSetMarkedDates(String roomName) async {
     setState(() {
@@ -41,8 +57,8 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
-    fetchAndSetMarkedDates(
-        'defaultRoom'); // Inisialisasi dengan ruangan default
+    fetchAndSetMarkedDates('defaultRoom');
+    fetchGedungs();
   }
 
   void _showEventDetails(
@@ -96,6 +112,35 @@ class _SchedulePageState extends State<SchedulePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade500,
+                    offset: Offset(4, 4),
+                  )
+                ],
+                color: Colors.amber,
+              ),
+              child: DropdownButton<GedungModel>(
+                  // padding: EdgeInsets.symmetric(horizontal: 16),
+                  value: _selectedGedung,
+                  hint: const Text('Pilih Gedung'),
+                  isExpanded: true,
+                  items: _gedungs.map((gedung) {
+                    return DropdownMenuItem(
+                      value: gedung,
+                      child: Text(gedung.namaGedung),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedGedung = value;
+                    });
+                    print('Selected Gedung: ${value?.namaGedung}');
+                  }),
+            ),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -106,23 +151,6 @@ class _SchedulePageState extends State<SchedulePage> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Cari ruangan',
-                        border: InputBorder.none,
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.search, color: Colors.blue),
-                          onPressed: () async {
-                            final roomName = _searchController.text;
-                            await fetchAndSetMarkedDates(roomName);
-                          },
-                        ),
-                      ),
-                      onSubmitted: (value) async {
-                        await fetchAndSetMarkedDates(value);
-                      },
-                    ),
                     _isLoading
                         ? const CircularProgressIndicator()
                         : TableCalendar(
