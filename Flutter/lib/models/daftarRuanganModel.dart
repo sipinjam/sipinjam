@@ -34,4 +34,9 @@ class daftarRuanganModel {
       photos: List<String>.from(json['foto_ruangan'] ?? []),
     );
   }
+
+  @override
+  String toString() {
+    return name; // Mengembalikan nama gedung sebagai representasi
+  }
 }

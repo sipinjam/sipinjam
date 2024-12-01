@@ -125,18 +125,7 @@ class ProfilePage extends StatelessWidget {
                             Nav.push(context, UpdatePass());
                           },
                         ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.notifications),
-                          title: const Text('NOTIFIKASI'),
-                          trailing: Switch(
-                            value:
-                                true, // ganti dengan state logika apakah notifikasi aktif atau tidak
-                            onChanged: (bool value) {
-                              // Aksi ketika Switch ditekan
-                            },
-                          ),
-                        ),
+                        
                         const Divider(),
                         ListTile(
                           leading: const Icon(Icons.language),
