@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/gedung_datasource.dart';
 import 'package:sipit_app/datasources/peminjaman_datasource.dart';
+import 'package:sipit_app/datasources/ruangan_datasource.dart';
+import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:sipit_app/models/gedungModel.dart';
+import 'package:sipit_app/models/ruanganModel.dart';
 import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -18,18 +21,39 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   DateTime _focusedDay = DateTime.now();
   Map<DateTime, List<Map<String, dynamic>>> _markedDates = {};
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchGedungController = TextEditingController();
+  final TextEditingController _searchRuanganController =
+      TextEditingController();
   final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
   bool _isLoading = false;
   final GedungDatasource _gedungDatasource = GedungDatasource();
   List<GedungModel> _gedungs = [];
   GedungModel? _selectedGedung;
+  final RuanganDatasource _ruanganDatasource = RuanganDatasource();
+  List<daftarRuanganModel> _ruangans = [];
+  String? _selectedRuangan;
 
   Future<void> fetchGedungs() async {
+    if (_gedungs.isNotEmpty) return;
     try {
       final gedungs = await _gedungDatasource.fetchGedungList();
       setState(() {
         _gedungs = gedungs;
+        _gedungs.forEach((gedung) {
+          print('namaGedung: ${gedung.namaGedung}');
+        });
+        print('fetch gedung: $_gedungs');
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> fetchRuangans(int gedungId) async {
+    try {
+      final ruangans = await _ruanganDatasource.fetchRuanganList(gedungId);
+      setState(() {
+        _ruangans = ruangans;
       });
     } catch (e) {
       print('Error: $e');
@@ -57,7 +81,6 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
-    fetchAndSetMarkedDates('defaultRoom');
     fetchGedungs();
   }
 
@@ -99,6 +122,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('building widget with _gedungs: $_gedungs');
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -113,90 +137,134 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
             ),
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade500,
-                    offset: Offset(4, 4),
-                  )
-                ],
-                color: Colors.amber,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: DropdownButton<GedungModel>(
-                  // padding: EdgeInsets.symmetric(horizontal: 16),
-                  value: _selectedGedung,
-                  hint: const Text('Pilih Gedung'),
-                  isExpanded: true,
-                  items: _gedungs.map((gedung) {
-                    return DropdownMenuItem(
-                      value: gedung,
-                      child: Text(gedung.namaGedung),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedGedung = value;
-                    });
-                    print('Selected Gedung: ${value?.namaGedung}');
-                  }),
+              child: DropdownMenu<GedungModel?>(
+                width: MediaQuery.of(context).size.width,
+                controller: _searchGedungController,
+                hintText: "Cari Gedung",
+                inputDecorationTheme:
+                    InputDecorationTheme(border: InputBorder.none),
+                dropdownMenuEntries: _gedungs.map((gedungName) {
+                  return DropdownMenuEntry(
+                    value: gedungName,
+                    label: gedungName.namaGedung,
+                  );
+                }).toList(),
+                onSelected: (gedungName) {
+                  setState(() {
+                    _selectedGedung = gedungName;
+                    _selectedRuangan = null;
+                  });
+                  fetchRuangans(_selectedGedung!.idGedung);
+                },
+              ),
             ),
+            SizedBox(
+              height: 4,
+            ),
+            if (_selectedGedung != null)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
+                child: DropdownMenu<daftarRuanganModel?>(
+                  width: MediaQuery.of(context).size.width,
+                  controller: _searchRuanganController,
+                  hintText: "Cari Ruangan",
+                  inputDecorationTheme:
+                      InputDecorationTheme(border: InputBorder.none),
+                  dropdownMenuEntries: _ruangans
+                      .where((ruangan) =>
+                          ruangan.buildingName == _selectedGedung!.namaGedung)
+                      .map((ruangan) {
+                    return DropdownMenuEntry(
+                        value: ruangan, label: ruangan.name);
+                  }).toList(),
+                  onSelected: (ruangan) {
+                    setState(() {
+                      _selectedRuangan = ruangan.toString();
+                    });
+                    print('ruangan yang dipilih: $_selectedRuangan');
+                  },
+                ),
+              ),
+            SizedBox(
+              height: 4,
+            ),
+            DButtonElevation(
+                onClick: () async {
+                  await fetchAndSetMarkedDates(_selectedRuangan!);
+                  print(_selectedRuangan);
+                },
+                mainColor: Color(0xff615EFC),
+                radius: 8,
+                child: Text(
+                  'Cek Ketersedian',
+                  style: TextStyle(color: Colors.white),
+                )),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
               elevation: 2,
-              margin: const EdgeInsets.only(top: 6),
+              // margin: const EdgeInsets.only(top: 6),
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    _isLoading
-                        ? const CircularProgressIndicator()
-                        : TableCalendar(
-                            headerStyle: const HeaderStyle(
-                              formatButtonVisible: false,
-                              titleCentered: true,
-                            ),
-                            focusedDay: _focusedDay,
-                            firstDay: DateTime.utc(1978),
-                            lastDay: DateTime.utc(9999),
-                            calendarBuilders: CalendarBuilders(
-                              defaultBuilder: (context, day, focusedDay) {
-                                final dayKey =
-                                    DateTime(day.year, day.month, day.day);
-                                if (_markedDates.containsKey(dayKey)) {
-                                  final eventDetails = _markedDates[dayKey]!;
-                                  final color =
-                                      eventDetails[0]['color'] as Color;
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        _showEventDetails(day, eventDetails),
-                                    child: Container(
-                                      margin: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: color,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          '${day.day}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
+                    Center(
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : TableCalendar(
+                              headerStyle: const HeaderStyle(
+                                formatButtonVisible: false,
+                                titleCentered: true,
+                              ),
+                              focusedDay: _focusedDay,
+                              firstDay: DateTime.utc(1978),
+                              lastDay: DateTime.utc(9999),
+                              calendarBuilders: CalendarBuilders(
+                                defaultBuilder: (context, day, focusedDay) {
+                                  final dayKey =
+                                      DateTime(day.year, day.month, day.day);
+                                  if (_markedDates.containsKey(dayKey)) {
+                                    final eventDetails = _markedDates[dayKey]!;
+                                    final color =
+                                        eventDetails[0]['color'] as Color;
+                                    return GestureDetector(
+                                      onTap: () =>
+                                          _showEventDetails(day, eventDetails),
+                                      child: Container(
+                                        margin: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          color: color,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '${day.day}',
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }
-                                return null;
+                                    );
+                                  }
+                                  return null;
+                                },
+                              ),
+                              onDaySelected: (selectedDay, focusedDay) {
+                                setState(() {
+                                  _focusedDay = focusedDay;
+                                });
                               },
                             ),
-                            onDaySelected: (selectedDay, focusedDay) {
-                              setState(() {
-                                _focusedDay = focusedDay;
-                              });
-                            },
-                          ),
+                    ),
                   ],
                 ),
               ),

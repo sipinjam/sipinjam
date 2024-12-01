@@ -31,4 +31,9 @@ class GedungModel {
         "nama_gedung": namaGedung,
         "foto_gedung": fotoGedung,
       };
+
+  @override
+  String toString() {
+    return namaGedung; // Mengembalikan nama gedung sebagai representasi
+  }
 }
