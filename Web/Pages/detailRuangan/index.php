@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +9,14 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        .active-thumbnail {
-            border: 2px solid #4f46e5; /* Warna ungu */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
+    .active-thumbnail {
+        border: 2px solid #4f46e5;
+        /* Warna ungu */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
     </style>
 </head>
+
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
     <!-- Sidebar -->
@@ -44,10 +47,12 @@
                 <div class="w-2/3">
                     <div class="relative">
                         <img id="mainImage" src="" alt="Ruangan" class="rounded-lg object-cover w-full h-80">
-                        <button onclick="prevImage()" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white p-2 rounded-full">
+                        <button onclick="prevImage()"
+                            class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white p-2 rounded-full">
                             &lt;
                         </button>
-                        <button onclick="nextImage()" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white p-2 rounded-full">
+                        <button onclick="nextImage()"
+                            class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white p-2 rounded-full">
                             &gt;
                         </button>
                     </div>
@@ -77,7 +82,8 @@
                     </div>
 
                     <!-- Tombol Booking -->
-                    <button class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700">
+                    <button class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700"
+                        href='../peminjaman.'>
                         Pinjam
                     </button>
                 </div>
@@ -117,9 +123,14 @@
                 data.nama_fasilitas.split(', ').forEach(fasilitas => {
                     let icon;
                     switch (fasilitas.toLowerCase()) {
-                        case 'ac': icon = 'fas fa-snowflake'; break;
-                        case 'proyektor': icon = 'fas fa-tv'; break;
-                        default: icon = 'fas fa-check';
+                        case 'ac':
+                            icon = 'fas fa-snowflake';
+                            break;
+                        case 'proyektor':
+                            icon = 'fas fa-tv';
+                            break;
+                        default:
+                            icon = 'fas fa-check';
                     }
                     fasilitasContainer.innerHTML += `<div class="flex items-center space-x-2 mt-2 text-gray-700">
                                                         <i class="${icon}"></i>
@@ -196,4 +207,5 @@
     window.onload = loadRoomData;
     </script>
 </body>
+
 </html>
