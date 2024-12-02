@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:sipit_app/config/app_session.dart';
+import 'package:sipit_app/models/peminjamModel.dart';
+import 'package:sipit_app/models/peminjamanModel.dart';
+
 void main() {
-  runApp(const HistoryPage());
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: HistoryPage(),
+  ));
 }
 
 class HistoryPage extends StatelessWidget {
@@ -11,9 +18,8 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: History(),
+    return const Scaffold(
+      body: History(),
     );
   }
 }
@@ -26,12 +32,9 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
-  List<dynamic> _allHistoryData = [];
-  List<dynamic> _pagedHistoryData = [];
-  bool _isLoading = true;
   int _page = 1;
+  List<PeminjamanModel> _allHistoryData = [];
   final int _pageSize = 10;
-  int _totalPages = 1;
 
   @override
   void initState() {
@@ -40,60 +43,50 @@ class _HistoryState extends State<History> {
   }
 
   Future<void> _fetchHistoryData() async {
-    const url = 'http://localhost/sipinjamfix/sipinjam/api/peminjaman/';
+    const baseUrl = 'http://localhost/sipinjamfix/sipinjam/api/peminjaman/';
     try {
+      final peminjamData = await AppSession.getPeminjam();
+      if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {
+        throw Exception('Data peminjam tidak ditemukan.');
+      }
+
+      final namaPeminjamLogin =
+          peminjamData.namaPeminjam; // Nama peminjam yang login
+      final url =
+          '$baseUrl?nama_peminjam=$namaPeminjamLogin'; // Filter berdasarkan nama
+
       final response = await http.get(Uri.parse(url));
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+
+        // Filter data yang sesuai dengan nama peminjam yang login
+        final filteredData = (data['data'] as List)
+            .map((json) => PeminjamanModel.fromJson(json))
+            .where((item) => item.namaPeminjam == namaPeminjamLogin)
+            .toList();
+
         setState(() {
-          _allHistoryData = data['data'] ?? [];
-          _totalPages = (_allHistoryData.length / _pageSize).ceil();
-          _loadPage();
-          _isLoading = false;
+          _allHistoryData = filteredData;
         });
       } else {
-        throw Exception('Failed to load data');
+        throw Exception(
+            'Gagal memuat data. Kode status: ${response.statusCode}');
       }
     } catch (e) {
+      print('Error fetching data: $e');
       setState(() {
-        _isLoading = false;
-      });
-      print('Error: $e');
-    }
-  }
-
-  void _loadPage() {
-    int startIndex = (_page - 1) * _pageSize;
-    int endIndex = startIndex + _pageSize;
-    setState(() {
-      _pagedHistoryData = _allHistoryData.sublist(
-          startIndex,
-          endIndex > _allHistoryData.length
-              ? _allHistoryData.length
-              : endIndex);
-    });
-  }
-
-  void _goToPreviousPage() {
-    if (_page > 1) {
-      setState(() {
-        _page--;
-        _loadPage();
-      });
-    }
-  }
-
-  void _goToNextPage() {
-    if (_page < _totalPages) {
-      setState(() {
-        _page++;
-        _loadPage();
+        _allHistoryData = [];
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    int totalPages = (_allHistoryData.length / _pageSize).ceil();
+    List<PeminjamanModel> pagedHistoryData =
+        _allHistoryData.skip((_page - 1) * _pageSize).take(_pageSize).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -104,52 +97,59 @@ class _HistoryState extends State<History> {
         elevation: 0,
       ),
       backgroundColor: Colors.grey[200],
-      body: _isLoading
+      body: _allHistoryData.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : _pagedHistoryData.isEmpty
-              ? const Center(
-                  child: Text(
-                    'No data available',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(10),
+                    itemCount: pagedHistoryData.length,
+                    itemBuilder: (context, index) {
+                      final item = pagedHistoryData[index];
+                      return _buildHistoryCard(
+                        item.namaStatus,
+                        _getStatusColor(item.namaStatus),
+                        item.tanggalKegiatan.toLocal().toString().split(' ')[0],
+                        item.namaKegiatan,
+                        item.namaRuangan,
+                        item.waktuMulai,
+                        item.waktuSelesai,
+                      );
+                    },
                   ),
-                )
-              : Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(10),
-                        itemCount: _pagedHistoryData.length,
-                        itemBuilder: (context, index) {
-                          final item = _pagedHistoryData[index];
-                          return _buildHistoryCard(
-                            item['nama_status'] ?? 'Unknown',
-                            _getStatusColor(item['nama_status'] ?? 'Unknown'),
-                            item['tanggal_kegiatan'] ?? 'Unknown',
-                            item['nama_kegiatan'] ?? 'Unknown',
-                            item['nama_ruangan'] ?? 'Unknown',
-                          );
-                        },
-                      ),
-                    ),
-                    _buildPaginationControls(),
-                  ],
                 ),
+                _buildPaginationControls(totalPages),
+              ],
+            ),
     );
   }
 
-  Widget _buildPaginationControls() {
+  Widget _buildPaginationControls(int totalPages) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            onPressed: _page > 1 ? _goToPreviousPage : null,
+            onPressed: _page > 1
+                ? () {
+                    setState(() {
+                      _page--;
+                    });
+                  }
+                : null,
             icon: const Icon(Icons.arrow_back),
           ),
-          Text('Halaman $_page dari $_totalPages'),
+          Text('Halaman $_page dari $totalPages'),
           IconButton(
-            onPressed: _page < _totalPages ? _goToNextPage : null,
+            onPressed: _page < totalPages
+                ? () {
+                    setState(() {
+                      _page++;
+                    });
+                  }
+                : null,
             icon: const Icon(Icons.arrow_forward),
           ),
         ],
@@ -171,7 +171,7 @@ class _HistoryState extends State<History> {
   }
 
   Widget _buildHistoryCard(String status, Color statusColor, String date,
-      String name, String location) {
+      String name, String location, String time1, String time2) {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -209,9 +209,15 @@ class _HistoryState extends State<History> {
             const SizedBox(height: 12),
             Divider(color: Colors.grey[300]),
             const SizedBox(height: 8),
-            Text(
-              date,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  date,
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                Text('$time1 - $time2'),
+              ],
             ),
           ],
         ),
