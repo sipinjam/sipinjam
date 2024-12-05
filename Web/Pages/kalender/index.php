@@ -49,7 +49,10 @@
                         </svg>
                     </div>
 
-                    <div id="dropdownRuangan" class="rounded border-[1px] border-gray-300 bg-white absolute top-[50px] w-[300px] shadow-rd hidden z-50">
+                    <div id="dropdownRuangan" class="rounded border-[1px] text-center border-gray-300 bg-white absolute top-[50px] w-[300px] shadow-rd hidden z-50">
+                        <div class="p-3">
+                            Pilih gedung terlebih dahulu
+                        </div>
                     </div>
                 </div>
                 <button onclick="searchRoom()" class="w-full bg-blue-500 text-white p-2 rounded w-1/4 h-10">Search</button>
@@ -161,7 +164,7 @@
 
             item.forEach(item => {
                 const div = document.createElement("div");
-                div.className = "cursor-pointer hover:bg-gray-300 p-3";
+                div.className = "cursor-pointer text-start hover:bg-gray-300 p-3";
                 div.textContent = item;
                 div.onclick = () => selectItem(buttonId, dropdownId, item);
                 dropdown.appendChild(div);

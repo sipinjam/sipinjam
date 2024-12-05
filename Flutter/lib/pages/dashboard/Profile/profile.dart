@@ -125,16 +125,6 @@ class ProfilePage extends StatelessWidget {
                             Nav.push(context, UpdatePass());
                           },
                         ),
-                        
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.language),
-                          title: const Text('BAHASA'),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            // Aksi ketika tombol Bahasa ditekan
-                          },
-                        ),
                         const Divider(),
                         ListTile(
                           leading: const Icon(Icons.help_outline),
