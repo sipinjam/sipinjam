@@ -27,7 +27,7 @@
 
                 <!-- Profile Section -->
                 <div class="flex items-center mx-10 p-6 space-x-6 border-b">
-                    <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center -mt-5 ml-5">
+                    <div class="w-24 h-24 p-6 bg-gray-200 rounded-full flex items-center justify-center -mt-5 ml-5">
                         <!-- Avatar Icon -->
                         <svg class= "w-12 h-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                             <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->

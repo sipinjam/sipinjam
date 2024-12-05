@@ -37,12 +37,12 @@
                 <form action="../Profile/index.php" method="POST">
                     <div class="grid grid-cols-1 gap-4 mb-6">
                         <div>
-                            <label class="text-gray-700">Username</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Username">
+                            <label class="text-gray-700">Nama Lengkap</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Nama Lengkap">
                         </div>
                         <div>
-                            <label class="text-gray-700">Konfirmasi Username</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Konfirmasi Username">
+                            <label class="text-gray-700">Konfirmasi Nama Lengkap</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Konfirmasi Nama Lengkap">
                         </div>
                     </div>
 
