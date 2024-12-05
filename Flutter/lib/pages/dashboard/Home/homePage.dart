@@ -5,7 +5,7 @@ import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:sipit_app/config/app_session.dart'; // Pastikan ini sudah ada di project Anda
+import 'package:sipit_app/config/app_session.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> gedungList = [];
   List<Map<String, dynamic>> bookingList = [];
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -40,8 +41,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchBookings() async {
     int idPeminjam = await AppSession.getUserId();
-    final response = await http
-        .get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/peminjaman'));
+    final response = await http.get(
+      Uri.parse('http://localhost/sipinjamfix/sipinjam/api/peminjaman'),
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -59,8 +61,44 @@ class _HomePageState extends State<HomePage> {
       DateTime bookingDate = DateTime.parse(booking['tanggal_kegiatan']);
       return (booking['nama_status'] == 'proses' ||
               booking['nama_status'] == 'disetujui') &&
-          now.isBefore(bookingDate.add(Duration(days: 1)));
+          now.isBefore(bookingDate.add(const Duration(days: 1)));
     }).toList();
+  }
+
+  Future<void> searchRooms(String keyword) async {
+    final response = await http.get(
+        Uri.parse('http://localhost/sipinjamfix/sipinjam/api/ruangan'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['status'] == 'success') {
+        List<Map<String, dynamic>> ruanganList =
+            List<Map<String, dynamic>>.from(data['data']);
+        
+        // Filter berdasarkan nama gedung atau nama ruangan
+        List<Map<String, dynamic>> filteredRooms = ruanganList.where((room) {
+          return room['nama_gedung']
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase()) ||
+              room['nama_ruangan']
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase());
+        }).toList();
+
+        if (filteredRooms.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DaftarRuanganPage(buildingId: filteredRooms),
+            ),
+          );
+        } else {
+          // Jika tidak ada hasil
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Tidak ditemukan hasil')),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -73,37 +111,57 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // SEARCH BAR
+                //Search Bar
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                   elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Cari ruangan',
-                        border: InputBorder.none,
-                        icon: Icon(Icons.search, color: Colors.grey.shade600),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextField(
+                            controller: searchController,
+                            decoration: const InputDecoration(
+                              hintText: 'Cari ruangan',
+                              border: InputBorder.none,
+                            ),
+                            onSubmitted: (keyword) {
+                              // Ketika pengguna menekan Enter
+                              keyword = keyword.trim();
+                              if (keyword.isNotEmpty) {
+                                searchRooms(keyword); // Memanggil fungsi searchRooms
+                                searchController.clear(); // Menghapus teks setelah pencarian
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Masukkan kata kunci pencarian')),
+                                );
+                              }
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                      IconButton(
+                        icon: Icon(Icons.search, color: Colors.grey.shade600),
+                        onPressed: () {
+                          String keyword = searchController.text.trim();
+                          if (keyword.isNotEmpty) {
+                            searchRooms(keyword); // Memanggil fungsi searchRooms
+                            searchController.clear(); // Menghapus teks setelah pencarian
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Masukkan kata kunci pencarian')),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
 
                 // DAFTAR GEDUNG
-                const SizedBox(
-                  height: 0,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [],
-                    ),
-                  ),
-                ),
-                // Menampilkan GedungCard secara dinamis
-                const SizedBox(height: 10),
                 SizedBox(
                   height: 220, // Tinggi kontainer untuk daftar gedung
                   child: ListView.builder(
@@ -121,13 +179,14 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 10),
 
                 // DAFTAR RUANGAN
-                const SizedBox(height: 10),
                 const Text(
                   "RUANGAN YANG DIPINJAM",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 10),
                 // Menampilkan BookingCard yang sudah difilter
                 for (final booking in getFilteredBookings())
                   BookingCard(
@@ -222,12 +281,12 @@ class BookingCard extends StatelessWidget {
 class GedungCard extends StatelessWidget {
   final String imageUrl;
   final String buildingName;
-  final int buildingId; // Tambahkan ID gedung
+  final int buildingId;
 
   const GedungCard({
     required this.imageUrl,
     required this.buildingName,
-    required this.buildingId, // Tambahkan parameter ini
+    required this.buildingId,
     super.key,
   });
 
@@ -238,7 +297,6 @@ class GedungCard extends StatelessWidget {
       height: 200,
       child: InkWell(
         onTap: () {
-          // Kirim ID gedung saat menavigasi ke daftar ruangan
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -246,27 +304,28 @@ class GedungCard extends StatelessWidget {
             ),
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 200,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: NetworkImage(imageUrl),
-                      fit: BoxFit.cover,
-                    ),
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 200,
+                height: 170,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: NetworkImage(imageUrl),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(buildingName, style: const TextStyle(fontSize: 16)),
-              ],
-            ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                buildingName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 15),
+              ),
+            ],
           ),
         ),
       ),

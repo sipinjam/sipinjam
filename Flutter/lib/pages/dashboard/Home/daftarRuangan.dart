@@ -9,7 +9,8 @@ void main() {
 }
 
 class DaftarRuanganPage extends StatefulWidget {
-  final int buildingId; // Tambahkan parameter ini
+  final dynamic buildingId; // Tambahkan parameter ini
+
 
   const DaftarRuanganPage({super.key, required this.buildingId});
 
@@ -23,15 +24,30 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   bool _isLoading = true;
   int _page = 1;
   final int _pageSize = 10;
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _fetchRuanganData();
+    _searchController.addListener(_filterRuanganData);
   }
 
+  void _loadPage() {
+  int startIndex = (_page - 1) * _pageSize;
+  int endIndex = startIndex + _pageSize;
+  setState(() {
+    _filteredRuanganData = _filteredRuanganData.sublist(
+      startIndex,
+      endIndex > _filteredRuanganData.length
+          ? _filteredRuanganData.length
+          : endIndex,
+    );
+  });
+}
+
+
   Future<void> _fetchRuanganData() async {
-    // Ambil semua data ruangan
     const url = 'http://localhost/sipinjamfix/sipinjam/api/ruangan/';
     try {
       final response = await http.get(
@@ -42,7 +58,6 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
         final data = json.decode(response.body);
         setState(() {
           _allRuanganData = (data['data'] as List<dynamic>).map((item) {
-            // Ubah URL gambar di sini
             if (item['foto_ruangan'] != null) {
               item['foto_ruangan'] = item['foto_ruangan']
                   .map((photo) =>
@@ -52,7 +67,6 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
             return daftarRuanganModel.fromJson(item);
           }).toList();
 
-          // Filter ruangan berdasarkan buildingId
           _filteredRuanganData = _allRuanganData
               .where((ruangan) => ruangan.buildingId == widget.buildingId)
               .toList();
@@ -71,16 +85,24 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
     }
   }
 
-  void _loadPage() {
-    int startIndex = (_page - 1) * _pageSize;
-    int endIndex = startIndex + _pageSize;
+  void _filterRuanganData() {
+    String searchQuery = _searchController.text.toLowerCase();
     setState(() {
-      _filteredRuanganData = _filteredRuanganData.sublist(
-        startIndex,
-        endIndex > _filteredRuanganData.length
-            ? _filteredRuanganData.length
-            : endIndex,
-      );
+      _filteredRuanganData = _allRuanganData.where((ruangan) {
+        bool matchesKeyword = searchQuery.isNotEmpty;
+        if (matchesKeyword) {
+          if (searchQuery.contains(' ')) {
+            List<String> keywords = searchQuery.split(' ');
+            return keywords.any((keyword) =>
+                ruangan.name.toLowerCase().contains(keyword) ||
+                ruangan.buildingName.toLowerCase().contains(keyword));
+          } else {
+            return ruangan.name.toLowerCase().contains(searchQuery) ||
+                ruangan.buildingName.toLowerCase().contains(searchQuery);
+          }
+        }
+        return false;
+      }).toList();
     });
   }
 
@@ -110,6 +132,18 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
               ],
             ),
             const SizedBox(height: 10),
+            // Search bar
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Cari ruangan...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -124,8 +158,8 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                           itemCount: _filteredRuanganData.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Jumlah kolom dalam grid
-                            childAspectRatio: 0.75, // Rasio aspek item
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
                           ),
                           itemBuilder: (context, index) {
                             final ruangan = _filteredRuanganData[index];
@@ -135,8 +169,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => detailRuanganPage(
-                                        ruanganId:
-                                            ruangan.id), // Kirim ID ruangan
+                                        ruanganId: ruangan.id),
                                   ),
                                 );
                               },
@@ -169,8 +202,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              const Icon(Icons.people,
-                                                  size: 18),
+                                              const Icon(Icons.people, size: 18),
                                               const SizedBox(width: 3),
                                               Text(
                                                 '${ruangan.capacity}',
@@ -195,6 +227,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
     );
   }
 }
+
 
 class DetailRuanganPage extends StatelessWidget {
   final daftarRuanganModel ruangan;
