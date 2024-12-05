@@ -35,6 +35,7 @@
                     <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
                     <th class="w-1/4 px-4 py-2">Kegiatan</th>
                     <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
+                    <th class="w-1/4 px-4 py-2">Sesi</th>
                     <th class="w-1/4 px-4 py-2">Status</th>
                 </tr>
             </thead>
@@ -67,7 +68,7 @@ async function getGedung() {
 
                 // Image
                 const img = document.createElement('img');
-                img.className = "gedung w-full h-[200px] rounded-t-[20px]";
+                img.className = "gedung w-full h-[190px] rounded-t-[20px]";
                 img.src = gedung.foto_gedung ? gedung.foto_gedung : "../../Sources/Img/default.jpg";
                 img.alt = gedung.nama_gedung;
                 link.appendChild(img);
@@ -128,14 +129,14 @@ async function getPeminjaman() {
 
             if (result.data.length === 0) {
                 peminjamanTable.innerHTML =
-                    '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
+                    '<tr><td colspan="6" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
             } else {
                 const today = new Date();
                 const filteredData = result.data
                     .filter(item => {
                         const itemDate = new Date(item.tanggal_kegiatan);
                         return item.nama_peminjam === loggedInUserName &&
-                            item.nama_status.toLowerCase() === 'disetujui' &&
+                            (item.nama_status.toLowerCase() === 'disetujui' || item.nama_status.toLowerCase() === 'proses') &&
                             itemDate > today;
                     })
                     .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
@@ -152,17 +153,27 @@ async function getPeminjaman() {
                         case 'disetujui':
                             statusColor = 'text-green-600';
                             break;
-                        case 'ditolak':
-                            statusColor = 'text-red-600';
-                            break;
                         default:
                             statusColor = 'text-gray-600';
+                    }
+
+                    // Tentukan sesi berdasarkan waktu_mulai dan waktu_selesai
+                    let sesi = '';
+                    if (item.waktu_mulai === "08:00:00" && item.waktu_selesai === "12:00:00") {
+                        sesi = 'Sesi 1';
+                    } else if (item.waktu_mulai === "12:00:00" && item.waktu_selesai === "16:00:00") {
+                        sesi = 'Sesi 2';
+                    } else if (item.waktu_mulai === "08:00:00" && item.waktu_selesai === "16:00:00") {
+                        sesi = 'Full Sesi';
+                    } else {
+                        sesi = 'Tidak Diketahui';
                     }
 
                     row.innerHTML = `
                         <td class="border px-4 py-2">${item.nama_ruangan}</td>
                         <td class="border px-4 py-2">${item.nama_kegiatan}</td>
                         <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
+                        <td class="border px-4 py-2">${sesi}</td>
                         <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
                     `;
                     peminjamanTable.appendChild(row);
@@ -170,7 +181,7 @@ async function getPeminjaman() {
 
                 if (filteredData.length === 0) {
                     peminjamanTable.innerHTML =
-                        '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
+                        '<tr><td colspan="6" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
                 }
             }
         } else {
@@ -180,6 +191,8 @@ async function getPeminjaman() {
         console.error('Terjadi kesalahan saat mengambil data:', error);
     }
 }
+
+
 // Panggil fungsi saat halaman dimuat
 window.onload = function() {
     getGedung();
