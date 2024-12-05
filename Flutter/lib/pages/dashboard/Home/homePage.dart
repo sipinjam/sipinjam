@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                       return GedungCard(
                         imageUrl: imageUrl,
                         buildingName: gedung['nama_gedung'],
-                        buildingId: gedung['id_gedung'],
+                        gedungId: gedung['id_gedung'],
                       );
                     },
                   ),
@@ -222,12 +222,12 @@ class BookingCard extends StatelessWidget {
 class GedungCard extends StatelessWidget {
   final String imageUrl;
   final String buildingName;
-  final int buildingId; // Tambahkan ID gedung
+  final int gedungId; // Tambahkan ID gedung
 
   const GedungCard({
     required this.imageUrl,
     required this.buildingName,
-    required this.buildingId, // Tambahkan parameter ini
+    required this.gedungId, // Tambahkan parameter ini
     super.key,
   });
 
@@ -242,7 +242,9 @@ class GedungCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DaftarRuanganPage(buildingId: buildingId),
+              builder: (context) => DaftarRuanganPage(
+                gedungId: gedungId,
+              ),
             ),
           );
         },

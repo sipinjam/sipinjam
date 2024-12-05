@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
 
@@ -64,51 +66,65 @@ class _peminjamanPageState extends State<peminjamanPage> {
                     width: 8,
                   ),
                   const Text(
-                    'Detail Ruangan',
+                    'Peminjaman',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
               // Bagian Peminjam
-              Card(
-                color: Colors.white, // Warna abu-abu
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Sudut membulat
-                ),
-                elevation: 4, // Efek bayangan
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Peminjam',
-                        style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+              FutureBuilder<PeminjamModel?>(
+                  future: AppSession.getPeminjam(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.data == null) {
+                      return const Center(
+                        child: Text("no profile data"),
+                      );
+                    }
+
+                    PeminjamModel peminjam = snapshot.data!;
+
+                    return Card(
+                      color: Colors.white, // Warna abu-abu
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10), // Sudut membulat
                       ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        initialValue: 'PENGGUNA SIPIT',
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                          border: OutlineInputBorder(),
+                      elevation: 4, // Efek bayangan
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Peminjam',
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            TextFormField(
+                              initialValue: peminjam.namaPeminjam,
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            TextFormField(
+                              initialValue: 'Rohani Kristiani Polines',
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                labelText: 'Ormawa',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        initialValue: 'Rohani Kristiani Polines',
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Ormawa',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }),
               // Bagian Kegiatan
               Card(
                 color: Colors.white, // Warna abu-abu

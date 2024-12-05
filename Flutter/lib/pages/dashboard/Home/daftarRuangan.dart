@@ -9,17 +9,17 @@ void main() {
 }
 
 class DaftarRuanganPage extends StatefulWidget {
-  final int buildingId; // Tambahkan parameter ini
+  final int gedungId; // Tambahkan parameter ini
 
-  const DaftarRuanganPage({super.key, required this.buildingId});
+  const DaftarRuanganPage({super.key, required this.gedungId});
 
   @override
   State<DaftarRuanganPage> createState() => _DaftarRuanganPageState();
 }
 
 class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
-  List<daftarRuanganModel> _allRuanganData = [];
-  List<daftarRuanganModel> _filteredRuanganData = [];
+  List<DaftarRuanganModel> _allRuanganData = [];
+  List<DaftarRuanganModel> _filteredRuanganData = [];
   bool _isLoading = true;
   int _page = 1;
   final int _pageSize = 10;
@@ -49,12 +49,12 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                       'http://localhost/sipinjamfix/sipinjam/api/assets/ruangan/${photo.split('/').last}')
                   .toList();
             }
-            return daftarRuanganModel.fromJson(item);
+            return DaftarRuanganModel.fromJson(item);
           }).toList();
 
           // Filter ruangan berdasarkan buildingId
           _filteredRuanganData = _allRuanganData
-              .where((ruangan) => ruangan.buildingId == widget.buildingId)
+              .where((ruangan) => ruangan.idGedung == widget.gedungId)
               .toList();
 
           _loadPage();
@@ -135,8 +135,8 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => detailRuanganPage(
-                                        ruanganId:
-                                            ruangan.id), // Kirim ID ruangan
+                                        ruanganId: ruangan
+                                            .idRuangan), // Kirim ID ruangan
                                   ),
                                 );
                               },
@@ -149,7 +149,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                   children: [
                                     Expanded(
                                       child: Image.network(
-                                        '${ruangan.photos.isNotEmpty ? ruangan.photos.first : 'default_image.png'}',
+                                        '${ruangan.fotoRuangan!.isNotEmpty ? ruangan.fotoRuangan!.first : 'default_image.png'}',
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -158,7 +158,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            ruangan.name,
+                                            ruangan.namaRuangan,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
@@ -173,7 +173,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                                   size: 18),
                                               const SizedBox(width: 3),
                                               Text(
-                                                '${ruangan.capacity}',
+                                                '${ruangan.kapasitas}',
                                                 style: const TextStyle(
                                                     fontSize: 10),
                                               ),
@@ -196,31 +196,31 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   }
 }
 
-class DetailRuanganPage extends StatelessWidget {
-  final daftarRuanganModel ruangan;
+// class DetailRuanganPage extends StatelessWidget {
+//   final DaftarRuanganModel ruangan;
 
-  const DetailRuanganPage({super.key, required this.ruangan});
+//   const DetailRuanganPage({super.key, required this.ruangan});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(ruangan.name),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Nama Ruangan: ${ruangan.name}'),
-            Text('Kapasitas: ${ruangan.capacity}'),
-            if (ruangan.photos.isNotEmpty)
-              Image.network(
-                '${ruangan.photos.first}',
-                fit: BoxFit.cover,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(ruangan.namaRuangan),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text('Nama Ruangan: ${ruangan.namaRuangan}'),
+//             Text('Kapasitas: ${ruangan.kapasitas}'),
+//             if (ruangan.fotoRuangan!.isNotEmpty)
+//               Image.network(
+//                 '${ruangan.fotoRuangan!.first}',
+//                 fit: BoxFit.cover,
+//               ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

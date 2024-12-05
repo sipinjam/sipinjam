@@ -1,42 +1,68 @@
-class daftarRuanganModel {
-  final int id;
-  final String name;
-  final String buildingName;
-  final int buildingId;
-  final String description;
-  final int capacity;
-  final String borrowerName;
-  final String? facilities;
-  final List<String> photos;
+// To parse this JSON data, do
+//
+//     final daftarRuanganModel = daftarRuanganModelFromJson(jsonString);
 
-  daftarRuanganModel({
-    required this.id,
-    required this.name,
-    required this.buildingName,
-    required this.buildingId,
-    required this.description,
-    required this.capacity,
-    required this.borrowerName,
-    this.facilities,
-    required this.photos,
+import 'dart:convert';
+
+import 'package:sipit_app/models/ruanganModel.dart';
+
+DaftarRuanganModel daftarRuanganModelFromJson(String str) =>
+    DaftarRuanganModel.fromJson(json.decode(str));
+
+String daftarRuanganModelToJson(DaftarRuanganModel data) =>
+    json.encode(data.toJson());
+
+class DaftarRuanganModel {
+  final int idRuangan;
+  final String namaRuangan;
+  final String namaGedung;
+  final int idGedung;
+  final String deskripsiRuangan;
+  final int kapasitas;
+  final String namaPeminjam;
+  final String namaFasilitas;
+  final List<String>? fotoRuangan;
+
+  DaftarRuanganModel({
+    required this.idRuangan,
+    required this.namaRuangan,
+    required this.namaGedung,
+    required this.idGedung,
+    required this.deskripsiRuangan,
+    required this.kapasitas,
+    required this.namaPeminjam,
+    required this.namaFasilitas,
+    required this.fotoRuangan,
   });
 
-  factory daftarRuanganModel.fromJson(Map<String, dynamic> json) {
-    return daftarRuanganModel(
-      id: json['id_ruangan'],
-      name: json['nama_ruangan'],
-      buildingName: json['nama_gedung'],
-      buildingId: json['id_gedung'],
-      description: json['deskripsi_ruangan'] ?? '',
-      capacity: json['kapasitas'],
-      borrowerName: json['nama_peminjam'] ?? '',
-      facilities: json['nama_fasilitas'],
-      photos: List<String>.from(json['foto_ruangan'] ?? []),
+  factory DaftarRuanganModel.fromJson(Map<String, dynamic> json) {
+    return DaftarRuanganModel(
+      idRuangan: json['id_ruangan'] ?? 0,
+      namaRuangan: json['nama_ruangan'] ?? '',
+      namaGedung: json['nama_gedung'] ?? '',
+      idGedung: json['id_gedung'] ?? 0,
+      deskripsiRuangan: json['deskripsi_ruangan'] ?? '',
+      kapasitas: json['kapasitas'] ?? 0,
+      namaPeminjam: json['nama_peminjam'] ?? '',
+      namaFasilitas: json['nama_fasilitas'] ?? '',
+      fotoRuangan: List<String>.from(json['foto_ruangan'] ?? []),
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        "id_ruangan": idRuangan,
+        "nama_ruangan": namaRuangan,
+        "nama_gedung": namaGedung,
+        "id_gedung": idGedung,
+        "deskripsi_ruangan": deskripsiRuangan ?? "",
+        "kapasitas": kapasitas ?? 0,
+        "nama_peminjam": namaPeminjam ?? "",
+        "nama_fasilitas": namaFasilitas ?? "",
+        "foto_ruangan": fotoRuangan ?? [],
+      };
+
   @override
   String toString() {
-    return name; // Mengembalikan nama gedung sebagai representasi
+    return namaRuangan; // Mengembalikan nama gedung sebagai representasi
   }
 }

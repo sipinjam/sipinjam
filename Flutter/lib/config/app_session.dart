@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
 
 class AppSession {
@@ -7,7 +8,7 @@ class AppSession {
     // Mengambil data peminjam dari SharedPreferences
     final pref = await SharedPreferences.getInstance();
     String? peminjamString = pref.getString('peminjamData');
-    
+
     // Jika data peminjam tidak ditemukan, kembalikan id default
     if (peminjamString == null) {
       return -1; // Menandakan tidak ada pengguna yang login
@@ -42,5 +43,23 @@ class AppSession {
 
     var peminjamMap = jsonDecode(peminjamString);
     return PeminjamModel.fromJson(peminjamMap);
+  }
+
+  // appSession Ruangan
+  static Future<void> saveRuangan(DaftarRuanganModel ruangan) async {
+    final pref = await SharedPreferences.getInstance();
+    String ruanganString = jsonEncode(ruangan.toJson());
+    await pref.setString('ruanganData', ruanganString);
+  }
+
+  static Future<DaftarRuanganModel?> getRuangan() async {
+    final pref = await SharedPreferences.getInstance();
+    String? ruanganString = pref.getString('ruanganData');
+    if (ruanganString == null) {
+      return null;
+    }
+
+    var ruanganMap = jsonDecode(ruanganString);
+    return DaftarRuanganModel.fromJson(ruanganMap);
   }
 }

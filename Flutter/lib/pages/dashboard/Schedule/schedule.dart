@@ -6,7 +6,6 @@ import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:sipit_app/datasources/ruangan_datasource.dart';
 import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:sipit_app/models/gedungModel.dart';
-import 'package:sipit_app/models/ruanganModel.dart';
 import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -30,7 +29,7 @@ class _SchedulePageState extends State<SchedulePage> {
   List<GedungModel> _gedungs = [];
   GedungModel? _selectedGedung;
   final RuanganDatasource _ruanganDatasource = RuanganDatasource();
-  List<daftarRuanganModel> _ruangans = [];
+  List<DaftarRuanganModel> _ruangans = [];
   String? _selectedRuangan;
 
   Future<void> fetchGedungs() async {
@@ -39,10 +38,6 @@ class _SchedulePageState extends State<SchedulePage> {
       final gedungs = await _gedungDatasource.fetchGedungList();
       setState(() {
         _gedungs = gedungs;
-        _gedungs.forEach((gedung) {
-          print('namaGedung: ${gedung.namaGedung}');
-        });
-        print('fetch gedung: $_gedungs');
       });
     } catch (e) {
       print('Error: $e');
@@ -122,7 +117,6 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('building widget with _gedungs: $_gedungs');
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -172,7 +166,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8)),
-                child: DropdownMenu<daftarRuanganModel?>(
+                child: DropdownMenu<DaftarRuanganModel?>(
                   width: MediaQuery.of(context).size.width,
                   controller: _searchRuanganController,
                   hintText: "Cari Ruangan",
@@ -180,16 +174,15 @@ class _SchedulePageState extends State<SchedulePage> {
                       InputDecorationTheme(border: InputBorder.none),
                   dropdownMenuEntries: _ruangans
                       .where((ruangan) =>
-                          ruangan.buildingName == _selectedGedung!.namaGedung)
+                          ruangan.namaGedung == _selectedGedung!.namaGedung)
                       .map((ruangan) {
                     return DropdownMenuEntry(
-                        value: ruangan, label: ruangan.name);
+                        value: ruangan, label: ruangan.namaRuangan);
                   }).toList(),
                   onSelected: (ruangan) {
                     setState(() {
                       _selectedRuangan = ruangan.toString();
                     });
-                    print('ruangan yang dipilih: $_selectedRuangan');
                   },
                 ),
               ),
@@ -199,7 +192,6 @@ class _SchedulePageState extends State<SchedulePage> {
             DButtonElevation(
                 onClick: () async {
                   await fetchAndSetMarkedDates(_selectedRuangan!);
-                  print(_selectedRuangan);
                 },
                 mainColor: Color(0xff615EFC),
                 radius: 8,
