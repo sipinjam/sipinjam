@@ -21,7 +21,7 @@
 
     <div class="ml-64 max-w-9xl bg-white p-6 rounded-lg mt-20 shadow-md">
     <span class=" gap-5 items-center text-lg">
-        <p class="text-2xl flex font-bold text-gray-800 mb-4">FAQ</p>
+        <p class="text-2xl font-bold text-blue-800 mb-4">FAQ</p>
 
         <?php
         $faqs = [
