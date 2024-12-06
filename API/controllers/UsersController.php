@@ -180,7 +180,7 @@ class UsersController
                 $result_stmt->execute([$id_peminjam]);
                 $updatedUser = $result_stmt->fetch(PDO::FETCH_OBJ);
 
-                response('success', 'User updated successfully', $updatedUser);
+                response('success', 'User updated successfully', $updatedUser,statusCode: 200);
             } else {
                 response('error', 'Unable to update user', null, 400);
             }
