@@ -36,7 +36,7 @@
 
     <!-- Modal Popup -->
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" onclick="closeModalOnOutsideClick(event)">
-        <div class="bg-white rounded-lg shadow-lg max-w-xl w-full mx-4 p-6 relative" onclick="event.stopPropagation()">
+        <div class="bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4 p-6 relative" onclick="event.stopPropagation()">
             <!-- Close Button -->
             <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
                 &times;
@@ -46,7 +46,7 @@
             <div>
                 <!-- Image Carousel -->
                 <div class="relative">
-                    <img id="mainImage" src="" alt="Ruangan" class="rounded-lg object-cover w-full h-72">
+                    <img id="mainImage" src="" alt="Ruangan" class="rounded-lg object-cover w-full h-80">
                     <button onclick="prevImage()" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white p-2 rounded-full">
                         &lt;
                     </button>
