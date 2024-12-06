@@ -181,7 +181,7 @@ async function getPeminjaman() {
 
                 if (filteredData.length === 0) {
                     peminjamanTable.innerHTML =
-                        '<tr><td colspan="6" class="text-center py-4">Tidak ada data peminjaman untuk pengguna ini.</td></tr>';
+                        '<tr><td colspan="6" class="text-center py-4">Tidak ada ruangan yang sedang dipinjam.</td></tr>';
                 }
             }
         } else {
