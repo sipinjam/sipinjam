@@ -21,7 +21,7 @@
 
     <div class="ml-64 max-w-9xl bg-white p-6 rounded-lg mt-20 shadow-md">
     <span class=" gap-5 items-center text-lg">
-        <p class="text-2xl flex font-bold text-gray-800 mb-4">FAQ</p>
+        <p class="text-2xl font-bold text-blue-800 mb-4">FAQ</p>
 
         <?php
         $faqs = [
@@ -61,7 +61,7 @@
             echo '<div class="border-b border-gray-200 py-4">';
             echo '<button onclick="toggleAnswer('.$index.')" class="flex justify-between w-full text-left text-lg font-semibold text-gray-800">';
             echo $faq["question"];
-            echo '<span id="icon-'.$index.'" class="transform transition-transform">&#9660;</span>';
+            echo '<span id="icon-'.$index.'" class="transform transition-transform">⌄</span>';
             echo '</button>';
             echo '<div id="answer-'.$index.'" class="faq-answer mt-2 text-gray-600 hidden">'.$faq["answer"].'</div>';
             echo '</div>';
