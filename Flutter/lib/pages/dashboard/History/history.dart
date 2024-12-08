@@ -98,7 +98,7 @@ class _HistoryState extends State<History> {
       ),
       backgroundColor: Colors.grey[200],
       body: _allHistoryData.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: Text('Tidak ada Peminjaman'))
           : Column(
               children: [
                 Expanded(

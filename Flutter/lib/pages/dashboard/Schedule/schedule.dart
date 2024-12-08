@@ -6,7 +6,7 @@ import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:sipit_app/datasources/ruangan_datasource.dart';
 import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:sipit_app/models/gedungModel.dart';
-import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
+import 'package:sipit_app/pages/dashboard/PeminjamanForm/peminjaman.dart';
 import 'package:sipit_app/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -60,9 +60,12 @@ class _SchedulePageState extends State<SchedulePage> {
       _isLoading = true;
     });
     try {
+      print(roomName);
       final dates = await _peminjamanDatasource.fetchMarkedDates(roomName);
+      print(dates);
       setState(() {
         _markedDates = dates;
+        print(_markedDates);
       });
     } catch (e) {
       print('Error fetching marked dates: $e');
@@ -98,7 +101,6 @@ class _SchedulePageState extends State<SchedulePage> {
                       children: [
                         Text('Nama Kegiatan: ${event['nama_kegiatan']}'),
                         Text('Waktu: ${event['waktu']}'),
-                        Text('Nama Ormawa: ${event['nama_ormawa']}'),
                         Text('Status: ${event['status']}'),
                       ],
                     );
@@ -334,20 +336,20 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
 
             // button ke form peminjaman
-            const SizedBox(
-              height: 10,
-            ),
-            DButtonElevation(
-              radius: 10,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              mainColor: biruTua,
-              onClick: () => {Nav.push(context, peminjamanPage())},
-              child: const Text(
-                'Pinjam',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            )
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            // DButtonElevation(
+            //   radius: 10,
+            //   padding: const EdgeInsets.symmetric(vertical: 10),
+            //   mainColor: biruTua,
+            //   onClick: () => {Nav.push(context, peminjamanPage())},
+            //   child: const Text(
+            //     'Pinjam',
+            //     style:
+            //         TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            //   ),
+            // )
           ],
         ),
       ),

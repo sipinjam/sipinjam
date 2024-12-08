@@ -20,7 +20,6 @@ class PeminjamanModel {
   String daftarPanitia;
   String namaRuangan;
   String namaKetuaOrmawa;
-  String namaOrmawa;
   String namaKetuaPelaksana;
   String namaPeminjam;
   String namaStatus;
@@ -35,7 +34,6 @@ class PeminjamanModel {
     required this.daftarPanitia,
     required this.namaRuangan,
     required this.namaKetuaOrmawa,
-    required this.namaOrmawa,
     required this.namaKetuaPelaksana,
     required this.namaPeminjam,
     required this.namaStatus,
@@ -52,7 +50,6 @@ class PeminjamanModel {
         daftarPanitia: json["daftar_panitia"],
         namaRuangan: json["nama_ruangan"],
         namaKetuaOrmawa: json["nama_ketua_ormawa"],
-        namaOrmawa: json["nama_ormawa"],
         namaKetuaPelaksana: json["nama_ketua_pelaksana"],
         namaPeminjam: json["nama_peminjam"],
         namaStatus: json["nama_status"],
@@ -69,7 +66,6 @@ class PeminjamanModel {
         "daftar_panitia": daftarPanitia,
         "nama_ruangan": namaRuangan,
         "nama_ketua_ormawa": namaKetuaOrmawa,
-        "nama_ormawa": namaOrmawa,
         "nama_ketua_pelaksana": namaKetuaPelaksana,
         "nama_peminjam": namaPeminjam,
         "nama_status": namaStatus,

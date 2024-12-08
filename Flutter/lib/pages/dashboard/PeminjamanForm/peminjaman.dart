@@ -1,9 +1,16 @@
+import 'package:d_button/d_button.dart';
+import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/datasources/mahasiswa_datasource.dart';
+import 'package:sipit_app/datasources/ruangan_datasource.dart';
+import 'package:sipit_app/models/mahasiswaModel.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/theme.dart';
+
+import '../../../models/daftarRuanganModel.dart';
 
 class peminjamanPage extends StatefulWidget {
   peminjamanPage({super.key});
@@ -14,6 +21,43 @@ class peminjamanPage extends StatefulWidget {
 
 class _peminjamanPageState extends State<peminjamanPage> {
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _searchRuanganController =
+      TextEditingController();
+  final MahasiswaDatasource _mahasiswaDatasource = MahasiswaDatasource();
+  List<MahasiswanModel> _mahasiswas = [];
+  String? _selectedOrmawa;
+  final RuanganDatasource _ruanganDatasource = RuanganDatasource();
+  List<DaftarRuanganModel> _ruangans = [];
+  String? _selectedRuangan;
+
+  bool _isLoadingMahasiswa = false;
+  bool _isLoadingRuangan = false;
+
+  Future<void> fetchApi() async {
+    setState(() {
+      _isLoadingMahasiswa = true;
+      _isLoadingRuangan = true;
+    });
+
+    try {
+      final results = await Future.wait([
+        _mahasiswaDatasource.getAllMahasiswa(),
+        _ruanganDatasource.fetchRuanganNonRequired(),
+      ]);
+
+      setState(() {
+        _mahasiswas = results[0] as List<MahasiswanModel>;
+        _ruangans = results[1] as List<DaftarRuanganModel>;
+      });
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        _isLoadingRuangan = false;
+        _isLoadingMahasiswa = false;
+      });
+    }
+  }
 
   // Fungsi untuk memilih tanggal
   Future<void> _selectDate() async {
@@ -32,10 +76,36 @@ class _peminjamanPageState extends State<peminjamanPage> {
   }
 
   @override
-  void dispose() {
-    _dateController
-        .dispose(); // Pastikan untuk membuang controller setelah selesai
-    super.dispose();
+  void initState() {
+    fetchApi();
+    super.initState();
+  }
+
+  void _addEvent() {
+    final TextEditingController eventBaruController = TextEditingController();
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Tambah Event'),
+            content: TextField(
+              controller: eventBaruController,
+              decoration: InputDecoration(
+                labelText: 'Event Baru',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Batal')),
+              TextButton(onPressed: () {}, child: Text('Tambah'))
+            ],
+          );
+        });
   }
 
   @override
@@ -72,59 +142,73 @@ class _peminjamanPageState extends State<peminjamanPage> {
                 ],
               ),
               // Bagian Peminjam
-              FutureBuilder<PeminjamModel?>(
-                  future: AppSession.getPeminjam(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData || snapshot.data == null) {
-                      return const Center(
-                        child: Text("no profile data"),
-                      );
-                    }
-
-                    PeminjamModel peminjam = snapshot.data!;
-
-                    return Card(
-                      color: Colors.white, // Warna abu-abu
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // Sudut membulat
+              Card(
+                color: Colors.white, // Warna abu-abu
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Sudut membulat
+                ),
+                elevation: 4, // Efek bayangan
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Peminjam',
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
-                      elevation: 4, // Efek bayangan
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Peminjam',
-                              style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 8),
-                            TextFormField(
+                      const SizedBox(height: 8),
+                      FutureBuilder(
+                          future: AppSession.getPeminjam(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(
+                                  child: Text("No profile data available."));
+                            }
+
+                            PeminjamModel peminjam = snapshot.data!;
+                            return TextFormField(
                               initialValue: peminjam.namaPeminjam,
                               readOnly: true,
                               decoration: const InputDecoration(
                                 labelText: 'Username',
                                 border: OutlineInputBorder(),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextFormField(
-                              initialValue: 'Rohani Kristiani Polines',
-                              readOnly: true,
-                              decoration: const InputDecoration(
-                                labelText: 'Ormawa',
-                                border: OutlineInputBorder(),
+                            );
+                          }),
+                      const SizedBox(height: 8),
+                      _isLoadingMahasiswa
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Container(
+                              padding: EdgeInsets.symmetric(horizontal: 6),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(6)),
+                              child: DropdownMenu<MahasiswanModel?>(
+                                width: MediaQuery.of(context).size.width,
+                                // controller: _searchRuanganController,
+                                hintText: "Ormawa",
+                                inputDecorationTheme: InputDecorationTheme(
+                                    border: InputBorder.none),
+                                dropdownMenuEntries: _mahasiswas.map((ormawa) {
+                                  return DropdownMenuEntry(
+                                      value: ormawa, label: ormawa.namaOrmawa!);
+                                }).toList(),
+                                onSelected: (ormawa) {
+                                  setState(() {
+                                    _selectedOrmawa = ormawa.toString();
+                                  });
+                                },
                               ),
                             ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
               // Bagian Kegiatan
               Card(
                 color: Colors.white, // Warna abu-abu
@@ -143,11 +227,46 @@ class _peminjamanPageState extends State<peminjamanPage> {
                             color: Colors.purple, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Nama Kegiatan',
-                          border: OutlineInputBorder(),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            padding: EdgeInsets.symmetric(horizontal: 6),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(6)),
+                            child: DropdownMenu<MahasiswanModel?>(
+                              width: MediaQuery.of(context).size.width,
+                              // controller: _searchRuanganController,
+                              hintText: "Kegiatan",
+                              inputDecorationTheme: InputDecorationTheme(
+                                  border: InputBorder.none),
+                              dropdownMenuEntries: _mahasiswas.map((ormawa) {
+                                return DropdownMenuEntry(
+                                    value: ormawa, label: ormawa.namaOrmawa!);
+                              }).toList(),
+                              onSelected: (ormawa) {
+                                setState(() {
+                                  _selectedOrmawa = ormawa.toString();
+                                });
+                              },
+                            ),
+                          ),
+                          DButtonFlat(
+                            padding: EdgeInsets.all(12),
+                            radius: 6,
+                            onClick: () => _addEvent(),
+                            mainColor: biruTua,
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                size: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
@@ -180,13 +299,32 @@ class _peminjamanPageState extends State<peminjamanPage> {
                       const SizedBox(height: 16),
 
                       // Bagian Ruangan
-                      TextFormField(
-                        initialValue: 'Ruang Seminar MST',
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Ruangan',
-                          border: OutlineInputBorder(),
-                        ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: _isLoadingRuangan
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : DropdownMenu<DaftarRuanganModel?>(
+                                width: MediaQuery.of(context).size.width,
+                                controller: _searchRuanganController,
+                                hintText: "Cari Ruangan",
+                                inputDecorationTheme: InputDecorationTheme(
+                                    border: InputBorder.none),
+                                dropdownMenuEntries: _ruangans.map((ruangan) {
+                                  return DropdownMenuEntry(
+                                      value: ruangan,
+                                      label: ruangan.namaRuangan);
+                                }).toList(),
+                                onSelected: (ruangan) {
+                                  setState(() {
+                                    _selectedRuangan = ruangan.toString();
+                                  });
+                                },
+                              ),
                       ),
                     ],
                   ),

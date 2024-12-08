@@ -36,16 +36,16 @@ class RuanganDatasource {
     return null;
   }
 
-  // Future<List<DaftarRuanganModel>> fetchRuangan(int ruanganId) async {
-  //   final response = await http.get(Uri.parse('$ruanganUrl/$ruanganId'));
-  //   if (response.statusCode == 200) {
-  //     final data = jsonDecode(response.body);
-  //     final List<dynamic> ruanganData = data['data'];
-  //     return ruanganData
-  //         .map((json) => DaftarRuanganModel.fromJson(json))
-  //         .toList();
-  //   } else {
-  //     throw Exception('failed to load data ruangan');
-  //   }
-  // }
+  Future<List<DaftarRuanganModel>> fetchRuanganNonRequired() async {
+    final response = await http.get(Uri.parse('$ruanganUrl'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> ruanganData = data['data'];
+      return ruanganData
+          .map((json) => DaftarRuanganModel.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('failed to load data ruangan');
+    }
+  }
 }

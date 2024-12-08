@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
-import 'package:sipit_app/pages/dashboard/Home/peminjaman.dart';
+import 'package:sipit_app/pages/dashboard/PeminjamanForm/peminjaman.dart';
 import 'package:sipit_app/config/widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:sipit_app/models/ruanganModel.dart';
@@ -226,31 +226,31 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          // const SizedBox(height: 20),
 
-                          // Book Now button
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Nav.push(context, peminjamanPage());
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text(
-                                'Book Now',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // // Book Now button
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   height: 50,
+                          //   child: ElevatedButton(
+                          //     onPressed: () {
+                          //       Nav.push(context, peminjamanPage());
+                          //     },
+                          //     style: ElevatedButton.styleFrom(
+                          //       backgroundColor: Colors.blueAccent,
+                          //       shape: RoundedRectangleBorder(
+                          //         borderRadius: BorderRadius.circular(20),
+                          //       ),
+                          //     ),
+                          //     child: const Text(
+                          //       'Book Now',
+                          //       style: TextStyle(
+                          //         fontSize: 18,
+                          //         color: Colors.white,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
