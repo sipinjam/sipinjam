@@ -10,7 +10,7 @@
     <title>Sipinjam</title>
 </head>
 
-<body>
+<body class="flex flex-col items-center">
     <!-- Header -->
     <?php include '../../components/header.php' ?>
     <!-- End Header -->
@@ -97,25 +97,15 @@
                 <div id="loading" class="hidden text-center text-blue-500">Loading...</div>
                 <div id="error" class="hidden text-center text-red-500">Failed to fetch data. Please try again.</div>
             </div>
-        </div>
 
-        <div class="flex flex-col">
             <!-- Keterangan -->
-            <div class="p-6 bg-white rounded-lg shadow max-h-max">
+            <div class="p-6 bg-white rounded-lg shadow max-h-max mt-4">
                 <h2 class="text-lg font-bold mb-2">Keterangan</h2>
                 <div class="space-y-2">
-                    <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi sudah penuh</div>
+                    <div class="bg-red-500 text-white px-4 py-2 rounded-md">Sesi Sudah Penuh</div>
                     <div class="bg-yellow-400 text-white px-4 py-2 rounded-md">Sesi 1</div>
                     <div class="bg-green-400 text-white px-4 py-2 rounded-md">Sesi 2</div>
                 </div>
-            </div>
-
-            <div class="w-full h-32">
-                <button
-                    class="mt-5 tracking-wide font-semibold bg-blue-800 text-white w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                    onclick="window.location.href='../peminjaman/index.php'">
-                    <span class="ml-">PINJAM</span>
-                </button>
             </div>
         </div>
     </div>
@@ -222,7 +212,7 @@
                         .filter(item =>
                             item.nama_ruangan.toLowerCase() === roomName.toLowerCase() &&
                             item.nama_status !== "ditolak"
-                        )
+                        );
                         .map(item => ({
                             day: new Date(item.tanggal_kegiatan).getDate() - 1,
                             month: new Date(item.tanggal_kegiatan).getMonth() + 1,
