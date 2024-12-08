@@ -6,6 +6,8 @@ import 'package:sipit_app/theme.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sipit_app/config/app_session.dart';
+import 'package:sipit_app/models/peminjamanModel.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> gedungList = [];
-  List<Map<String, dynamic>> bookingList = [];
+  List<PeminjamanModel> bookingList = [];
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -40,28 +42,50 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchBookings() async {
-    int idPeminjam = await AppSession.getUserId();
-    final response = await http.get(
-      Uri.parse('http://localhost/sipinjamfix/sipinjam/api/peminjaman'),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['status'] == 'success') {
-        setState(() {
-          bookingList = List<Map<String, dynamic>>.from(data['data']);
-        });
+    const baseUrl = 'http://localhost/sipinjamfix/sipinjam/api/peminjaman/';
+    try {
+      final peminjamData = await AppSession.getPeminjam();
+      if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {
+        throw Exception('Data peminjam tidak ditemukan.');
       }
+
+      final namaPeminjamLogin =
+          peminjamData.namaPeminjam; // Nama peminjam yang login
+      final url =
+          '$baseUrl?nama_peminjam=$namaPeminjamLogin'; // Filter berdasarkan nama
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        // Filter data yang sesuai dengan nama peminjam yang login
+        final filteredData = (data['data'] as List)
+            .map((json) => PeminjamanModel.fromJson(json))
+            .where((item) => item.namaPeminjam == namaPeminjamLogin)
+            .toList();
+
+        setState(() {
+          bookingList = filteredData;
+        });
+      } else {
+        throw Exception(
+            'Gagal memuat data. Kode status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        bookingList = [];
+      });
     }
   }
 
-  List<Map<String, dynamic>> getFilteredBookings() {
+  List<PeminjamanModel> getFilteredBookings() {
     DateTime now = DateTime.now();
-    return bookingList.where((booking) {
-      DateTime bookingDate = DateTime.parse(booking['tanggal_kegiatan']);
-      return (booking['nama_status'] == 'proses' ||
-              booking['nama_status'] == 'disetujui') &&
-          now.isBefore(bookingDate.add(const Duration(days: 1)));
+    return bookingList.where((PeminjamanModel booking) {
+      return (booking.namaStatus == 'proses' ||
+              booking.namaStatus == 'disetujui') &&
+          now.isBefore(booking.tanggalKegiatan.add(const Duration(days: 1)));
     }).toList();
   }
 
@@ -191,19 +215,36 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 10),
 
                 // DAFTAR RUANGAN
-                const Text(
-                  "RUANGAN YANG DIPINJAM",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "RUANGAN YANG DIPINJAM",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    // Kondisi untuk memeriksa apakah daftar peminjaman kosong
+                    if (getFilteredBookings().isEmpty)
+                      const Center(
+                        child: Text(
+                          "Tidak ada data peminjaman",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      )
+                    else
+                      for (final booking in getFilteredBookings())
+                        BookingCard(
+                          buildingName: booking.namaRuangan,
+                          activityName: booking.namaKegiatan,
+                          date: DateFormat('yyyy-MM-dd')
+                              .format(booking.tanggalKegiatan),
+                          status: booking.namaStatus,
+                          time1: (booking.waktuMulai),
+                          time2: (booking.waktuSelesai),
+                        ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                // Menampilkan BookingCard yang sudah difilter
-                for (final booking in getFilteredBookings())
-                  BookingCard(
-                    buildingName: booking['nama_ruangan'] ?? '-',
-                    activityName: booking['nama_kegiatan'] ?? '-',
-                    date: booking['tanggal_kegiatan'] ?? '-',
-                    status: booking['nama_status'] ?? '-',
-                  ),
               ],
             ),
           ),
@@ -218,12 +259,16 @@ class BookingCard extends StatelessWidget {
   final String activityName;
   final String date;
   final String status;
+  final String time1;
+  final String time2;
 
   const BookingCard({
     required this.buildingName,
     required this.activityName,
     required this.date,
     required this.status,
+    required this.time1,
+    required this.time2,
     super.key,
   });
 
@@ -247,37 +292,47 @@ class BookingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Peminjaman',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  status,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: _getStatusColor(status)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Text(
               buildingName,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(
               activityName,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 12),
             Divider(color: Colors.grey[300]),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   date,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                Text(
-                  status,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: _getStatusColor(status),
-                  ),
-                ),
+                Text('$time1 - $time2'),
               ],
             ),
           ],
