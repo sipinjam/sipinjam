@@ -212,7 +212,7 @@
                         .filter(item =>
                             item.nama_ruangan.toLowerCase() === roomName.toLowerCase() &&
                             item.nama_status !== "ditolak"
-                        );
+                        )
                         .map(item => ({
                             day: new Date(item.tanggal_kegiatan).getDate() - 1,
                             month: new Date(item.tanggal_kegiatan).getMonth() + 1,
