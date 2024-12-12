@@ -21,9 +21,9 @@ switch ($method) {
             $KegiatanController->getAllKegiatan();
         }
         break;
-    // case 'POST':
-    //     $KegiatanController->createKegiatan();
-    //     break;
+    case 'POST':
+        $KegiatanController->createKegiatan();
+        break;
     // case 'PATCH':
     //     $id = intval($_GET["id"]);
     //     $KegiatanController->editKegiatan($id);

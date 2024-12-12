@@ -21,9 +21,8 @@ class PeminjamansController
             p.id_peminjaman,
             k.nama_kegiatan,
             k.tema_kegiatan,
-            k.tanggal_kegiatan,
-            k.waktu_mulai,
-            k.waktu_selesai,
+            p.tgl_peminjaman,
+            p.sesi_peminjaman,
             k.daftar_panitia,
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
@@ -63,9 +62,8 @@ class PeminjamansController
             p.id_peminjaman,
             k.nama_kegiatan,
             k.tema_kegiatan,
-            k.tanggal_kegiatan,
-            k.waktu_mulai,
-            k.waktu_selesai,
+            p.tgl_peminjaman,
+            p.sesi_peminjaman,
             k.daftar_panitia,
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
@@ -103,103 +101,81 @@ class PeminjamansController
     }
 
     public function createPeminjaman()
-    {
-        $requiredFields = ['nama_kegiatan', 'tema_kegiatan', 'tanggal_kegiatan', 'waktu_mulai', 'waktu_selesai', 'nama_ketua_ormawa', 'nama_ketua_pelaksana', 'nama_peminjam', 'nama_ruangan'];
-        $missingFields = array_diff($requiredFields, array_keys($_POST));
-        if (!empty($missingFields)) {
-            response('error', 'Missing parameters: ' . implode(', ', $missingFields), null, 400);
-            return;
-        }
-
-        if (isset($_FILES['daftar_panitia']) && $_FILES['daftar_panitia']['error'] == UPLOAD_ERR_OK) {
-            $folderPath = '../assets/daftar_panitia/';
-            $fileName = date('YmdHis') . '_' . basename($_FILES['daftar_panitia']['name']);
-            $filePath = $folderPath . $fileName;
-            $relativePath = '../../../api/assets/daftar_panitia/' . $fileName;
-            if (!move_uploaded_file($_FILES['daftar_panitia']['tmp_name'], $filePath)) {
-                response('error', 'Failed to upload daftar_panitia file', null, 500);
-                return;
-            }
-        } else {
-            response('error', 'Missing or invalid daftar_panitia file', null, 400);
-            return;
-        }
-
-        // Ambil id_struktur_organisasi dan id_mahasiswa berdasarkan nama_ketua_ormawa
-        $strukturQuery = "
-    SELECT so.id_struktur_organisasi, m.id_mahasiswa 
-    FROM struktur_organisasi so
-    JOIN mahasiswa m ON so.id_struktur_organisasi = m.id_struktur_organisasi
-    WHERE m.nama_mahasiswa = ?
-";
-
-        $strukturStmt = $this->conn->prepare($strukturQuery);
-        $strukturStmt->execute([$_POST['nama_ketua_ormawa']]);
-        $strukturOrganisasi = $strukturStmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$strukturOrganisasi) {
-            response('error', 'Struktur organisasi not found for the provided mahasiswa', null, 400);
-            return;
-        }
-        $id_struktur_organisasi = $strukturOrganisasi['id_struktur_organisasi'];
-
-        $mahasiswaQuery = "SELECT id_mahasiswa FROM mahasiswa WHERE nama_mahasiswa = ?";
-        $mahasiswaStmt = $this->conn->prepare($mahasiswaQuery);
-        $mahasiswaStmt->execute([$_POST['nama_ketua_pelaksana']]);
-        $mahasiswa = $mahasiswaStmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$mahasiswa) {
-            response('error', 'Mahasiswa peminjam not found', null, 400);
-            return;
-        }
-        $id_mahasiswa_peminjam = $mahasiswa['id_mahasiswa'];
-
-        $kegiatanQuery = "INSERT INTO kegiatan (nama_kegiatan, tema_kegiatan, tanggal_kegiatan, waktu_mulai, waktu_selesai, daftar_panitia, id_struktur_organisasi, id_mahasiswa) 
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $kegiatanStmt = $this->conn->prepare($kegiatanQuery);
-        $kegiatanStmt->execute([$_POST['nama_kegiatan'], $_POST['tema_kegiatan'], $_POST['tanggal_kegiatan'], $_POST['waktu_mulai'], $_POST['waktu_selesai'], $relativePath, $id_struktur_organisasi, $id_mahasiswa_peminjam]);
-
-        $id_kegiatan = $this->conn->lastInsertId();
-
-        // Ambil id_peminjam dari nama_peminjam
-        $peminjamQuery = "SELECT id_peminjam FROM peminjam WHERE nama_peminjam = ?";
-        $peminjamStmt = $this->conn->prepare($peminjamQuery);
-        $peminjamStmt->execute([$_POST['nama_peminjam']]);
-        $peminjam = $peminjamStmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$peminjam) {
-            response('error', 'Peminjam not found', null, 400);
-            return;
-        }
-        $id_peminjam = $peminjam['id_peminjam'];
-
-        // Ambil id_ruangan dari nama_ruangan
-        $ruanganQuery = "SELECT id_ruangan FROM ruangan WHERE nama_ruangan = ?";
-        $ruanganStmt = $this->conn->prepare($ruanganQuery);
-        $ruanganStmt->execute([$_POST['nama_ruangan']]);
-        $ruangan = $ruanganStmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$ruangan) {
-            response('error', 'Ruangan not found', null, 400);
-            return;
-        }
-        $id_ruangan = $ruangan['id_ruangan'];
-
-        $peminjamanQuery = "INSERT INTO peminjaman (id_kegiatan, id_ruangan, id_peminjam, id_status) VALUES (?, ?, ?, ?)";
-        $peminjamanStmt = $this->conn->prepare($peminjamanQuery);
-
-        if ($peminjamanStmt->execute([$id_kegiatan, $id_ruangan, $id_peminjam, 1])) {
-            $new_id = $this->conn->lastInsertId();
-            $result_stmt = $this->conn->prepare("SELECT * FROM peminjaman WHERE id_peminjaman = ?");
-            $result_stmt->execute([$new_id]);
-            $new_data = $result_stmt->fetch(PDO::FETCH_OBJ);
-
-            response('success', 'Peminjaman Added Successfully', $new_data, statusCode: 201);
-        } else {
-            response('error', 'Unable to create peminjaman', null, 400);
-        }
+{
+    $requiredFields = ['id_kegiatan', 'id_ruangan', 'id_peminjam', 'id_status', 'keterangan', 'tgl_peminjaman', 'sesi_peminjaman'];
+    $missingFields = array_diff($requiredFields, array_keys($_POST));
+    if (!empty($missingFields)) {
+        response('error', 'Missing parameters: ' . implode(', ', $missingFields), null, 400);
+        return;
     }
 
+    $kegiatanQuery = "SELECT * FROM kegiatan WHERE id_kegiatan = ?";
+    $kegiatanStmt = $this->conn->prepare($kegiatanQuery);
+    $kegiatanStmt->execute([$_POST['id_kegiatan']]);
+    $kegiatan = $kegiatanStmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$kegiatan) {
+        response('error', 'Kegiatan tidak ditemukan', null, 400);
+        return;
+    }
+
+    $ruanganQuery = "SELECT * FROM ruangan WHERE id_ruangan = ?";
+    $ruanganStmt = $this->conn->prepare($ruanganQuery);
+    $ruanganStmt->execute([$_POST['id_ruangan']]);
+    $ruangan = $ruanganStmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$ruangan) {
+        response('error', 'Ruangan tidak ditemukan', null, 400);
+        return;
+    }
+
+    $peminjamQuery = "SELECT * FROM peminjam WHERE id_peminjam = ?";
+    $peminjamStmt = $this->conn->prepare($peminjamQuery);
+    $peminjamStmt->execute([$_POST['id_peminjam']]);
+    $peminjam = $peminjamStmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$peminjam) {
+        response('error', 'Peminjam tidak ditemukan', null, 400);
+        return;
+    }
+
+    $statusQuery = "SELECT * FROM status WHERE id_status = ?";
+    $statusStmt = $this->conn->prepare($statusQuery);
+    $statusStmt->execute([$_POST['id_status']]);
+    $status = $statusStmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$status) {
+        response('error', 'Status tidak ditemukan', null, 400);
+        return;
+    }
+
+    $tgl_peminjaman = date('Y-m-d', strtotime($_POST['tgl_peminjaman']));
+    if (!preg_match('/\d{4}-\d{2}-\d{2}/', $tgl_peminjaman)) {
+        response('error', 'Format tanggal peminjaman salah', null, 400);
+        return;
+    }
+
+    $sesi_peminjaman = $_POST['sesi_peminjaman'];
+    if (!in_array($sesi_peminjaman, [1,2,3])) {
+        response('error', 'Sesi peminjaman salah', null, 400);
+        return;
+    }
+
+    $peminjamanQuery = "INSERT INTO peminjaman (id_kegiatan, id_ruangan, id_peminjam, id_status, keterangan, tgl_peminjaman, sesi_peminjaman) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $peminjamanStmt = $this->conn->prepare($peminjamanQuery);
+
+    if ($peminjamanStmt->execute([$_POST['id_kegiatan'], $_POST['id_ruangan'], $_POST['id_peminjam'], $_POST['id_status'], $_POST['keterangan'], $tgl_peminjaman, $sesi_peminjaman])) {
+        $new_id = $this->conn->lastInsertId();
+        $result_stmt = $this->conn->prepare("SELECT * FROM peminjaman WHERE id_peminjaman = ?");
+        $result_stmt->execute([$new_id]);
+        $new_data = $result_stmt->fetch(PDO::FETCH_OBJ);
+
+        response('success', 'Peminjaman Added Successfully', $new_data, statusCode: 201);
+    } else {
+        response('error', 'Unable to create peminjaman', null, 400);
+    }
+}
     public function editPeminjaman($id_peminjaman)
     {
         $inputData = json_decode(file_get_contents('php://input'), true);
