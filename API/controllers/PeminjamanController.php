@@ -21,6 +21,7 @@ class PeminjamansController
             p.id_peminjaman,
             k.nama_kegiatan,
             k.tema_kegiatan,
+            k.id_peminjam,
             p.tgl_peminjaman,
             p.sesi_peminjaman,
             k.daftar_panitia,

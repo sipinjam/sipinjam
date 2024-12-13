@@ -52,7 +52,7 @@ class KegiatansController
         }
     }
     public function createKegiatan()
-    {
+{
     $requiredFields = ['nama_kegiatan', 'tema_kegiatan', 'id_ormawa', 'id_mahasiswa', 'id_peminjam'];
     $missingFields = array_diff($requiredFields, array_keys($_POST));
     if (!empty($missingFields)) {
@@ -60,6 +60,7 @@ class KegiatansController
         return;
     }
 
+    // Memeriksa dan mengupload file daftar panitia
     if (isset($_FILES['daftar_panitia']) && $_FILES['daftar_panitia']['error'] == UPLOAD_ERR_OK) {
         $folderPath = '../assets/daftar_panitia/';
         $fileName = date('YmdHis') . '_' . basename($_FILES['daftar_panitia']['name']);
@@ -74,36 +75,40 @@ class KegiatansController
         return;
     }
 
+    // Memeriksa keberadaan ormawa
     $ormawaQuery = "SELECT * FROM ormawa WHERE id_ormawa = ?";
     $ormawaStmt = $this->conn->prepare($ormawaQuery);
     $ormawaStmt->execute([$_POST['id_ormawa']]);
     $ormawa = $ormawaStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$ormawa) {
-        response('error', 'Ormawa not found', null, 400);
+        response('error', 'Ormawa tidak ditemukan', null, 400);
         return;
     }
 
+    // Memeriksa keberadaan mahasiswa
     $mahasiswaQuery = "SELECT * FROM mahasiswa WHERE id_mahasiswa = ?";
     $mahasiswaStmt = $this->conn->prepare($mahasiswaQuery);
     $mahasiswaStmt->execute([$_POST['id_mahasiswa']]);
     $mahasiswa = $mahasiswaStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$mahasiswa) {
-        response('error', 'Mahasiswa not found', null, 400);
+        response('error', 'Mahasiswa tidak ditemukan', null, 400);
         return;
     }
 
+    // Memeriksa keberadaan peminjam
     $peminjamQuery = "SELECT * FROM peminjam WHERE id_peminjam = ?";
     $peminjamStmt = $this->conn->prepare($peminjamQuery);
     $peminjamStmt->execute([$_POST['id_peminjam']]);
     $peminjam = $peminjamStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$peminjam) {
-        response('error', 'Peminjam not found', null, 400);
+        response('error', 'Peminjam tidak ditemukan', null, 400);
         return;
     }
 
+    // Memastikan nama dan tema kegiatan tidak kosong
     $nama_kegiatan = $_POST['nama_kegiatan'];
     if (empty($nama_kegiatan)) {
         response('error', 'Nama kegiatan tidak boleh kosong', null, 400);
@@ -116,6 +121,7 @@ class KegiatansController
         return;
     }
 
+    // Menyisipkan data ke dalam tabel kegiatan
     $kegiatanQuery = "INSERT INTO kegiatan (nama_kegiatan, tema_kegiatan, daftar_panitia, id_ormawa, id_mahasiswa, id_peminjam) 
                       VALUES (?, ?, ?, ?, ?, ?)";
     $kegiatanStmt = $this->conn->prepare($kegiatanQuery);
@@ -126,10 +132,9 @@ class KegiatansController
         $result_stmt->execute([$new_id]);
         $new_data = $result_stmt->fetch(PDO::FETCH_OBJ);
 
-        response('success', 'Kegiatan Added Successfully', $new_data, statusCode: 201);
+        response('success', 'Kegiatan berhasil ditambahkan', $new_data, statusCode: 201);
     } else {
-        response('error', 'Unable to create kegiatan', null, 400);
+        response('error', 'Tidak dapat membuat kegiatan', null, 400);
     }
 }
 }
-
