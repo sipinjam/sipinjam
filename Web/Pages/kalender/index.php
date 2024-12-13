@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="searchRoom()" class="w-full bg-blue-500 text-white p-2 rounded w-1/4 h-10">Search</button>
+                <button onclick="handleSearchRoom()" class="w-full bg-blue-500 text-white p-2 rounded w-1/4 h-10">Search</button>
             </div>
 
             <!-- Kalender -->
@@ -107,6 +107,22 @@
                     <div class="bg-green-400 text-white px-4 py-2 rounded-md">Sesi 2</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Snackbar -->
+    <div id="snackbar" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-md hidden z-50">
+        <span id="snackbar-message"></span>
+    </div>
+
+    <!-- Modal Event -->
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 relative">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 id="event-title" class="text-2xl font-bold mb-4"></h2>
+            <p id="event-details" class="text-black leading-relaxed whitespace-pre-line"></p>
         </div>
     </div>
 
@@ -322,11 +338,13 @@
             }
         }
 
-        async function searchRoom() {
-            if (selectedRoomName) {
-                await fetchDataPeminjaman(selectedRoomName);
+        async function handleSearchRoom() {
+            const selectedGedung = document.getElementById("buttonGedung").textContent.trim();
+            if (selectedGedung === "--Gedung--" || selectedRoomName === "") {
+                showSnackbar("Harap pilih gedung dan ruangan terlebih dahulu.");
             } else {
-                alert("Pilih ruangan terlebih dahulu");
+                showSnackbar(`Menampilkan data untuk ${selectedRoomName}.`);
+                await fetchDataPeminjaman(selectedRoomName);
             }
         }
 
@@ -345,6 +363,29 @@
 
         // Inisialisasi kalender
         renderCalendar();
+
+        // Fungsi Snackbar
+        function showSnackbar(message) {
+            const snackbar = document.getElementById('snackbar');
+            const snackbarMessage = document.getElementById('snackbar-message');
+
+            snackbarMessage.textContent = message;
+            snackbar.classList.remove('hidden');
+            setTimeout(() => {
+                snackbar.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Fungsi lainnya (Kalender, Dropdown, dll.)
+        // Contoh memanggil snackbar setelah pemilihan gedung:
+        function searchRoom() {
+            const selectedGedung = document.getElementById("buttonGedung").textContent.trim();
+            if (selectedGedung === "--Gedung--") {
+                showSnackbar("Harap pilih gedung dan ruangan terlebih dahulu.");
+            } else {
+                showSnackbar(`Menampilkan data untuk ${selectedRoomName}.`);
+            }
+        }
     </script>
 
 </body>
