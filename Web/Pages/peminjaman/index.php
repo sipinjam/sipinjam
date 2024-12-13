@@ -20,31 +20,26 @@
     <!-- End Header -->
 
     <!-- Main Content -->
-    <div
-        class="flex pl-44 max-w-6xl mx-auto bg-gray-50 rounded-lg  p-8 pt-24 flex-row items-center justify-center min-h-screen bg-gray-100">
+    <div class="flex pl-44 max-w-6xl mx-auto bg-gray-50 rounded-lg p-8 pt-24 flex-row items-center justify-center min-h-screen bg-gray-100">
 
         <!-- Grid Container for Responsive Layout -->
         <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 
-            <!-- Peminjaman Card -->
+            <!-- Kegiatan Card -->
             <div class="bg-white shadow-lg rounded-lg h-64">
-                <div class="bg-blue-500 text-white font-semibold text-lg px-4 py-3 rounded-t-lg">Peminjaman</div>
+                <div class="bg-blue-500 text-white font-semibold text-lg px-4 py-3 rounded-t-lg">Kegiatan</div>
                 <div class="p-6 space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input id="nama_lengkap" type="text" disabled
-                            class="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-600 shadow-sm cursor-not-allowed">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Ormawa</label>
-                        <select id="ormawa" name="ormawa"
+                        <label class="block text-sm font-medium text-gray-700">Nama Kegiatan</label>
+                        <select id="nama_kegiatan" name="nama_kegiatan"
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
-                            <option value="">Pilih Ormawa</option>
+                            <option value="">Pilih Kegiatan</option>
                             <!-- Options will be added dynamically -->
                         </select>
                     </div>
                 </div>
             </div>
+
             <!-- Ormawa Card -->
             <div class="bg-white shadow-lg rounded-lg h-[36rem]">
                 <div class="bg-blue-500 text-white font-semibold text-lg px-4 py-3 rounded-t-lg">Ormawa</div>
@@ -60,14 +55,16 @@
                             class="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-600 shadow-sm cursor-not-allowed">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Nama Ketua Pelaksana</label>
-                        <input id="namaKetuaPelaksana" type="text" placeholder="John Doe"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                        <label class="block text-sm font-medium text-gray-700">Ketua Pelaksana</label>
+                        <select id="ketuaPelaksanaDropdown" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih Ketua Pelaksana</option>
+                            <!-- Options will be added dynamically -->
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">NIM Ketua Pelaksana</label>
-                        <input id="nimKetuaPelaksana" type="text" placeholder="0.00.00.0.0"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                        <input id="nimKetuaPelaksana" type="text" disabled
+                            class="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-600 shadow-sm cursor-not-allowed">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Nama Pembina HM/UKM</label>
@@ -85,59 +82,38 @@
             <!-- Kegiatan Card -->
             <div class="w-96">
                 <div class="bg-white shadow-lg rounded-lg">
-                    <div class="bg-blue-500 text-white font-semibold text-lg px-4 py-3 rounded-t-lg">Kegiatan</div>
+                    <div class="bg-blue-500 text-white font-semibold text-lg px-4 py-3 rounded-t-lg">Form Peminjaman</div>
                     <div class="p-6 space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Nama Kegiatan</label>
-                            <input id="namaKegiatan" type="text" placeholder="Silahkan isi nama kegiatan"
-                                class="mt-1 block w-full p-2 border border-red-500 rounded-md shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tema Kegiatan</label>
-                            <input id="temaKegiatan" type="text" value=""
+                            <label class="block text-sm font-medium text-gray-700">Ruangan</label>
+                            <input id="ruangan" type="text" placeholder="Pilih Ruangan"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tanggal</label>
-                            <input id="tanggalKegiatan" type="date"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 my-2">Waktu</label>
-                            <div class="time-selector">
-                                <div class="button-group">
-                                    <button
-                                        class="time-button flex-1 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32 h-8">08:00
-                                        - 12:00</button>
-                                    <button
-                                        class="time-button flex-1 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32 h-8">12:00
-                                        - 16:00</button>
-                                </div>
-                                <button
-                                    class="time-button mt-1 flex-1 px-4 border border-blue-500 bg-blue-100 rounded text-blue-500 w-32 h-8">08:00
-                                    - 16:00</button>
+                            <div id="suggestions" class="absolute bg-white border border-gray-300 rounded-md mt-1 hidden">
+                                <!-- Suggestions will be populated here -->
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Ruangan</label>
-                            <input id="ruangan" type="text" value=""
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            <label class="block text-sm font-medium text-gray-700">Tanggal Peminjaman</label>
+                            <input id="tgl_peminjaman" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
                         </div>
-                        <div class="justify-between mt-2">
-                            <label class="block text-sm font-medium text-gray-900 text-white" for="file_input">Daftar
-                                Panitia</label>
-                            <input
-                                class="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 cursor-pointer text-gray-400 focus:outline-none border-gray-600 placeholder-gray-400"
-                                aria-describedby="file_input_help" id="file_input" type="file">
-
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 my-2">Sesi Peminjaman</label>
+                            <div class="time-selector">
+                                <button class="time-button flex-1 px-4 border border-silver-500 rounded text-silver-500 w-32 h-8" data-sesi="1">08:00 - 12:00</button>
+                                <button class="time-button flex-1 px-4 border border-silver-500 rounded text-silver-500 w-32 h-8" data-sesi="2">12:00 - 16:00</button>
+                                <button class="time-button flex-1 px-4 border border-silver-500 rounded text-silver-500 w-32 h-8" data-sesi="3">08:00 - 16:00</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keterangan</label>
+                            <input id="keterangan" type="text" placeholder="Masukkan keterangan"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
                         </div>
                     </div>
                 </div>
                 <div class="flex justify-end space-x-4 mt-4">
-                    <button
-                        class="py-2 px-6 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">Cancel</button>
-                    <button
-                        class="py-2 px-6 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">Submit</button>
+                    <button class="py-2 px-6 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">Cancel</button>
+                    <button id="submitPeminjaman" class="py-2 px-6 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">Submit</button>
                 </div>
             </div>
         </div>
@@ -149,236 +125,270 @@
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
-
-        // Mengambil cookie 'nama_lengkap'
-        const namaLengkap = getCookie('nama_lengkap');
-
-        // Memasukkan nilai cookie ke dalam elemen HTML
-        if (namaLengkap) {
-            document.getElementById('nama_lengkap').textContent = namaLengkap;
-        } else {
-            document.getElementById('nama_lengkap').textContent = 'Nama lengkap tidak ditemukan';
-        }
-        // Fetch `id_ruangan` from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const idRuangan = urlParams.get('id_ruangan');
-
-        if (idRuangan) {
-            fetchRoomData(idRuangan);
-        }
-
-        async function fetchRoomData(idRuangan) {
+        const idOrmawa = getCookie('id_ormawa');
+        const idPeminjam = getCookie('id_peminjam');
+        async function getKegiatan(idOrmawa) {
             try {
-                // Fetch room data based on the provided idRuangan
-                const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/ruangan/${idRuangan}`);
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    const roomData = result.data;
-
-                    // Fetch the logged-in user data using the id_peminjam from the cookie
-                    const idUser = getCookie('id_peminjam');
-                    if (!idUser) {
-                        console.error("User ID not found in cookies.");
-                        return;
-                    }
-
-                    // Fetch user profile using the id_user
-                    const userResponse = await fetch(`http://localhost/sipinjamfix/sipinjam/api/users/${idUser}`);
-                    const userResult = await userResponse.json();
-
-                    if (userResult.status === "success") {
-                        const userData = userResult.data;
-
-                        // Populate the form with the fetched user data and room data
-                        document.getElementById("username").value = userData
-                            .nama_lengkap; // Set the username field with the user's full name
-                        document.getElementById("ormawa").value =
-                            "Rohani Kristiani Polines"; // Replace with dynamic data if needed
-
-                        document.getElementById("namaKetuaHMUKM").value = "-"; // Empty field for user input
-                        document.getElementById("nimKetuaHMUKM").value = "-"; // Empty field for user input
-                        document.getElementById("namaKetuaPelaksana").value = ""; // Empty field for user input
-                        document.getElementById("nimKetuaPelaksana").value = ""; // Empty field for user input
-                        document.getElementById("namaPembinaHMUKM").value = "-"; // Empty field for user input
-                        document.getElementById("nipPembinaHMUKM").value = "-"; // Empty field for user input
-                        document.getElementById("namaKegiatan").value = ""; // Empty field for user input
-                        document.getElementById("temaKegiatan").value = ""; // Empty field for user input
-
-                        document.getElementById("ruangan").value = roomData.nama_ruangan ||
-                            ""; // The room name (can be auto-filled)
-
-                        // Now, fetch the Ketua data (from the structure API)
-                        //await fetchKetuaData(); // Ensure this is called after setting room data
-                    } else {
-                        console.error("Error fetching user data:", userResult.message);
-                    }
-                } else {
-                    console.error("Error fetching room data:", result.message);
+                const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/kegiatan/${idOrmawa}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                const result = await response.json();
+                return result.data || [];
             } catch (error) {
-                console.error("Error fetching data:", error);
+                console.error('Error fetching data:', error);
+                return [];
             }
         }
-        // Fetch room data on page load or as needed
-        fetchRoomData(idRuangan);
 
-        async function populateOrmawaDropdown() {
+        async function populateKegiatanDropdown() {
+            if (idOrmawa) {
+                const kegiatanList = await getKegiatan(idOrmawa);
+                const selectKegiatan = document.getElementById('nama_kegiatan');
+
+                if (Array.isArray(kegiatanList) && kegiatanList.length > 0) {
+                    kegiatanList.forEach(kegiatan => {
+                        const option = document.createElement('option');
+                        option.value = kegiatan.id_kegiatan;
+                        option.textContent = kegiatan.nama_kegiatan;
+                        selectKegiatan.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.textContent = 'Tidak ada kegiatan tersedia';
+                    selectKegiatan.appendChild(option);
+                }
+            } else {
+                console.error('id_ormawa cookie not found');
+            }
+        }
+
+        window.onload = populateKegiatanDropdown();
+        async function getMahasiswaByOrmawa(idOrmawa) {
             try {
-                const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/mahasiswa');
+                const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/mahasiswa?id_ormawa=${idOrmawa}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 const result = await response.json();
+                return result.data; // Pastikan ini sesuai dengan struktur respons API Anda
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
 
-                if (result.status === "success") {
-                    const ormawaMembers = result.data;
+        // Fungsi untuk mengisi form
+        async function fillForm() {
+            const mahasiswaData = await getMahasiswaByOrmawa(idOrmawa);
 
-                    // Remove duplicates by id_ormawa
-                    const uniqueOrmawa = Array.from(new Set(ormawaMembers.map(a => a.id_ormawa)))
-                        .map(id_ormawa => {
-                            return ormawaMembers.find(a => a.id_ormawa === id_ormawa);
+            if (mahasiswaData.length > 0) {
+                // Ambil data ketua HM/UKM
+                const ketuaHMUKM = mahasiswaData[0]; // Asumsi ketua HM/UKM adalah mahasiswa pertama
+                document.getElementById('namaKetuaHMUKM').value = ketuaHMUKM.nama_mahasiswa;
+                document.getElementById('nimKetuaHMUKM').value = ketuaHMUKM.nim_mahasiswa;
+                document.getElementById('namaPembinaHMUKM').value = ketuaHMUKM.nama_pembina;
+                document.getElementById('nipPembinaHMUKM').value = ketuaHMUKM.nip_pembina;
+
+                // Tambahkan opsi untuk ketua pelaksana
+                const dropdown = document.getElementById('ketuaPelaksanaDropdown');
+                mahasiswaData.forEach(mahasiswa => {
+                    const option = document.createElement('option');
+                    option.value = mahasiswa.nim_mahasiswa; // NIM sebagai value
+                    option.textContent = mahasiswa.nama_mahasiswa; // Nama sebagai teks
+                    dropdown.appendChild(option);
+                });
+
+                // Event listener untuk dropdown
+                dropdown.addEventListener('change', function() {
+                    const selectedNIM = this.value;
+                    const selectedMahasiswa = mahasiswaData.find(m => m.nim_mahasiswa === selectedNIM);
+                    if (selectedMahasiswa) {
+                        document.getElementById('nimKetuaPelaksana').value = selectedMahasiswa.nim_mahasiswa;
+                    } else {
+                        document.getElementById('nimKetuaPelaksana').value = '';
+                    }
+                });
+            }
+        }
+
+        // Panggil fungsi untuk mengisi form saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', fillForm);
+        async function getKegiatan() {
+            try {
+                const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/kegiatan');
+                const result = await response.json();
+                const selectKegiatan = document.getElementById('nama_kegiatan');
+                result.data.forEach(kegiatan => {
+                    const option = document.createElement('option');
+                    option.value = kegiatan.id_kegiatan;
+                    option.textContent = kegiatan.nama_kegiatan;
+                    selectKegiatan.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching kegiatan:', error);
+            }
+        }
+
+        async function getRuangan() {
+            try {
+                const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/ruangan');
+                const result = await response.json();
+                const inputRuangan = document.getElementById('ruangan');
+                const suggestions = document.getElementById('suggestions');
+
+                inputRuangan.addEventListener('input', () => {
+                    const query = inputRuangan.value.toLowerCase();
+                    suggestions.innerHTML = '';
+                    const filteredRuangan = result.data.filter(ruangan => ruangan.nama_ruangan.toLowerCase().includes(query));
+                    filteredRuangan.forEach(ruangan => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.textContent = ruangan.nama_ruangan;
+                        suggestionItem.classList.add('suggestion-item', 'p-2', 'cursor-pointer');
+                        suggestionItem.addEventListener('click', () => {
+                            inputRuangan.value = ruangan.nama_ruangan; // Set nama ruangan di input
+                            inputRuangan.setAttribute('data-id', ruangan.id_ruangan); // Simpan id_ruangan di atribut data
+                            suggestions.innerHTML = '';
+                            suggestions.classList.add('hidden');
+                        });
+                        suggestions.appendChild(suggestionItem);
+                    });
+                    suggestions.classList.remove('hidden');
+                });
+
+                document.addEventListener('click', () => {
+                    suggestions.classList.add('hidden');
+                });
+            } catch (error) {
+                console.error('Error fetching ruangan:', error);
+            }
+        }
+        window.onload = getRuangan()
+        let sesiPeminjaman = null;
+
+        // Fungsi untuk memeriksa ketersediaan ruangan
+        // Fungsi untuk memeriksa ketersediaan ruangan
+
+        document.querySelectorAll('.time-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const selectedSesi = button.getAttribute('data-sesi');
+                const tglPeminjaman = document.getElementById('tgl_peminjaman').value;
+                const inputRuangan = document.getElementById('ruangan');
+                const idRuangan = inputRuangan.getAttribute('data-id'); // Ambil id_ruangan dari atribut data
+
+                if (tglPeminjaman && idRuangan) {
+                    const isAvailable = await checkRuanganAvailability(tglPeminjaman, selectedSesi, idRuangan); // Gunakan id_ruangan
+                    if (isAvailable) {
+                        // Reset semua tombol
+                        document.querySelectorAll('.time-button').forEach(btn => {
+                            btn.classList.remove('bg-blue-500', 'text-white'); // Reset warna aktif
+                            btn.classList.add('bg-blue-100', 'text-blue-500'); // Kembalikan warna default
                         });
 
-                    const dropdown = document.getElementById('ormawa');
-
-                    // Clear existing options
-                    dropdown.innerHTML = '';
-
-                    // Add unique options to dropdown
-                    uniqueOrmawa.forEach(member => {
-                        const option = document.createElement('option');
-                        option.value = member.id_ormawa;
-                        option.textContent = member.nama_ormawa; // Display the name of Ormawa
-                        dropdown.appendChild(option);
-                    });
+                        // Ubah warna tombol yang dipilih
+                        button.classList.add('bg-blue-500', 'text-white'); // Set warna aktif
+                        button.classList.remove('bg-blue-100', 'text-blue-500'); // Hapus warna default
+                        sesiPeminjaman = selectedSesi; // Simpan sesi yang dipilih
+                    } else {
+                        alert('Ruangan tidak tersedia untuk sesi ini.');
+                    }
                 } else {
-                    console.error("Error fetching Ormawa members:", result.message);
+                    alert('Silakan pilih tanggal dan ruangan terlebih dahulu.');
                 }
-            } catch (error) {
-                console.error("Error populating Ormawa dropdown:", error);
-            }
-        }
-
-        // Fetch Ormawa data when the page loads
-        fetchOrmawaData();
-
-        async function fetchOrmawaData() {
-            try {
-                const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/mahasiswa');
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    const ormawaData = result.data;
-
-                    // Populate the Ormawa dropdown
-                    const dropdown = document.getElementById("ormawa");
-                    dropdown.innerHTML = ''; // Clear the existing options
-
-                    // Add the default "Pilih Ormawa" option
-                    const defaultOption = document.createElement("option");
-                    defaultOption.value = "";
-                    defaultOption.textContent = "Pilih Ormawa";
-                    dropdown.appendChild(defaultOption);
-
-                    // Loop through the ormawaData and create an option for each
-                    ormawaData.forEach(item => {
-                        const option = document.createElement("option");
-                        option.value = item.id_ormawa; // Set `id_ormawa` as the value
-                        option.textContent = item.nama_ormawa; // Display `nama_ormawa` as the option text
-                        dropdown.appendChild(option);
-                    });
-                } else {
-                    console.error("Failed to fetch Ormawa data:", result.message);
-                }
-            } catch (error) {
-                console.error("Error fetching Ormawa data:", error);
-            }
-        }
-
-        // Event listener to handle Ormawa selection
-        document.getElementById('ormawa').addEventListener('change', async function() {
-            const selectedOrmawa = this.value; // Get the selected Ormawa ID
-            if (selectedOrmawa) {
-                await autofillKetuaData(selectedOrmawa);
-            }
+            });
         });
 
-        async function autofillKetuaData(ormawaId) {
+
+        async function checkRuanganAvailability(tanggal, sesi, idRuangan) {
+
             try {
-                // Fetch all members related to the selected Ormawa
-                const response = await fetch(
-                    `http://localhost/sipinjamfix/sipinjam/api/mahasiswa?ormawa_id=${ormawaId}`
-                );
+                const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/peminjaman?date=${tanggal}&sesi=${sesi}&ruangan=${idRuangan}`);
                 const result = await response.json();
-
-                if (result.status === "success") {
-                    const ormawaMembers = result.data;
-
-                    // Debug log to show fetched members
-                    console.log("Fetched Ormawa Members:", ormawaMembers);
-
-                    const ormawaName = document.getElementById('ormawa').selectedOptions[0].textContent;
-
-                    console.log("Selected Ormawa:", ormawaName);
-
-                    // Find the Ketua based on the dynamic Ormawa name
-                    const ketua = ormawaMembers.find(member =>
-                        member.nama_ormawa === ormawaName && member.nama_struktur === 'Ketua UKM'
-                    );
-
-                    const pembina = ormawaMembers.find(member =>
-                        member.nama_ormawa === ormawaName
-                    );
-
-                    // If needed, log or use the 'ketua' variable
-                    console.log(ketua);
-
-                    console.log(pembina);
-
-                    // Debug log to see if the Ketua was found
-                    console.log("Found Ketua:", ketua);
-                    console.log("Found Pembina:", pembina);
-
-                    if (ketua) {
-                        // Autofill the Ketua details
-                        document.getElementById("namaKetuaHMUKM").value = ketua.nama_mahasiswa;
-                        document.getElementById("nimKetuaHMUKM").value = ketua.nim_mahasiswa;
-                    } else {
-                        console.error("Ketua not found in the selected Ormawa.");
-                        clearKetuaFields();
-                    }
-
-                    if (pembina) {
-                        // Autofill the Ketua details
-                        document.getElementById("namaPembinaHMUKM").value = pembina.nama_pembina;
-                        document.getElementById("nipPembinaHMUKM").value = pembina.nip_pembina;
-                    } else {
-                        console.error("Pembina not found in the selected Ormawa.");
-                        clearPembinaFields();
-                    }
-                } else {
-                    console.error("Error fetching Ormawa members:", result.message);
-                }
+                return result.data.available; // Pastikan API mengembalikan status ketersediaan
             } catch (error) {
-                console.error("Error autofilling Ketua data:", error);
+                console.error('Error checking availability:', error);
+                return false;
+            }
+        }
+        // Fungsi untuk menonaktifkan tombol sesi yang tidak tersedia
+        async function disableUnavailableSessions(tanggal, ruangan) {
+            let sesi3Available = await checkRuanganAvailability(tanggal, 3, ruangan);
+
+            // Nonaktifkan sesi 1 dan 2 jika sesi 3 tidak tersedia
+            if (!sesi3Available) {
+                const button1 = document.querySelector('.time-button[data-sesi="1"]');
+                const button2 = document.querySelector('.time-button[data-sesi="2"]');
+
+                button1.disabled = true; // Nonaktifkan tombol sesi 1
+                button1.classList.add('opacity-50', 'cursor-not-allowed'); // Tambahkan gaya untuk menunjukkan nonaktif
+
+                button2.disabled = true; // Nonaktifkan tombol sesi 2
+                button2.classList.add('opacity-50', 'cursor-not-allowed'); // Tambahkan gaya untuk menunjukkan nonaktif
+            } else {
+                // Jika sesi 3 tersedia, periksa ketersediaan sesi 1 dan 2
+                for (let sesi = 1; sesi <= 2; sesi++) {
+                    const isAvailable = await checkRuanganAvailability(tanggal, sesi, ruangan);
+                    const button = document.querySelector(`.time-button[data-sesi="${sesi}"]`);
+                    if (!isAvailable) {
+                        button.disabled = true; // Nonaktifkan tombol
+                        button.classList.add('opacity-50', 'cursor-not-allowed'); // Tambahkan gaya untuk menunjukkan nonaktif
+                    } else {
+                        button.disabled = false; // Pastikan tombol dapat diklik
+                        button.classList.remove('opacity-50', 'cursor-not-allowed'); // Hapus gaya nonaktif
+                    }
+                }
             }
         }
 
-        // Function to clear Ketua fields
-        function clearKetuaFields() {
-            document.getElementById("namaKetuaHMUKM").value = "-";
-            document.getElementById("nimKetuaHMUKM").value = "-";
-        }
+        // Event listener untuk input tanggal dan ruangan
+        document.getElementById('tgl_peminjaman').addEventListener('change', () => {
+            const tglPeminjaman = document.getElementById('tgl_peminjaman').value;
+            const inputRuangan = document.getElementById('ruangan');
+            const idRuangan = inputRuangan.getAttribute('data-id'); // Ambil id_ruangan dari atribut data
+            if (tglPeminjaman && idRuangan) {
+                disableUnavailableSessions(tglPeminjaman, idRuangan);
+            }
+        });
+        document.getElementById('submitPeminjaman').addEventListener('click', async () => {
+            const idKegiatan = document.getElementById('nama_kegiatan').value;
+            const inputRuangan = document.getElementById('ruangan');
+            const idRuangan = inputRuangan.getAttribute('data-id'); // Ambil id_ruangan dari atribut data
+            const tglPeminjaman = document.getElementById('tgl_peminjaman').value;
+            const keterangan = document.getElementById('keterangan').value; // Ambil nilai keterangan
 
-        function clearPembinaFields() {
-            document.getElementById("namaPembinaHMUKM").value = "-";
-            document.getElementById("nipPembinaHMUKM").value = "-";
-        }
+            if (idKegiatan && idRuangan && tglPeminjaman && sesiPeminjaman && keterangan) {
+                const data = {
+                    id_kegiatan: idKegiatan,
+                    id_ruangan: idRuangan, // Kirim id_ruangan ke API
+                    id_status: 1,
+                    keterangan: keterangan, // Sertakan keterangan
+                    tgl_peminjaman: tglPeminjaman,
+                    sesi_peminjaman: sesiPeminjaman
+                };
 
-        // Fetch Ormawa data when the page loads
-        fetchOrmawaData();
+                try {
+                    const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
 
-        // Function to get cookies by name
-
-        // Function to fetch user data based on id_peminjam
+                    if (response.ok) {
+                        alert('Peminjaman berhasil dibuat!');
+                        // Reset form or redirect as needed
+                    } else {
+                        const errorData = await response.json();
+                        alert('Gagal membuat peminjaman: ' + errorData.message);
+                    }
+                } catch (error) {
+                    console.error('Error creating peminjaman:', error);
+                }
+            } else {
+                alert('Silakan lengkapi semua field.');
+            }
+        });
     </script>
 </body>
 

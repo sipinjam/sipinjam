@@ -17,6 +17,9 @@ switch ($method) {
         if (!empty($_GET["id"])) {
             $id = intval($_GET["id"]);
             $PeminjamanController->getPeminjamanById($id);
+        } elseif (!empty($_GET["date"]) && !empty($_GET["sesi"]) && !empty($_GET["ruangan"])) {
+            // Memanggil fungsi getPeminjamanByDate jika parameter ada
+            $PeminjamanController->getPeminjamanByDate();
         } else {
             $PeminjamanController->getAllPeminjaman();
         }

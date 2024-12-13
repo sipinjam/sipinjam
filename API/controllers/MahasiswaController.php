@@ -6,7 +6,7 @@ class MahasiswaController
 {
     private $conn;
     private $table_name = "mahasiswa";
-    
+
     public function __construct($conn)
     {
         if (!$conn) {
@@ -55,37 +55,68 @@ class MahasiswaController
 
     // Get a specific Mahasiswa by ID, including Pembina data
     public function getMahasiswaById($id)
-    {
-        $query = "SELECT 
-                    m.id_mahasiswa, 
-                    m.nama_mahasiswa, 
-                    m.nim_mahasiswa,  -- Added nim_mahasiswa
-                    m.id_jenis_peminjam, 
-                    m.id_ormawa, 
-                    o.nama_ormawa, 
-                    j.nama_jenis_peminjam, 
-                    s.nama_struktur,
-                    p.id_pembina,
-                    p.nama_pembina, 
-                    p.nip_pembina  -- Added pembina fields
-                  FROM mahasiswa m
-                  LEFT JOIN jenis_peminjam j ON m.id_jenis_peminjam = j.id_jenis_peminjam
-                  LEFT JOIN struktur_organisasi s ON m.id_struktur_organisasi = s.id_struktur_organisasi
-                  LEFT JOIN ormawa o ON m.id_ormawa = o.id_ormawa
-                  LEFT JOIN pembina p ON o.id_ormawa = p.id_ormawa  -- Join pembina table on id_ormawa
-                  WHERE m.id_mahasiswa = ?";
+{
+    $query = "SELECT 
+                m.id_mahasiswa, 
+                m.nama_mahasiswa, 
+                m.nim_mahasiswa, 
+                m.id_jenis_peminjam, 
+                m.id_ormawa, 
+                o.nama_ormawa, 
+                j.nama_jenis_peminjam, 
+                s.nama_struktur,
+                p.id_pembina,
+                p.nama_pembina, 
+                p.nip_pembina  
+              FROM mahasiswa m
+              LEFT JOIN jenis_peminjam j ON m.id_jenis_peminjam = j.id_jenis_peminjam
+              LEFT JOIN struktur_organisasi s ON m.id_struktur_organisasi = s.id_struktur_organisasi
+              LEFT JOIN ormawa o ON m.id_ormawa = o.id_ormawa
+              LEFT JOIN pembina p ON o.id_ormawa = p.id_ormawa  
+              WHERE m.id_ormawa = ? AND m.id_struktur_organisasi = 1";  // Dua kondisi di sini
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$id]);
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute([$id]);
 
-        if ($stmt->rowCount() > 0) {
-            $data = $stmt->fetch(PDO::FETCH_OBJ);
-            response('success', 'Mahasiswa Retrieved Successfully', $data, 200);
-        } else {
-            response('error', 'Mahasiswa Not Found', null, 404);
-        }
+    if ($stmt->rowCount() > 0) {
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        response('success', 'Mahasiswa Retrieved Successfully', $data, 200);
+    } else {
+        response('error', 'Mahasiswa Not Found', null, 404);
     }
+}
+// Get all Mahasiswa by id_ormawa
+public function getMahasiswaByOrmawa($id_ormawa)
+{
+    $query = "SELECT 
+                m.id_mahasiswa, 
+                m.nama_mahasiswa, 
+                m.nim_mahasiswa, 
+                m.id_jenis_peminjam, 
+                m.id_ormawa, 
+                o.nama_ormawa, 
+                j.nama_jenis_peminjam, 
+                s.nama_struktur,
+                p.id_pembina,
+                p.nama_pembina, 
+                p.nip_pembina  
+              FROM mahasiswa m
+              LEFT JOIN jenis_peminjam j ON m.id_jenis_peminjam = j.id_jenis_peminjam
+              LEFT JOIN struktur_organisasi s ON m.id_struktur_organisasi = s.id_struktur_organisasi
+              LEFT JOIN ormawa o ON m.id_ormawa = o.id_ormawa
+              LEFT JOIN pembina p ON o.id_ormawa = p.id_ormawa  
+              WHERE m.id_ormawa = ?";  // Kondisi untuk id_ormawa
 
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute([$id_ormawa]);
+
+    if ($stmt->rowCount() > 0) {
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        response('success', 'Mahasiswa Retrieved Successfully', $data, 200);
+    } else {
+        response('error', 'Mahasiswa Not Found', null, 404);
+    }
+}
     // Create a new Mahasiswa
     public function createMahasiswa()
     {
@@ -230,4 +261,3 @@ class MahasiswaController
         }
     }
 }
-?>
