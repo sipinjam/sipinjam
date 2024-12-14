@@ -112,9 +112,9 @@ function getCookies(name) {
 }
 
 async function getPeminjaman() {
-    const loggedInUserName = getCookies('nama_peminjam'); // Ambil nama pengguna dari cookie
+    const loggedInUserId = getCookies("id_peminjam"); // Ambil nama pengguna dari cookie
 
-    if (!loggedInUserName) {
+    if (!loggedInUserId) {
         console.error("Nama peminjam tidak ditemukan dalam cookie.");
         return;
     }
@@ -127,20 +127,28 @@ async function getPeminjaman() {
             const peminjamanTable = document.getElementById('peminjamanTable');
             peminjamanTable.innerHTML = '';
 
+            const data = result.data;
+
+            // Filter data based on logged-in user ID
+            const filteredData = data.filter(item => {
+                const itemDate = new Date(item.tgl_peminjaman);
+                const today = new Date();
+                // Directly check if 'id_peminjam' matches the logged-in user ID
+                if (item.id_peminjam) {
+                    const match = item.id_peminjam === parseInt(loggedInUserId) &&
+                        (item.nama_status.toLowerCase() === 'disetujui' || item.nama_status
+                        .toLowerCase() === 'proses') &&
+                        itemDate > today;
+                    return match;
+                } else {
+                    return false; // Exclude items with missing id_peminjam
+                }
+            });
+
             if (result.data.length === 0) {
                 peminjamanTable.innerHTML =
                     '<tr><td colspan="6" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
             } else {
-                const today = new Date();
-                const filteredData = result.data
-                    .filter(item => {
-                        const itemDate = new Date(item.tanggal_kegiatan);
-                        return item.nama_peminjam === loggedInUserName &&
-                            (item.nama_status.toLowerCase() === 'disetujui' || item.nama_status.toLowerCase() === 'proses') &&
-                            itemDate > today;
-                    })
-                    .sort((a, b) => a.nama_peminjam.localeCompare(b.nama_peminjam));
-
                 filteredData.forEach(item => {
                     const row = document.createElement('tr');
                     row.className = 'bg-white hover:bg-gray-100';
@@ -158,22 +166,27 @@ async function getPeminjaman() {
                     }
 
                     // Tentukan sesi berdasarkan waktu_mulai dan waktu_selesai
-                    let sesi = '';
-                    if (item.waktu_mulai === "08:00:00" && item.waktu_selesai === "12:00:00") {
-                        sesi = 'Sesi 1';
-                    } else if (item.waktu_mulai === "12:00:00" && item.waktu_selesai === "16:00:00") {
-                        sesi = 'Sesi 2';
-                    } else if (item.waktu_mulai === "08:00:00" && item.waktu_selesai === "16:00:00") {
-                        sesi = 'Full Sesi';
-                    } else {
-                        sesi = 'Tidak Diketahui';
+                    let sesiText;
+                    switch (item.sesi_peminjaman) {
+                        case "1":
+                            sesiText = "Pagi";
+                            break;
+                        case "2":
+                            sesiText = "Siang";
+                            break;
+                        case "3":
+                            sesiText = "Full Day";
+                            break;
+                        default:
+                            sesiText = "Tidak diketahui";
                     }
+
 
                     row.innerHTML = `
                         <td class="border px-4 py-2">${item.nama_ruangan}</td>
                         <td class="border px-4 py-2">${item.nama_kegiatan}</td>
-                        <td class="border px-4 py-2">${item.tanggal_kegiatan}</td>
-                        <td class="border px-4 py-2">${sesi}</td>
+                        <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
+                        <td class="border px-4 py-2">${sesiText}</td>
                         <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
                     `;
                     peminjamanTable.appendChild(row);

@@ -26,11 +26,11 @@
             <table class="min-w-full bg-white">
                 <thead class="bg-biru-500 text-white">
                     <tr>
-                        <th class="w-1/4 px-4 py-2">Nama Ruangan</th>
-                        <th class="w-1/4 px-4 py-2">Kegiatan</th>
-                        <th class="w-1/4 px-4 py-2">Tanggal Pinjam</th>
-                        <th class="w-1/4 px-4 py-2">Sesi</th>
-                        <th class="w-1/4 px-4 py-2">Status</th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer">Nama Ruangan</th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer">Kegiatan</th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer">Tanggal Pinjam</th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer">Sesi</th>
+                        <th class="w-1/4 px-4 py-2 cursor-pointer">Status</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-700" id="peminjamanTable">
@@ -53,11 +53,13 @@
         return null; // Kembalikan null jika cookie tidak ditemukan
     }
 
-
     const itemsPerPage = 10;
     let currentPage = 1;
+    let sortColumn = ""; // Kolom yang diurutkan
+    let sortDirection = "asc"; // Arah pengurutan: "asc" atau "desc"
+    let filteredData = []; // Data yang disaring secara global untuk sorting dan pagination
 
-    // Render pagination controls
+    // Render kontrol pagination
     function renderPaginationControls(totalItems) {
         const paginationControls = document.getElementById("paginationControls");
         paginationControls.innerHTML = "";
@@ -76,7 +78,7 @@
             li.addEventListener("click", (e) => {
                 e.preventDefault();
                 currentPage = page;
-                getPeminjaman();
+                renderTableData(); // Render ulang tabel untuk halaman saat ini
             });
             return li;
         };
@@ -86,82 +88,119 @@
         }
     }
 
-    // Function to fetch and render data
+    // Fungsi untuk mengurutkan data berdasarkan kolom dan arah
+    function sortData(data, column, direction) {
+        return data.sort((a, b) => {
+            let valueA, valueB;
+
+            switch (column) {
+                case "sesi":
+                    const order = ["Pagi", "Siang", "Full Day"]; // Urutan custom untuk sesi
+                    valueA = order.indexOf(a.sesi_peminjaman);
+                    valueB = order.indexOf(b.sesi_peminjaman);
+                    break;
+                case "tanggal":
+                    valueA = new Date(a.tgl_peminjaman);
+                    valueB = new Date(b.tgl_peminjaman);
+                    break;
+                case "nama_kegiatan":
+                    valueA = a.nama_kegiatan.toLowerCase();
+                    valueB = b.nama_kegiatan.toLowerCase();
+                    break;
+                case "nama_ruangan":
+                    valueA = a.nama_ruangan.toLowerCase();
+                    valueB = b.nama_ruangan.toLowerCase();
+                    break;
+                case "status":
+                    const statusOrder = ["proses", "ditolak", "disetujui"];
+                    valueA = statusOrder.indexOf(a.nama_status);
+                    valueB = statusOrder.indexOf(b.nama_status);
+                    break;
+                default:
+                    return 0;
+            }
+
+            if (valueA < valueB) return direction === "asc" ? -1 : 1;
+            if (valueA > valueB) return direction === "asc" ? 1 : -1;
+            return 0;
+        });
+    }
+
+    // Render data tabel
+    function renderTableData() {
+        const peminjamanTable = document.getElementById("peminjamanTable");
+        peminjamanTable.innerHTML = "";
+
+        // Ambil data untuk halaman saat ini
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedData = filteredData.slice(start, end);
+
+        paginatedData.forEach((item) => {
+            const row = document.createElement("tr");
+            row.className = "bg-white hover:bg-gray-100";
+
+            let statusColor;
+            switch (item.nama_status.toLowerCase()) {
+                case "proses":
+                    statusColor = "text-yellow-600";
+                    break;
+                case "disetujui":
+                    statusColor = "text-green-600";
+                    break;
+                case "ditolak":
+                    statusColor = "text-red-600";
+                    break;
+                default:
+                    statusColor = "text-gray-600";
+            }
+
+            let sesiText;
+            switch (item.sesi_peminjaman) {
+                case "1":
+                    sesiText = "Pagi";
+                    break;
+                case "2":
+                    sesiText = "Siang";
+                    break;
+                case "3":
+                    sesiText = "Full Day";
+                    break;
+                default:
+                    sesiText = "Tidak diketahui";
+            }
+
+            row.innerHTML = `
+                <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                <td class="border px-4 py-2">${item.nama_kegiatan}</td>
+                <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
+                <td class="border px-4 py-2">${sesiText}</td>
+                <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
+            `;
+            peminjamanTable.appendChild(row);
+        });
+
+        renderPaginationControls(filteredData.length);
+    }
+
+    // Fetch dan render data
     async function getPeminjaman() {
-        const loggedInUserId = getCookies("id_peminjam"); // Get the logged-in user ID from cookies
+        const loggedInUserId = getCookies("id_peminjam");
 
         try {
             const response = await fetch("http://localhost/sipinjamfix/sipinjam/api/peminjaman/");
             const result = await response.json();
 
             if (result.status === "success") {
-                const peminjamanTable = document.getElementById("peminjamanTable");
-                peminjamanTable.innerHTML = "";
+                // Filter data berdasarkan ID pengguna yang login
+                filteredData = result.data.filter(
+                    (item) => item.id_peminjam === parseInt(loggedInUserId)
+                );
 
-                const data = result.data;
+                // Urutkan data secara awal
+                filteredData = sortData(filteredData, sortColumn, sortDirection);
 
-                // Filter data based on logged-in user ID
-                const filteredData = data.filter(item => {
-
-                    // Directly check if 'id_peminjam' matches the logged-in user ID
-                    if (item.id_peminjam) {
-                        const match = item.id_peminjam === parseInt(loggedInUserId);
-                        return match;
-                    } else {
-                        return false; // Exclude items with missing id_peminjam
-                    }
-                });
-
-                if (filteredData.length === 0) {
-                    peminjamanTable.innerHTML =
-                        '<tr><td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan untuk pengguna ini.</td></tr>';
-                } else {
-                    filteredData.forEach((item) => {
-                        const row = document.createElement("tr");
-                        row.className = "bg-white hover:bg-gray-100";
-
-                        let statusColor;
-                        switch (item.nama_status.toLowerCase()) {
-                            case "proses":
-                                statusColor = "text-yellow-600";
-                                break;
-                            case "disetujui":
-                                statusColor = "text-green-600";
-                                break;
-                            case "ditolak":
-                                statusColor = "text-red-600";
-                                break;
-                            default:
-                                statusColor = "text-gray-600";
-                        }
-
-                        let sesiText;
-                        switch (item.sesi_peminjaman) {
-                            case "1":
-                                sesiText = "Pagi";
-                                break;
-                            case "2":
-                                sesiText = "Siang";
-                                break;
-                            case "3":
-                                sesiText = "Full Day";
-                                break;
-                            default:
-                                sesiText = "Tidak diketahui";
-                        }
-
-                        row.innerHTML = `
-                    <td class="border px-4 py-2">${item.nama_ruangan}</td>
-                    <td class="border px-4 py-2">${item.nama_kegiatan}</td>
-                    <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
-                    <td class="border px-4 py-2">${sesiText}</td>
-                    <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
-                    `;
-                        peminjamanTable.appendChild(row);
-                    });
-
-                    renderPaginationControls(filteredData.length);
-                }
+                renderTableData();
             } else {
                 console.error("Gagal mendapatkan data peminjaman:", result.message);
             }
@@ -170,10 +209,28 @@
         }
     }
 
+    // Tambahkan event listener untuk header tabel
+    document.querySelectorAll("th").forEach((header, index) => {
+        const columnMap = ["nama_ruangan", "nama_kegiatan", "tanggal", "sesi", "status"];
+        header.addEventListener("click", () => {
+            const column = columnMap[index];
+            if (sortColumn === column) {
+                sortDirection = sortDirection === "asc" ? "desc" : "asc";
+            } else {
+                sortColumn = column;
+                sortDirection = "asc";
+            }
+            filteredData = sortData(filteredData, sortColumn, sortDirection);
+            renderTableData();
+        });
+    });
+
     document.addEventListener("DOMContentLoaded", () => {
         getPeminjaman();
     });
     </script>
+
+
 </body>
 
 </html>
