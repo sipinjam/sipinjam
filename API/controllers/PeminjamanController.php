@@ -28,7 +28,6 @@ class PeminjamansController
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
-            pe.nama_peminjam,
             s.nama_status
        FROM 
             peminjaman p
@@ -40,8 +39,6 @@ class PeminjamansController
             mahasiswa m ON k.id_mahasiswa = m.id_mahasiswa
         JOIN 
             mahasiswa mp ON k.id_mahasiswa = mp.id_mahasiswa
-        JOIN 
-            peminjam pe ON p.id_peminjam = pe.id_peminjam
         JOIN 
             status s ON p.id_status = s.id_status
     ";
@@ -69,7 +66,6 @@ class PeminjamansController
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
-            pe.nama_peminjam,
             s.nama_status
         FROM 
             peminjaman p
@@ -81,8 +77,6 @@ class PeminjamansController
             mahasiswa m ON k.id_mahasiswa = m.id_mahasiswa
         JOIN 
             mahasiswa mp ON k.id_mahasiswa = mp.id_mahasiswa
-        JOIN 
-            peminjam pe ON p.id_peminjam = pe.id_peminjam
         JOIN 
             status s ON p.id_status = s.id_status
         WHERE 

@@ -81,19 +81,37 @@ function renderPaginationControls(totalItems) {
   }
 }
 
-// Function to get cookies
+// Function to get cookies with debugging
 function getCookies(name) {
+  // Log the full document cookies for debugging
+  console.log("All cookies:", document.cookie);
+  
+  // Format the cookie string for searching
   const value = `; ${document.cookie}`;
+  console.log("Formatted cookie string:", value);
+
+  // Split the cookies to find the target one
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
+  console.log(`Split parts for '${name}':`, parts);
+
+  // Check if the cookie exists and return it
+  if (parts.length === 2) {
+    const cookieValue = parts.pop().split(";").shift();
+    console.log(`Value of '${name}' cookie:`, cookieValue);
+    return cookieValue;
+  } else {
+    console.log(`Cookie '${name}' not found.`);
+    return null;
+  }
 }
+
 
 // Function to fetch and render data
 async function getPeminjaman() {
-  const loggedInUserName = getCookies("nama_peminjam");
+  const loggedInUserId = getCookies("id_peminjam"); // Change to use id_peminjam
 
-  if (!loggedInUserName) {
-    console.error("Nama peminjam tidak ditemukan dalam cookie.");
+  if (!loggedInUserId) {
+    console.error("ID peminjam tidak ditemukan dalam cookie.");
     return;
   }
 
@@ -110,7 +128,7 @@ async function getPeminjaman() {
       } else {
         // Group data by room, date, and activity
         const groupedData = result.data
-          .filter((item) => item.nama_peminjam === loggedInUserName)
+          .filter((item) => item.id_peminjam === loggedInUserId) // Filter by id_peminjam
           .reduce((acc, item) => {
             const key = `${item.nama_ruangan}_${item.tanggal_kegiatan}_${item.nama_kegiatan}`;
 
@@ -229,6 +247,7 @@ function updateSortIndicator(header, column) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  getCookies();
   getPeminjaman();
   attachSortEvents();
 });
