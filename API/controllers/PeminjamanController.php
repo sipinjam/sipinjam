@@ -211,16 +211,37 @@ class PeminjamansController
             return;
         }
 
-        $updateQuery = "UPDATE peminjaman SET id_status = ? WHERE id_peminjaman = ?";
-        $updateStmt = $this->conn->prepare($updateQuery);
+        $idStatus = $inputData['id_status'];
+        $keterangan = isset($inputData['keterangan']) ? $inputData['keterangan'] : null;
 
-        if ($updateStmt->execute([$inputData['id_status'], $id_peminjaman])) {
+        // Menyiapkan query dan parameter berdasarkan nilai id_status
+        if ($idStatus == "2") {
+            // Jika id_status adalah "2", kita perlu mengupdate keterangan
+            if (!isset($inputData['keterangan'])) {
+                response('error', 'Missing parameter: keterangan', null, 400);
+                return;
+            }
+
+            $updateQuery = "UPDATE peminjaman SET id_status = ?, keterangan = ? WHERE id_peminjaman = ?";
+            $updateStmt = $this->conn->prepare($updateQuery);
+            $params = [$idStatus, $keterangan, $id_peminjaman];
+        } elseif ($idStatus == "3") {
+            // Jika id_status adalah "3", kita tidak perlu mengupdate keterangan
+            $updateQuery = "UPDATE peminjaman SET id_status = ?, keterangan = NULL WHERE id_peminjaman = ?";
+            $updateStmt = $this->conn->prepare($updateQuery);
+            $params = [$idStatus, $id_peminjaman];
+        } else {
+            response('error', 'Invalid value for id_status', null, 400);
+            return;
+        }
+
+        // Eksekusi query
+        if ($updateStmt->execute($params)) {
             response('success', 'Peminjaman updated successfully', null, 200);
         } else {
             response('error', 'Unable to update peminjaman', null, 400);
         }
     }
-
     public function deletePeminjaman($id_peminjaman)
     {
         $deleteQuery = "DELETE FROM peminjaman WHERE id_peminjaman = ?";
