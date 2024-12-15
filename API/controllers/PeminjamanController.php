@@ -28,7 +28,8 @@ class PeminjamansController
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
-            s.nama_status
+            s.nama_status,
+            pem.nama_lengkap
        FROM 
             peminjaman p
         JOIN 
@@ -41,6 +42,8 @@ class PeminjamansController
             mahasiswa mp ON k.id_mahasiswa = mp.id_mahasiswa
         JOIN 
             status s ON p.id_status = s.id_status
+        JOIN 
+            peminjam pem ON k.id_peminjam = pem.id_peminjam
     ";
 
         $stmt = $this->conn->prepare($query);
@@ -60,13 +63,16 @@ class PeminjamansController
             p.id_peminjaman,
             k.nama_kegiatan,
             k.tema_kegiatan,
+            o.nama_ormawa,
             p.tgl_peminjaman,
             p.sesi_peminjaman,
             k.daftar_panitia,
             r.nama_ruangan,
             m.nama_mahasiswa AS nama_ketua_ormawa,
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
-            s.nama_status
+            b.nama_pembina,
+            s.nama_status,
+            pem.nama_lengkap
         FROM 
             peminjaman p
         JOIN 
@@ -79,6 +85,12 @@ class PeminjamansController
             mahasiswa mp ON k.id_mahasiswa = mp.id_mahasiswa
         JOIN 
             status s ON p.id_status = s.id_status
+        JOIN
+            peminjam pem ON k.id_peminjam = pem.id_peminjam
+        JOIN
+            ormawa o ON k.id_ormawa = o.id_ormawa
+        JOIN
+            pembina b ON o.id_ormawa = b.id_ormawa
         WHERE 
             p.id_peminjaman = ?
     ";

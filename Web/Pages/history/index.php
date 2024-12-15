@@ -197,10 +197,19 @@
                     (item) => item.id_peminjam === parseInt(loggedInUserId)
                 );
 
-                // Urutkan data secara awal
-                filteredData = sortData(filteredData, sortColumn, sortDirection);
+                if (filteredData.length === 0) {
+                    document.getElementById("peminjamanTable").innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td>
+                        </tr>
+                    `;
+                    return;
+                } else {
+                    // Urutkan data secara awal
+                    filteredData = sortData(filteredData, sortColumn, sortDirection);
 
-                renderTableData();
+                    renderTableData();
+                }
             } else {
                 console.error("Gagal mendapatkan data peminjaman:", result.message);
             }
