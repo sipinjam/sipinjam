@@ -1,36 +1,45 @@
+// To parse this JSON data, do
+//
+//     final peminjamModel = peminjamModelFromJson(jsonString);
+
+import 'dart:convert';
+
+PeminjamModel peminjamModelFromJson(String str) =>
+    PeminjamModel.fromJson(json.decode(str));
+
+String peminjamModelToJson(PeminjamModel data) => json.encode(data.toJson());
+
 class PeminjamModel {
-  int? idPeminjam;
+  int idPeminjam;
   String namaPeminjam;
   String password;
-  String? namaLengkap;
+  String namaLengkap;
   String email;
-  String? noTelpon;
-  int? idJenisPeminjam;
+  String noTelpon;
+  int idJenisPeminjam;
+  int idOrmawa;
 
   PeminjamModel({
-    this.idPeminjam,
+    required this.idPeminjam,
     required this.namaPeminjam,
     required this.password,
-    this.namaLengkap,
+    required this.namaLengkap,
     required this.email,
-    this.noTelpon,
-    this.idJenisPeminjam,
+    required this.noTelpon,
+    required this.idJenisPeminjam,
+    required this.idOrmawa,
   });
 
-  factory PeminjamModel.fromJson(Map<String, dynamic> json) {
-    return PeminjamModel(
-      idPeminjam: json["id_peminjam"] ?? 0,
-      namaPeminjam: json["nama_peminjam"] ??
-          '', // Pastikan selalu ada nilai default jika null
-      password:
-          json["password"] ?? '', // Pastikan selalu ada nilai default jika null
-      namaLengkap: json["nama_lengkap"],
-      email: json["email"] ?? '',
-      noTelpon: json["no_telpon"],
-      idJenisPeminjam:
-          json["id_jenis_peminjam"] != null ? json["id_jenis_peminjam"] : null,
-    );
-  }
+  factory PeminjamModel.fromJson(Map<String, dynamic> json) => PeminjamModel(
+        idPeminjam: json["id_peminjam"],
+        namaPeminjam: json["nama_peminjam"],
+        password: json["password"],
+        namaLengkap: json["nama_lengkap"],
+        email: json["email"],
+        noTelpon: json["no_telpon"],
+        idJenisPeminjam: json["id_jenis_peminjam"],
+        idOrmawa: json["id_ormawa"],
+      );
 
   Map<String, dynamic> toJson() => {
         "id_peminjam": idPeminjam,
@@ -40,5 +49,6 @@ class PeminjamModel {
         "email": email,
         "no_telpon": noTelpon,
         "id_jenis_peminjam": idJenisPeminjam,
+        "id_ormawa": idOrmawa,
       };
 }

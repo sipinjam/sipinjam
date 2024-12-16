@@ -50,10 +50,10 @@ class _HistoryState extends State<History> {
         throw Exception('Data peminjam tidak ditemukan.');
       }
 
-      final namaPeminjamLogin =
-          peminjamData.namaPeminjam; // Nama peminjam yang login
+      final idPeminjamLogin =
+          peminjamData.idPeminjam; // Nama peminjam yang login
       final url =
-          '$baseUrl?nama_peminjam=$namaPeminjamLogin'; // Filter berdasarkan nama
+          '$baseUrl?id_peminjam=$idPeminjamLogin'; // Filter berdasarkan nama
 
       final response = await http.get(Uri.parse(url));
 
@@ -63,7 +63,7 @@ class _HistoryState extends State<History> {
         // Filter data yang sesuai dengan nama peminjam yang login
         final filteredData = (data['data'] as List)
             .map((json) => PeminjamanModel.fromJson(json))
-            .where((item) => item.namaPeminjam == namaPeminjamLogin)
+            .where((item) => item.idPeminjam == idPeminjamLogin)
             .toList();
 
         setState(() {
@@ -110,11 +110,10 @@ class _HistoryState extends State<History> {
                       return _buildHistoryCard(
                         item.namaStatus,
                         _getStatusColor(item.namaStatus),
-                        item.tanggalKegiatan.toLocal().toString().split(' ')[0],
+                        item.tglPeminjaman.toLocal().toString().split(' ')[0],
                         item.namaKegiatan,
                         item.namaRuangan,
-                        item.waktuMulai,
-                        item.waktuSelesai,
+                        _displaySesi(item.sesiPeminjaman),
                       );
                     },
                   ),
@@ -170,8 +169,21 @@ class _HistoryState extends State<History> {
     }
   }
 
+  String _displaySesi(String sesi) {
+    switch (sesi) {
+      case '1':
+        return 'Pagi';
+      case '2':
+        return 'Siang';
+      case '3':
+        return 'Full Sesi';
+      default:
+        return '';
+    }
+  }
+
   Widget _buildHistoryCard(String status, Color statusColor, String date,
-      String name, String location, String time1, String time2) {
+      String name, String location, String sesi) {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -216,7 +228,7 @@ class _HistoryState extends State<History> {
                   date,
                   style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                Text('$time1 - $time2'),
+                Text(sesi),
               ],
             ),
           ],

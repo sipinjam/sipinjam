@@ -3,8 +3,12 @@ import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/datasources/kegiatan_datasource.dart';
 import 'package:sipit_app/datasources/mahasiswa_datasource.dart';
+import 'package:sipit_app/datasources/ormawa_datasource.dart';
 import 'package:sipit_app/datasources/ruangan_datasource.dart';
+import 'package:sipit_app/models/OrmawaModel.dart';
+import 'package:sipit_app/models/kegiatan_model.dart';
 import 'package:sipit_app/models/mahasiswaModel.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
@@ -25,13 +29,19 @@ class _peminjamanPageState extends State<peminjamanPage> {
       TextEditingController();
   final MahasiswaDatasource _mahasiswaDatasource = MahasiswaDatasource();
   List<MahasiswanModel> _mahasiswas = [];
-  String? _selectedOrmawa;
   final RuanganDatasource _ruanganDatasource = RuanganDatasource();
   List<DaftarRuanganModel> _ruangans = [];
+  String? _selectedOrmawa;
+  final KegiatanDatasource _kegiatanDatasource = KegiatanDatasource();
+  List<KegiatanModel> _kegiatans = [];
   String? _selectedRuangan;
-
   bool _isLoadingMahasiswa = false;
   bool _isLoadingRuangan = false;
+  String _namaPeminjam = '';
+  String _namaOrmawa = '';
+  final OrmawaDatasource ormawaDatasource = OrmawaDatasource();
+  TextEditingController _namaPeminjamController = TextEditingController();
+  TextEditingController _namaOrmawaController = TextEditingController();
 
   Future<void> fetchApi() async {
     setState(() {
@@ -43,11 +53,13 @@ class _peminjamanPageState extends State<peminjamanPage> {
       final results = await Future.wait([
         _mahasiswaDatasource.getAllMahasiswa(),
         _ruanganDatasource.fetchRuanganNonRequired(),
+        _kegiatanDatasource.getAllKegiatan(),
       ]);
 
       setState(() {
         _mahasiswas = results[0] as List<MahasiswanModel>;
         _ruangans = results[1] as List<DaftarRuanganModel>;
+        _kegiatans = results[2] as List<KegiatanModel>;
       });
     } catch (e) {
       print('Error: $e');
@@ -56,6 +68,39 @@ class _peminjamanPageState extends State<peminjamanPage> {
         _isLoadingRuangan = false;
         _isLoadingMahasiswa = false;
       });
+    }
+  }
+
+  Future<void> _formPeminjam() async {
+    try {
+      final PeminjamModel? peminjam = await AppSession.getPeminjam();
+      if (peminjam != null) {
+        setState(() {
+          _namaPeminjam = peminjam.namaPeminjam;
+          _namaPeminjamController.text = _namaPeminjam;
+        });
+        final OrmawaModel ormawa =
+            await ormawaDatasource.getOrmawaById(peminjam.idOrmawa);
+        setState(() {
+          _namaOrmawa = ormawa.namaOrmawa;
+          _namaOrmawaController.text = _namaOrmawa;
+        });
+      } else {
+        setState(() {
+          _namaPeminjam = 'Peminjam tidak ditemukan';
+          _namaPeminjamController.text = _namaPeminjam;
+          _namaOrmawa = 'Ormawa tidak ditemukan';
+          _namaOrmawaController.text = _namaOrmawa;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _namaPeminjam = 'Error memuat data';
+        _namaPeminjamController.text = _namaPeminjam;
+        _namaOrmawa = 'Error memuat data';
+        _namaOrmawaController.text = _namaOrmawa;
+      });
+      print(e);
     }
   }
 
@@ -76,45 +121,23 @@ class _peminjamanPageState extends State<peminjamanPage> {
   }
 
   @override
+  void dispose() {
+    _namaPeminjamController.dispose();
+    _namaOrmawaController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     fetchApi();
     super.initState();
-  }
-
-  void _addEvent() {
-    final TextEditingController eventBaruController = TextEditingController();
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Tambah Event'),
-            content: TextField(
-              controller: eventBaruController,
-              decoration: InputDecoration(
-                labelText: 'Event Baru',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Batal')),
-              TextButton(onPressed: () {}, child: Text('Tambah'))
-            ],
-          );
-        });
+    _formPeminjam();
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Form Peminjaman"),
-      // ),
       backgroundColor: putih,
       body: SingleChildScrollView(
         child: Padding(
@@ -149,65 +172,36 @@ class _peminjamanPageState extends State<peminjamanPage> {
                 ),
                 elevation: 4, // Efek bayangan
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Peminjam',
-                        style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 8),
-                      FutureBuilder(
-                          future: AppSession.getPeminjam(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData || snapshot.data == null) {
-                              return const Center(
-                                  child: Text("No profile data available."));
-                            }
-
-                            PeminjamModel peminjam = snapshot.data!;
-                            return TextFormField(
-                              initialValue: peminjam.namaPeminjam,
-                              readOnly: true,
-                              decoration: const InputDecoration(
-                                labelText: 'Username',
-                                border: OutlineInputBorder(),
-                              ),
-                            );
-                          }),
-                      const SizedBox(height: 8),
-                      _isLoadingMahasiswa
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Container(
-                              padding: EdgeInsets.symmetric(horizontal: 6),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(6)),
-                              child: DropdownMenu<MahasiswanModel?>(
-                                width: MediaQuery.of(context).size.width,
-                                // controller: _searchRuanganController,
-                                hintText: "Ormawa",
-                                inputDecorationTheme: InputDecorationTheme(
-                                    border: InputBorder.none),
-                                dropdownMenuEntries: _mahasiswas.map((ormawa) {
-                                  return DropdownMenuEntry(
-                                      value: ormawa, label: ormawa.namaOrmawa!);
-                                }).toList(),
-                                onSelected: (ormawa) {
-                                  setState(() {
-                                    _selectedOrmawa = ormawa.toString();
-                                  });
-                                },
-                              ),
-                            ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Peminjam',
+                          style: TextStyle(
+                              color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          controller: _namaPeminjamController,
+                          readOnly: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Username',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          controller: _namaOrmawaController,
+                          readOnly: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Ormawa',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                      ],
+                    )),
               ),
               // Bagian Kegiatan
               Card(
@@ -227,46 +221,28 @@ class _peminjamanPageState extends State<peminjamanPage> {
                             color: Colors.purple, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(6)),
-                            child: DropdownMenu<MahasiswanModel?>(
-                              width: MediaQuery.of(context).size.width,
-                              // controller: _searchRuanganController,
-                              hintText: "Kegiatan",
-                              inputDecorationTheme: InputDecorationTheme(
-                                  border: InputBorder.none),
-                              dropdownMenuEntries: _mahasiswas.map((ormawa) {
-                                return DropdownMenuEntry(
-                                    value: ormawa, label: ormawa.namaOrmawa!);
-                              }).toList(),
-                              onSelected: (ormawa) {
-                                setState(() {
-                                  _selectedOrmawa = ormawa.toString();
-                                });
-                              },
-                            ),
-                          ),
-                          DButtonFlat(
-                            padding: EdgeInsets.all(12),
-                            radius: 6,
-                            onClick: () => _addEvent(),
-                            mainColor: biruTua,
-                            child: Center(
-                              child: Icon(
-                                Icons.add,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: DropdownMenu<MahasiswanModel?>(
+                          width: MediaQuery.of(context).size.width,
+                          // controller: _searchRuanganController,
+                          hintText: "Kegiatan",
+                          inputDecorationTheme:
+                              InputDecorationTheme(border: InputBorder.none),
+                          dropdownMenuEntries: _mahasiswas.map((ormawa) {
+                            return DropdownMenuEntry(
+                                value: ormawa, label: ormawa.namaOrmawa!);
+                          }).toList(),
+                          onSelected: (ormawa) {
+                            setState(() {
+                              _selectedOrmawa = ormawa.toString();
+                            });
+                          },
+                        ),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(

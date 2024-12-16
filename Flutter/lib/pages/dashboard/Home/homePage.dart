@@ -49,10 +49,10 @@ class _HomePageState extends State<HomePage> {
         throw Exception('Data peminjam tidak ditemukan.');
       }
 
-      final namaPeminjamLogin =
-          peminjamData.namaPeminjam; // Nama peminjam yang login
+      final idPeminjamLogin =
+          peminjamData.idPeminjam; // Nama peminjam yang login
       final url =
-          '$baseUrl?nama_peminjam=$namaPeminjamLogin'; // Filter berdasarkan nama
+          '$baseUrl?id_peminjam=$idPeminjamLogin'; // Filter berdasarkan nama
 
       final response = await http.get(Uri.parse(url));
 
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
         // Filter data yang sesuai dengan nama peminjam yang login
         final filteredData = (data['data'] as List)
             .map((json) => PeminjamanModel.fromJson(json))
-            .where((item) => item.namaPeminjam == namaPeminjamLogin)
+            .where((item) => item.idPeminjam == idPeminjamLogin)
             .toList();
 
         setState(() {
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     return bookingList.where((PeminjamanModel booking) {
       return (booking.namaStatus == 'proses' ||
               booking.namaStatus == 'disetujui') &&
-          now.isBefore(booking.tanggalKegiatan.add(const Duration(days: 1)));
+          now.isBefore(booking.tglPeminjaman.add(const Duration(days: 1)));
     }).toList();
   }
 
@@ -238,10 +238,9 @@ class _HomePageState extends State<HomePage> {
                           buildingName: booking.namaRuangan,
                           activityName: booking.namaKegiatan,
                           date: DateFormat('yyyy-MM-dd')
-                              .format(booking.tanggalKegiatan),
+                              .format(booking.tglPeminjaman),
                           status: booking.namaStatus,
-                          time1: (booking.waktuMulai),
-                          time2: (booking.waktuSelesai),
+                          sesi: booking.sesiPeminjaman,
                         ),
                   ],
                 ),
@@ -259,16 +258,14 @@ class BookingCard extends StatelessWidget {
   final String activityName;
   final String date;
   final String status;
-  final String time1;
-  final String time2;
+  final String sesi;
 
   const BookingCard({
     required this.buildingName,
     required this.activityName,
     required this.date,
     required this.status,
-    required this.time1,
-    required this.time2,
+    required this.sesi,
     super.key,
   });
 
@@ -280,6 +277,19 @@ class BookingCard extends StatelessWidget {
         return Colors.green;
       default:
         return Colors.grey;
+    }
+  }
+
+  String _displaySesi(String sesi) {
+    switch (sesi) {
+      case '1':
+        return 'Pagi';
+      case '2':
+        return 'Siang';
+      case '3':
+        return 'Full Sesi';
+      default:
+        return '';
     }
   }
 
@@ -332,7 +342,7 @@ class BookingCard extends StatelessWidget {
                   date,
                   style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                Text('$time1 - $time2'),
+                Text(_displaySesi(sesi)),
               ],
             ),
           ],

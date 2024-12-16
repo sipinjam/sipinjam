@@ -100,7 +100,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Nama Kegiatan: ${event['nama_kegiatan']}'),
-                        Text('Waktu: ${event['waktu']}'),
+                        Text('Sesi: ${event['sesi']}'),
                         Text('Status: ${event['status']}'),
                       ],
                     );
@@ -289,7 +289,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
-                        'Sesi sudah penuh',
+                        'Full Sesi',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -306,7 +306,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
-                        'Sesi 1',
+                        'Sesi Pagi',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -323,7 +323,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
-                        'Sesi 2',
+                        'Sesi Siang',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -334,22 +334,6 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
               ),
             ),
-
-            // button ke form peminjaman
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // DButtonElevation(
-            //   radius: 10,
-            //   padding: const EdgeInsets.symmetric(vertical: 10),
-            //   mainColor: biruTua,
-            //   onClick: () => {Nav.push(context, peminjamanPage())},
-            //   child: const Text(
-            //     'Pinjam',
-            //     style:
-            //         TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            //   ),
-            // )
           ],
         ),
       ),

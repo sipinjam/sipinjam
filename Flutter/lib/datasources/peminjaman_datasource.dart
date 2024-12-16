@@ -24,52 +24,46 @@ class PeminjamanDatasource {
                 .toLowerCase()
                 .contains(roomName.toLowerCase()) &&
             peminjaman.namaStatus != 'ditolak') {
-          final date = DateTime.parse(peminjaman.tanggalKegiatan.toString());
-          final startTime = peminjaman.waktuMulai;
-          final endTime = peminjaman.waktuSelesai;
+          final date = DateTime.parse(peminjaman.tglPeminjaman.toString());
+          final sesiPeminjaman = peminjaman.sesiPeminjaman;
+          var sesiDisplay = '';
           Color? color;
 
           if (date.isBefore(DateTime.now())) {
             color = const Color(0xff615EFC);
-          } else if (startTime == '08:00:00' && endTime == '12:00:00') {
+          } else if (sesiPeminjaman == '1') {
             color = const Color.fromRGBO(241, 207, 77, 1);
-          } else if (startTime == '12:00:00' && endTime == '16:00:00') {
+            sesiDisplay = 'Pagi';
+          } else if (sesiPeminjaman == '2') {
             color = const Color.fromRGBO(74, 222, 128, 1);
-          } else if (startTime == '08:00:00' && endTime == '16:00:00') {
+            sesiDisplay = 'Siang';
+          } else if (sesiPeminjaman == '3') {
             color = const Color.fromRGBO(239, 68, 68, 1);
-          } else {
-            null;
+            sesiDisplay = 'Full Sesi';
           }
 
           if (markedDates.containsKey(date)) {
             for (var existingEvent in markedDates[date]!) {
-              if ((startTime == '08:00:00' && endTime == '16:00:00') ||
-                  (existingEvent['start_time'] == '08:00:00' &&
-                      endTime == '16:00:00') ||
-                  (startTime == '08:00:00' &&
-                      existingEvent['end_time'] == '16:00:00')) {
-                existingEvent['start_time'] = '08:00:00';
-                existingEvent['end_time'] = '16:00:00';
+              if ((sesiPeminjaman == '3') ||
+                  (existingEvent['sesiPeminjaman'] == '1') ||
+                  (existingEvent['sesiPeminjaman'] == '2')) {
                 existingEvent['color'] = const Color.fromRGBO(239, 68, 68, 1);
+                existingEvent['sesiDisplay'] = 'Full Sesi';
               }
             }
             markedDates[date]!.add({
               'color': color,
               'nama_kegiatan': peminjaman.namaKegiatan,
-              'waktu': '$startTime - $endTime',
+              'sesi': sesiDisplay,
               'status': peminjaman.namaStatus,
-              'start_time': startTime,
-              'end_time': endTime,
             });
           } else {
             markedDates[date] = [
               {
                 'color': color,
                 'nama_kegiatan': peminjaman.namaKegiatan,
-                'waktu': '$startTime - $endTime',
+                'sesi': sesiDisplay,
                 'status': peminjaman.namaStatus,
-                'start_time': startTime,
-                'end_time': endTime,
               }
             ];
           }
