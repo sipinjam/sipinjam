@@ -29,6 +29,7 @@ class PeminjamansController
             m.nama_mahasiswa AS nama_ketua_ormawa,
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
             s.nama_status,
+            p.keterangan,
             pem.nama_lengkap
        FROM 
             peminjaman p
@@ -72,6 +73,7 @@ class PeminjamansController
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
             b.nama_pembina,
             s.nama_status,
+            p.keterangan,
             pem.nama_lengkap
         FROM 
             peminjaman p
