@@ -18,12 +18,24 @@
 
     <!-- Main Content -->
     <div class="p-4 sm:ml-64">
-        <h1 class="text-4xl font-bold p-4">Kotak Masuk</h1>
-        <!-- Responsive Grid -->
-        <div id="peminjamanGrid" class="pt-5 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mb-4">
-            <!-- Data peminjaman akan diisi di sini -->
-        </div>
+        <h3 class="text-4xl font-bold p-4">Kotak Masuk</h3>
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+            <thead class="bg-biru-500 text-white">
+                <tr>
+                    <th class="px-4 py-2">Nama Ruangan</th>
+                    <th class="px-4 py-2">Peminjam</th>
+                    <th class="px-4 py-2">Ormawa</th>
+                    <th class="px-4 py-2">Tanggal Pinjam</th>
+                    <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2 text-center">Detail Peminjaman</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700" id="peminjamanTable">
+                <!-- Data akan dimuat dengan JavaScript -->
+            </tbody>
+        </table>
     </div>
+
     <!-- End Main -->
 
     <!-- Main Modal (Detail Peminjaman) -->
@@ -40,9 +52,7 @@
                 <!-- Image Section -->
                 <div class="flex justify-center">
                     <div>
-                        <img id="modalImage" class="w-full rounded-lg" alt="Gedung Kuliah Terpadu">
                         <h2 id="modalTitle" class="text-center text-lg font-bold mt-2"></h2>
-                        <p id="modalRoom" class="text-center text-sm text-gray-500"></p>
                     </div>
                 </div>
 
@@ -71,7 +81,8 @@
                     <div class="flex justify-start gap-x-4">
                         <button id="openSubModal"
                             class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">TOLAK</button>
-                        <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">SETUJU</button>
+                        <button id="btnSetuju"
+                            class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">SETUJU</button>
                     </div>
 
                     <!-- Sub Modal -->
@@ -86,11 +97,11 @@
                             </div>
 
                             <!-- Content -->
-                            <textarea
+                            <textarea id="alasanTolak"
                                 class="w-full h-32 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Masukkan keterangan disini..."></textarea>
+                                placeholder="Masukkan alasan penolakan disini..."></textarea>
                             <div class="flex justify-center mt-4">
-                                <button
+                                <button id="btnSubmitTolak"
                                     class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Submit</button>
                             </div>
                         </div>
@@ -108,30 +119,44 @@
         const data = await response.json();
 
         if (data.status === "success") {
-            const peminjamanList = data.data;
-            const peminjamanGrid = document.getElementById('peminjamanGrid');
-
+            const peminjamanList = data.data.filter(item => item.nama_status.toLowerCase() === "proses"); // Filter hanya yang status "proses"
+            const peminjamanTable = document.getElementById('peminjamanTable');
+            
             peminjamanList.forEach(item => {
-                const peminjamanCard = document.createElement('a');
-                peminjamanCard.href = "#";
-                peminjamanCard.classList.add("flex", "flex-col", "items-center", "bg-white", "border",
-                    "border-gray-200", "rounded-lg", "shadow", "md:flex-row", "hover:bg-gray-100");
+                // Tentukan warna status berdasarkan item.nama_status
+                let statusColor;
+                switch (item.nama_status.toLowerCase()) {
+                    case 'proses':
+                        statusColor = 'text-yellow-600';
+                        break;
+                    case 'disetujui':
+                        statusColor = 'text-green-600';
+                        break;
+                    case 'ditolak':
+                        statusColor = 'text-red-600'; // Warna merah untuk ditolak
+                        break;
+                    default:
+                        statusColor = 'text-gray-600';
+                }
 
-                peminjamanCard.innerHTML = `
-                        <img class="object-cover w-full rounded-t-lg h-48 md:h-full md:w-48 md:rounded-none md:rounded-s-lg" 
-                            src="../../Sources/Img/gedungkuliah-terpadu.png" alt="png">
-                        <div class="flex flex-col justify-between p-4 leading-normal">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${item.nama_ruangan}</h5>
-                            <p class="text-sm text-gray-600 pt-2">Peminjam:</p>
-                            <p class="text-sm font-bold">${item.nama_lengkap}</p>
-                            <p class="text-sm text-gray-600 pt-1">Tanggal Pinjam:</p>
-                            <p class="text-sm font-bold">${item.tgl_peminjaman}</p>
-                            <p class="text-sm mt-2">Status: <span class="text-yellow-600 font-bold">${getStatusText(item.nama_status)}</span></p>
-                            <button type="button" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail Peminjaman</button>
-                        </div>
-                    `;
+                // Buat baris tabel untuk setiap item
+                const row = document.createElement('tr');
+                row.classList.add('hover:bg-gray-100'); // Tambahkan efek hover pada baris
 
-                peminjamanGrid.appendChild(peminjamanCard);
+                row.innerHTML = `
+                    <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                    <td class="border px-4 py-2">${item.nama_lengkap}</td>
+                    <td class="border px-4 py-2">${item.nama_ormawa}</td>
+                    <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
+                    <td class="border px-4 py-2">
+                        <span class="${statusColor} font-bold ">${item.nama_status}</span>
+                    </td>
+                    <td class="border px-4 py-2 text-center">
+                        <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Detail Peminjaman</button>
+                    </td>
+                `;
+
+                peminjamanTable.appendChild(row);
             });
         } else {
             alert('Failed to load peminjaman data.');
@@ -156,12 +181,27 @@
     const subModal = document.getElementById('subModal');
     const openSubModal = document.getElementById('openSubModal');
     const closeSubModal = document.getElementById('closeSubModal');
+    const btnSubmitTolak = document.getElementById('btnSubmitTolak');
 
-    openSubModal.addEventListener('click', () => subModal.classList.remove('hidden'));
-    closeSubModal.addEventListener('click', () => subModal.classList.add('hidden'));
-    window.addEventListener('click', (event) => {
-        if (event.target === subModal) subModal.classList.add('hidden');
+    // Event listener untuk membuka modal kecil (alasan TOLAK)
+    openSubModal.addEventListener('click', () => {
+        subModal.classList.remove('hidden');
     });
+
+    // Event listener untuk menutup modal kecil
+    closeSubModal.addEventListener('click', () => {
+        subModal.classList.add('hidden');
+    });
+
+    // Event listener untuk klik di luar modal
+    window.addEventListener('click', (event) => {
+        if (event.target === subModal) {
+            subModal.classList.add('hidden');
+        }
+    });
+
+    // Event listener untuk tombol submit penolakan
+    let selectedIdPeminjaman = null; // Variabel global untuk menyimpan ID peminjaman yang sedang diproses
 
     // Fungsi untuk membuka modal detail dan menampilkan data peminjaman berdasarkan ID
     async function openDetailModal(idPeminjaman) {
@@ -175,9 +215,7 @@
                 const peminjaman = data.data;
 
                 // Update modal dengan data peminjaman
-                document.getElementById('modalImage').src = peminjaman.mainImage;
                 document.getElementById('modalTitle').innerText = peminjaman.nama_ruangan;
-                document.getElementById('modalRoom').innerText = peminjaman.ruangan;
                 document.getElementById('peminjam').innerText = peminjaman.nama_lengkap;
                 document.getElementById('ormawa').innerText = peminjaman.nama_ormawa;
                 document.getElementById('ketua_ormawa').innerText = peminjaman.nama_ketua_ormawa;
@@ -205,6 +243,9 @@
                 // Menampilkan sesi di modal
                 document.getElementById("sesi").innerText = sesiText;
 
+                // Set selectedIdPeminjaman dengan ID peminjaman yang dibuka
+                selectedIdPeminjaman = peminjaman.id_peminjaman;
+
                 // Show modal
                 document.getElementById('mainModal').classList.remove('hidden');
             } else {
@@ -215,6 +256,88 @@
         }
     }
 
+    // Fungsi untuk menutup modal dan mereset data
+    function closeModal() {
+        selectedIdPeminjaman = null; // Reset ID peminjaman
+        document.getElementById('mainModal').classList.add('hidden');
+
+        // Bersihkan data modal
+        document.getElementById('modalImage').src = '';
+        document.getElementById('modalTitle').innerText = '';
+        document.getElementById('peminjam').innerText = '';
+        document.getElementById('ormawa').innerText = '';
+        document.getElementById('ketua_ormawa').innerText = '';
+        document.getElementById('pembina').innerText = '';
+        document.getElementById('nama_kegiatan').innerText = '';
+        document.getElementById('tema_kegiatan').innerText = '';
+        document.getElementById('ketua_pelaksana').innerText = '';
+        document.getElementById('tanggal').innerText = '';
+        document.getElementById('sesi').innerText = '';
+    }
+
+    // Event listener untuk tombol TUTUP modal
+    document.getElementById('closeMainModal').addEventListener('click', closeModal);
+
+    // Event listener untuk tombol SETUJU
+    document.getElementById("btnSetuju").addEventListener("click", async () => {
+        if (!selectedIdPeminjaman) {
+            alert('ID peminjaman tidak ditemukan.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/peminjaman/${selectedIdPeminjaman}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_status: 3 }) // 3 untuk disetujui
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Peminjaman berhasil disetujui.');
+                location.reload(); // Refresh data di halaman
+            } else {
+                alert('Gagal menyetujui peminjaman: ' + result.message);
+            }
+        } catch (error) {
+            alert('Terjadi kesalahan: ' + error.message);
+        }
+    });
+
+    // Event listener untuk tombol TOLAK
+    document.getElementById('btnSubmitTolak').addEventListener('click', async () => {
+    if (!selectedIdPeminjaman) {
+        alert('ID peminjaman tidak ditemukan.');
+        return;
+    }
+
+    const keterangan = document.getElementById('alasanTolak').value.trim(); // Ambil isi dari textarea
+    if (!keterangan) {
+        alert('Harap masukkan alasan penolakan.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/peminjaman/${selectedIdPeminjaman}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_status: 2, keterangan }) // Tambahkan 'keterangan' ke body request
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert('Peminjaman berhasil ditolak.');
+            document.getElementById('subModal').classList.add('hidden'); // Tutup sub-modal
+            location.reload(); // Refresh data di halaman
+        } else {
+            alert('Gagal menolak peminjaman: ' + result.message);
+        }
+    } catch (error) {
+        alert('Terjadi kesalahan: ' + error.message);
+    }
+});
+
+
     // Menutup modal
     document.getElementById('closeMainModal').addEventListener('click', () => {
         document.getElementById('mainModal').classList.add('hidden');
@@ -224,5 +347,4 @@
     window.onload = fetchPeminjaman;
     </script>
 </body>
-
 </html>

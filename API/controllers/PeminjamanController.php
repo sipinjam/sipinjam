@@ -30,6 +30,7 @@ class PeminjamansController
             mp.nama_mahasiswa AS nama_ketua_pelaksana,
             s.nama_status,
             p.keterangan,
+            o.nama_ormawa,
             pem.nama_lengkap
        FROM 
             peminjaman p
@@ -45,6 +46,8 @@ class PeminjamansController
             status s ON p.id_status = s.id_status
         JOIN 
             peminjam pem ON k.id_peminjam = pem.id_peminjam
+        JOIN
+            ormawa o ON k.id_ormawa = o.id_ormawa
     ";
 
         $stmt = $this->conn->prepare($query);
