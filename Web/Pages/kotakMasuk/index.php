@@ -40,70 +40,67 @@
 
     <!-- Main Modal (Detail Peminjaman) -->
     <div id="mainModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-2xl w-full">
             <!-- Header -->
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-blue-500 font-semibold text-lg">Detail Peminjaman</h3>
-                <button id="closeMainModal" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
+            <div class="flex justify-between items-center border-b pb-4 mb-6">
+                <h2 id="modalTitle" class="text-2xl font-bold mt-4 text-gray-800 text-left"></h2>
+                <button id="closeMainModal" class="text-gray-500 hover:text-gray-800 text-2xl font-semibold">&times;</button>
             </div>
 
             <!-- Modal Content -->
-            <div class="grid grid-cols-2 gap-4">
-                <!-- Image Section -->
-                <div class="flex justify-center">
-                    <div>
-                        <h2 id="modalTitle" class="text-center text-lg font-bold mt-2"></h2>
-                    </div>
-                </div>
-
+            <div>
                 <!-- Information Section -->
                 <div>
                     <!-- Peminjam -->
-                    <div class="mb-6">
-                        <h3 class="font-semibold text-xl text-purple-600">Peminjam</h3>
-                        <p><span class="font-semibold">Peminjam:</span> <span id="peminjam"></span></p>
-                        <p><span class="font-semibold">Ormawa:</span> <span id="ormawa"></span></p>
-                        <p><span class="font-semibold">Ketua Ormawa:</span> <span id="ketua_ormawa"></span></p>
-                        <p><span class="font-semibold">Pembina:</span> <span id="pembina"></span></p>
+                    <div class="mb-8">
+                        <h3 class="font-bold text-xl text-blue-700 mb-2">Peminjam</h3>
+                        <ul class="space-y-1 text-gray-700">
+                            <li><strong>Peminjam:</strong> <span id="peminjam"></span></li>
+                            <li><strong>Ormawa:</strong> <span id="ormawa"></span></li>
+                            <li><strong>Ketua Ormawa:</strong> <span id="ketua_ormawa"></span></li>
+                            <li><strong>Pembina:</strong> <span id="pembina"></span></li>
+                        </ul>
                     </div>
 
                     <!-- Kegiatan -->
-                    <div class="mb-6">
-                        <h3 class="font-semibold text-xl text-purple-600">Kegiatan</h3>
-                        <p><span class="font-semibold">Nama Kegiatan:</span> <span id="nama_kegiatan"></span></p>
-                        <p><span class="font-semibold">Tema Kegiatan:</span> <span id="tema_kegiatan"></span></p>
-                        <p><span class="font-semibold">Ketua Pelaksana:</span> <span id="ketua_pelaksana"></span></p>
-                        <p><span class="font-semibold">Hari/Tanggal:</span> <span id="tanggal"></span></p>
-                        <p><span class="font-semibold">Sesi:</span> <span id="sesi"></span></p>
+                    <div class="mb-8">
+                        <h3 class="font-bold text-xl text-blue-700 mb-2">Kegiatan</h3>
+                        <ul class="space-y-1 text-gray-700">
+                            <li><strong>Nama Kegiatan:</strong> <span id="nama_kegiatan"></span></li>
+                            <li><strong>Tema Kegiatan:</strong> <span id="tema_kegiatan"></span></li>
+                            <li><strong>Ketua Pelaksana:</strong> <span id="ketua_pelaksana"></span></li>
+                            <li><strong>Hari/Tanggal:</strong> <span id="tanggal"></span></li>
+                            <li><strong>Sesi:</strong> <span id="sesi"></span></li>
+                        </ul>
                     </div>
+                </div>
 
-                    <!-- Buttons -->
-                    <div class="flex justify-start gap-x-4">
-                        <button id="openSubModal"
-                            class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">TOLAK</button>
-                        <button id="btnSetuju"
-                            class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">SETUJU</button>
-                    </div>
+                <!-- Buttons -->
+                <div class="flex justify-center gap-4">
+                    <button id="openSubModal"
+                        class="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-red-600">TOLAK</button>
+                    <button id="btnSetuju"
+                        class="bg-green-500 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-green-600">SETUJU</button>
+                </div>
 
-                    <!-- Sub Modal -->
-                    <div id="subModal"
-                        class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-                        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                            <!-- Header -->
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-blue-500 font-semibold text-lg">Keterangan</h3>
-                                <button id="closeSubModal"
-                                    class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
-                            </div>
+                <!-- Sub Modal -->
+                <div id="subModal"
+                    class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center border-b pb-4 mb-4">
+                            <h3 class="text-blue-600 font-bold text-lg">Keterangan</h3>
+                            <button id="closeSubModal"
+                                class="text-gray-500 hover:text-gray-800 text-2xl font-semibold">&times;</button>
+                        </div>
 
-                            <!-- Content -->
-                            <textarea id="alasanTolak"
-                                class="w-full h-32 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Masukkan alasan penolakan disini..."></textarea>
-                            <div class="flex justify-center mt-4">
-                                <button id="btnSubmitTolak"
-                                    class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Submit</button>
-                            </div>
+                        <!-- Content -->
+                        <textarea id="alasanTolak"
+                            class="w-full h-32 border border-gray-300 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Masukkan alasan penolakan di sini..."></textarea>
+                        <div class="flex justify-center mt-6">
+                            <button id="btnSubmitTolak"
+                                class="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-blue-600">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -152,7 +149,7 @@
                         <span class="${statusColor} font-bold ">${item.nama_status}</span>
                     </td>
                     <td class="border px-4 py-2 text-center">
-                        <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Detail Peminjaman</button>
+                        <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail</button>
                     </td>
                 `;
 
