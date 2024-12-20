@@ -26,11 +26,12 @@
             <table class="min-w-full bg-white">
                 <thead class="bg-biru-500 text-white">
                     <tr>
-                        <th class="w-1/4 px-4 py-2 cursor-pointer">Nama Ruangan</th>
-                        <th class="w-1/4 px-4 py-2 cursor-pointer">Kegiatan</th>
-                        <th class="w-1/4 px-4 py-2 cursor-pointer">Tanggal Pinjam</th>
-                        <th class="w-1/4 px-4 py-2 cursor-pointer">Sesi</th>
-                        <th class="w-1/4 px-4 py-2 cursor-pointer">Status</th>
+                        <th class="w-1/6 px-4 py-2 cursor-pointer">Nama Ruangan</th>
+                        <th class="w-1/6 px-4 py-2 cursor-pointer">Kegiatan</th>
+                        <th class="w-1/6 px-4 py-2 cursor-pointer">Tanggal Pinjam</th>
+                        <th class="w-1/6 px-4 py-2 cursor-pointer">Sesi</th>
+                        <th class="w-1/6 px-4 py-2 cursor-pointer">Status</th>
+                        <th class="w-1/6 px-4 py-2 cursor-pointer">Keterangan</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-700" id="peminjamanTable">
@@ -116,6 +117,10 @@
                     valueA = statusOrder.indexOf(a.nama_status);
                     valueB = statusOrder.indexOf(b.nama_status);
                     break;
+                case "keterangan":
+                    valueA = a.keterangan.toLowerCase();
+                    valueB = b.keterangan.toLowerCase();
+                    break;
                 default:
                     return 0;
             }
@@ -176,7 +181,9 @@
                 <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
                 <td class="border px-4 py-2">${sesiText}</td>
                 <td class="border px-4 py-2 ${statusColor} font-bold">${item.nama_status}</td>
+                <td class="border px-4 py-2">${item.keterangan || "Tidak ada keterangan"}</td>
             `;
+
             peminjamanTable.appendChild(row);
         });
 
