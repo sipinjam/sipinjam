@@ -105,6 +105,7 @@
                             <div class="flex justify-end space-x-4 mt-4">
                                 <button class="py-2 px-6 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">Cancel</button>
                                 <button id="submitPeminjaman" class="py-2 px-6 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">Submit</button>
+                                <button type="button" onclick="tambahForm()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Tambah Formulir</button>
                             </div>
                         </div>
                     </div>
@@ -112,6 +113,65 @@
             </div>
         </div>
         <script>
+            function tambahForm() {
+                const container = document.getElementById('formPeminjaman');
+
+                // Elemen form baru
+                const formGroup = document.createElement('div');
+                formGroup.classList.add('space-y-4', 'border', 'p-4', 'rounded', 'bg-white', 'shadow-md', 'mb-4');
+
+                formGroup.innerHTML = `
+                <div class="w-96">
+                    <div class="bg-white shadow-lg rounded-lg">
+                        <div class="bg-blue-500 text-white font-semibold text-lg px-4 py-3 rounded-t-lg">Form Peminjaman</div>
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Ruangan</label>
+                                <input id="ruangan" type="text" placeholder="Pilih Ruangan"
+                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                                <div id="suggestions" class="absolute bg-white border border-gray-300 rounded-md mt-1 hidden">
+                                    <!-- Suggestions will be populated here -->
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Tanggal Peminjaman </label>
+                                <input id="tgl_peminjaman" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 my-2">Sesi Peminjaman</label>
+                                <div class="time-selector flex flex-col space-y-4">
+                                    <div>
+                                        <button class="time-button flex-1 px-4 border border-silver-500 rounded text-silver-500 w-32 h-8" data-sesi="1">08:00 - 12:00</button>
+                                        <button class="time-button flex-1 px-4 border border-silver-500 rounded text-silver-500 w-32 h-8" data-sesi="2">12:00 - 16:00</button>
+                                    </div>
+                                    <div>
+                                        <button class="time-button flex-1 px-4 border border-silver-500 rounded text-silver-500 w-32 h-8" data-sesi="3">08:00 - 16:00</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Keterangan</label>
+                                <input id="keterangan" type="text" placeholder="Masukkan keterangan"
+                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            </div>
+                            <div class="flex justify-end space-x-4 mt-4">
+                                <button class="py-2 px-6 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">Cancel</button>
+                                <button id="submitPeminjaman" class="py-2 px-6 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="text-red-500 text-sm" onclick="hapusForm(this)">Hapus Form</button>
+            `;
+
+                container.appendChild(formGroup);
+            }
+
+            function hapusForm(button) {
+                const formGroup = button.parentElement;
+                formGroup.remove();
+            }
+
             function getCookie(name) {
                 const value = `; ${document.cookie}`;
                 const parts = value.split(`; ${name}=`);
