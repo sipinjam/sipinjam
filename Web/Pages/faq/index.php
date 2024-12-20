@@ -20,8 +20,15 @@
 <div class="bg-gray-100 p-6">
 
     <div class="ml-64 max-w-9xl bg-white p-6 rounded-lg mt-20 shadow-md">
-    <span class=" gap-5 items-center text-lg">
-        <p class="text-2xl font-bold text-blue-800 mb-4">FAQ</p>
+    <div class="flex items-center gap-2 mb-4">
+    <button onclick="window.location.href='../Profile/index.php'" class="flex items-center text-blue-800 font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+    <p class="text-2xl font-bold text-blue-800">FAQ</p>
+</div>
+        
 
         <?php
         $faqs = [
