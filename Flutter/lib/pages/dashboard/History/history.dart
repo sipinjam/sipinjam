@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sipit_app/config/app_constant.dart';
 import 'dart:convert';
 
 import 'package:sipit_app/config/app_session.dart';
@@ -43,7 +44,7 @@ class _HistoryState extends State<History> {
   }
 
   Future<void> _fetchHistoryData() async {
-    const baseUrl = 'http://localhost/sipinjamfix/sipinjam/api/peminjaman/';
+    const baseUrl = '${AppConstants.baseUrl}/peminjaman.php/';
     try {
       final peminjamData = await AppSession.getPeminjam();
       if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {

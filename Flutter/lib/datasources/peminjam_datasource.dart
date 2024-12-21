@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:sipit_app/config/app_constant.dart';
 import 'package:sipit_app/config/app_session.dart';
-import 'package:sipit_app/datasources/ormawa_datasource.dart';
+// import 'package:sipit_app/datasources/ormawa_datasource.dart';
 import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:http/http.dart' as http;
 
 class PeminjamDatasource {
-  Uri loginUrl = Uri.parse('${AppConstants.baseUrl}/authentications');
-  OrmawaDatasource ormawaDatasource = OrmawaDatasource();
+  Uri loginUrl = Uri.parse('${AppConstants.baseUrl}/authentications.php');
+  // OrmawaDatasource ormawaDatasource = OrmawaDatasource();
 
   Future<PeminjamModel> login(
     String namaPeminjam,
@@ -34,6 +34,7 @@ class PeminjamDatasource {
           data.containsKey('id_peminjam') &&
           data['id_peminjam'] != null) {
         final int idPeminjam = data['id_peminjam'];
+        print(idPeminjam);
 
         // Panggil fetchPeminjam menggunakan `id_peminjam`
         return await fetchPeminjam(idPeminjam);
@@ -47,7 +48,7 @@ class PeminjamDatasource {
 
   Future<PeminjamModel> fetchPeminjam(int idPeminjam) async {
     final response = await http.get(
-      Uri.parse('${AppConstants.baseUrl}/users?id=$idPeminjam'),
+      Uri.parse('${AppConstants.baseUrl}/users.php?id=$idPeminjam'),
     );
 
     if (response.statusCode == 200) {
@@ -63,22 +64,6 @@ class PeminjamDatasource {
       }
     } else {
       throw Exception("Failed to fetch profile data");
-    }
-  }
-
-  Future<void> getNameOrmawa(int idPeminjam) async {
-    try {
-      // Ambil data peminjam
-      final peminjam = await fetchPeminjam(idPeminjam);
-
-      // Ambil data ormawa menggunakan idOrmawa dari data peminjam
-      final ormawa = await ormawaDatasource.getOrmawaById(peminjam.idOrmawa);
-
-      // Cetak hasil (atau gunakan dalam logika aplikasi Anda)
-      print('Nama Peminjam: ${peminjam.namaPeminjam}');
-      print('Nama Ormawa: ${ormawa.namaOrmawa}');
-    } catch (e) {
-      print('Error: $e');
     }
   }
 }

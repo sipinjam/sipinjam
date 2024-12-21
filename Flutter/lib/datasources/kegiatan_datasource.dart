@@ -5,7 +5,7 @@ import 'package:sipit_app/models/kegiatan_model.dart';
 import 'package:http/http.dart' as http;
 
 class KegiatanDatasource {
-  final String urlKegiatan = '${AppConstants.baseUrl}/kegiatan';
+  final String urlKegiatan = '${AppConstants.baseUrl}/kegiatan.php';
 
   Future<List<KegiatanModel>> getAllKegiatan() async {
     final url = Uri.parse(urlKegiatan);

@@ -6,7 +6,7 @@ import 'package:sipit_app/models/gedungModel.dart';
 
 class GedungDatasource {
   Future<List<GedungModel>> fetchGedungList() async {
-    final url = Uri.parse('${AppConstants.baseUrl}/gedung');
+    final url = Uri.parse('${AppConstants.baseUrl}/gedung.php');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

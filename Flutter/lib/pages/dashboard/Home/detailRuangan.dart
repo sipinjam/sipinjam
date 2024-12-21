@@ -1,5 +1,9 @@
+import 'package:d_info/d_info.dart';
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/app_constant.dart';
 import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/datasources/ruangan_datasource.dart';
+import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:sipit_app/pages/dashboardPage.dart';
 import 'package:sipit_app/pages/dashboard/PeminjamanForm/peminjaman.dart';
 import 'package:sipit_app/config/widget.dart';
@@ -17,25 +21,41 @@ class detailRuanganPage extends StatefulWidget {
 }
 
 class _detailRuanganPageState extends State<detailRuanganPage> {
-  late Future<Ruangan> futureRuangan;
+  final RuanganDatasource _ruanganDatasource = RuanganDatasource();
+  List<DaftarRuanganModel?> _ruangans = [];
   String? selectedImage;
+  bool isLoading = true;
+
+  final Map<String, IconData> fasilitasIcons = {
+    "Ac": Icons.ac_unit_rounded,
+    "Proyektor": Icons.videocam_rounded,
+    "Wifi": Icons.wifi,
+    "Seat": Icons.chair,
+  };
+
+  Future<void> fetchRuangans() async {
+    try {
+      final ruangans = await _ruanganDatasource.fetchRuangan(widget.ruanganId);
+      setState(() {
+        _ruangans = ruangans;
+        selectedImage = _ruangans.first!.fotoRuangan!.isNotEmpty == true
+            ? "${AppConstants.apiUrl}${_ruangans.first!.fotoRuangan!.first.replaceAll("../../../api/", "/")}"
+            : null;
+        print(_ruangans);
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: $e');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    futureRuangan = fetchRuangan();
-  }
-
-  Future<Ruangan> fetchRuangan() async {
-    final response = await http.get(Uri.parse(
-        'http://localhost/sipinjamfix/sipinjam/api/ruangan/${widget.ruanganId}'));
-
-    if (response.statusCode == 200) {
-      final ruanganModel = ruanganModelFromJson(response.body);
-      return ruanganModel.data; // Return the Ruangan object directly
-    } else {
-      throw Exception('Failed to load ruangan');
-    }
+    fetchRuangans();
   }
 
   @override
@@ -43,224 +63,127 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
     return Scaffold(
       body: Column(
         children: [
-          Row(
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.keyboard_arrow_left_rounded,
-                    size: 25,
-                  )),
-              const SizedBox(width: 8),
-              const Text(
-                'Detail Ruangan',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Expanded(
-            child: FutureBuilder<Ruangan>(
-              future: futureRuangan,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData) {
-                  final ruangan = snapshot.data!;
-                  selectedImage ??= ruangan.fotoRuangan[0]; // Set default image
-                  return SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Card for main image and building description
-                          Card(
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    selectedImage!,
-                                    height: 400,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.5),
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ruangan.namaGedung,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        ruangan.namaRuangan,
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.people,
-                                              color: Colors.white, size: 16),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            '${ruangan.kapasitas}',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // Section for facilities
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children:
-                                  (ruangan.namaFasilitas?.split(', ') ?? [])
-                                      .map((fasilitas) {
-                                IconData icon;
-                                switch (fasilitas.toLowerCase()) {
-                                  case 'wifi':
-                                    icon = Icons.wifi;
-                                    break;
-                                  case 'ac':
-                                    icon = Icons.ac_unit;
-                                    break;
-                                  case 'seat':
-                                    icon = Icons.chair;
-                                    break;
-                                  case 'lcd':
-                                    icon = Icons.tv;
-                                    break;
-                                  default:
-                                    icon = Icons.device_unknown;
-                                }
-                                return FacilityIcon(
-                                    icon: icon, label: fasilitas.toUpperCase());
-                              }).toList(),
-                            ),
-                          ),
-
-                          // GridView for other building images
-                          SizedBox(
-                            height: 125,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: ruangan.fotoRuangan.length,
-                              itemBuilder: (context, index) {
-                                final foto = ruangan.fotoRuangan[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedImage = foto;
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Stack(
-                                        children: [
-                                          Image.network(
-                                            foto,
-                                            width: 135,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          if (selectedImage == foto)
-                                            Positioned(
-                                              top: 0,
-                                              left: 0,
-                                              right: 0,
-                                              bottom: 0,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Colors.blueAccent,
-                                                    width: 4,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-
-                          // const SizedBox(height: 20),
-
-                          // // Book Now button
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   height: 50,
-                          //   child: ElevatedButton(
-                          //     onPressed: () {
-                          //       Nav.push(context, peminjamanPage());
-                          //     },
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor: Colors.blueAccent,
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(20),
-                          //       ),
-                          //     ),
-                          //     child: const Text(
-                          //       'Book Now',
-                          //       style: TextStyle(
-                          //         fontSize: 18,
-                          //         color: Colors.white,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return Center(child: Text('No data found'));
-                }
-              },
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.keyboard_arrow_left_rounded,
+                      size: 25,
+                    )),
+                const SizedBox(width: 8),
+                const Text(
+                  'Detail Ruangan',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    color: Colors.red,
+                    width: MediaQuery.sizeOf(context).width,
+                    height: 640,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (selectedImage != null)
+                          Container(
+                            width: double.infinity,
+                            height: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(selectedImage!),
+                                  fit: BoxFit.cover),
+                            ),
+                          )
+                        else
+                          Container(
+                            width: double.infinity,
+                            height: 300,
+                            color: Colors.grey,
+                            child: Center(
+                              child: Text('Tidak ada foto'),
+                            ),
+                          ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          _ruangans.first!.namaRuangan,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text('Fasilitas:'),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            children: _ruangans.first!.namaFasilitas
+                                .split(',')
+                                .map((fasilitas) {
+                              final icon = fasilitasIcons[fasilitas.trim()] ??
+                                  Icons.device_unknown;
+                              return Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Column(
+                                  children: [
+                                    Icon(icon, color: Colors.blue),
+                                    SizedBox(
+                                        height:
+                                            8), // Perbaikan: gunakan `height` untuk spacing vertikal
+                                    Text(
+                                      fasilitas.trim(),
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(), // Perbaikan: tambahkan `.toList()` untuk mengubah iterable menjadi `List<Widget>`
+                          ),
+                        ),
+                        Expanded(
+                            child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _ruangans.first!.fotoRuangan!.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final foto =
+                                "${AppConstants.apiUrl}${_ruangans.first!.fotoRuangan![index].replaceAll("../../../api/", "/")}";
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedImage = foto;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: foto == selectedImage
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                      width: 2,
+                                    ),
+                                    image: DecorationImage(
+                                        image: NetworkImage(foto),
+                                        fit: BoxFit.cover)),
+                              ),
+                            );
+                          },
+                        ))
+                      ],
+                    ),
+                  ),
+          )
         ],
       ),
     );
