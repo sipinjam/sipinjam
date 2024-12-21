@@ -6,9 +6,10 @@ import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
 import 'package:sipit_app/pages/dashboard/Schedule/schedule.dart';
 
 class AppConstants {
-  static const _host = "http://localhost";
+  static const _host = "http://192.168.100.124:8000";
 
-  static const baseUrl = "$_host/sipinjamfix/sipinjam/api";
+  static const apiUrl = "$_host/api";
+  static const baseUrl = "$apiUrl/routes";
 
   static List<Map> navMenu = [
     {

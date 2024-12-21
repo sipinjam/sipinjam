@@ -8,7 +8,7 @@ class PeminjamanDatasource {
   Future<Map<DateTime, List<Map<String, dynamic>>>> fetchMarkedDates(
       String roomName) async {
     final response =
-        await http.get(Uri.parse('${AppConstants.baseUrl}/peminjaman'));
+        await http.get(Uri.parse('${AppConstants.baseUrl}/peminjaman.php'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = json.decode(response.body);

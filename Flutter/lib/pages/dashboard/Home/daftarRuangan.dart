@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sipit_app/config/app_constant.dart';
 import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
 import 'dart:convert';
 import '../../../models/daftarRuanganModel.dart';
@@ -46,7 +47,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   }
 
   Future<void> _fetchRuanganData() async {
-    const url = 'http://localhost/sipinjamfix/sipinjam/api/ruangan/';
+    const url = '${AppConstants.baseUrl}/ruangan.php/';
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -59,7 +60,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
             if (item['foto_ruangan'] != null) {
               item['foto_ruangan'] = item['foto_ruangan']
                   .map((photo) =>
-                      'http://localhost/sipinjamfix/sipinjam/api/assets/ruangan/${photo.split('/').last}')
+                      '${AppConstants.apiUrl}/assets/ruangan/${photo.split('/').last}')
                   .toList();
             }
             return DaftarRuanganModel.fromJson(item);

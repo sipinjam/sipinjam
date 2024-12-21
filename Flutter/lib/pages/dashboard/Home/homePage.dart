@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipit_app/config/app_constant.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/config/widget.dart';
 import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
@@ -29,8 +30,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchGedungs() async {
-    final response = await http
-        .get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/gedung/'));
+    final response =
+        await http.get(Uri.parse('${AppConstants.baseUrl}/gedung.php'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['status'] == 'success') {
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchBookings() async {
-    const baseUrl = 'http://localhost/sipinjamfix/sipinjam/api/peminjaman/';
+    const baseUrl = '${AppConstants.baseUrl}/peminjaman.php/';
     try {
       final peminjamData = await AppSession.getPeminjam();
       if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {
@@ -90,8 +91,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> searchRooms(String keyword) async {
-    final response = await http
-        .get(Uri.parse('http://localhost/sipinjamfix/sipinjam/api/ruangan'));
+    final response =
+        await http.get(Uri.parse('${AppConstants.baseUrl}/ruangan.php'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['status'] == 'success') {
@@ -203,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final gedung = gedungList[index];
                       String imageUrl =
-                          'http://localhost/sipinjamfix/sipinjam/api/assets/gedung/${gedung['foto_gedung'].split('/').last}';
+                          '${AppConstants.apiUrl}/assets/gedung/${gedung['foto_gedung'].split('/').last}';
                       return GedungCard(
                         imageUrl: imageUrl,
                         buildingName: gedung['nama_gedung'],

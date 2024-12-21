@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:sipit_app/config/app_constant.dart';
+
 // Function to parse JSON string into RuanganModel
 RuanganModel ruanganModelFromJson(String str) =>
     RuanganModel.fromJson(json.decode(str));
@@ -63,7 +65,7 @@ class Ruangan {
         namaFasilitas: json["nama_fasilitas"],
         fotoRuangan: List<String>.from(json["foto_ruangan"].map((x) {
           // Prepend the base URL to each photo path
-          return 'http://localhost/sipinjamfix/sipinjam/api/assets/ruangan/$x';
+          return 'http://${AppConstants.apiUrl}/assets/ruangan/$x';
         })), // Ensure correct type
       );
 
