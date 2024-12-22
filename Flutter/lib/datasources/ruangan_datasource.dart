@@ -5,7 +5,7 @@ import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:http/http.dart' as http;
 
 class RuanganDatasource {
-  String ruanganUrl = '${AppConstants.baseUrl}/ruangan';
+  String ruanganUrl = '${AppConstants.baseUrl}/ruangan.php';
 
   Future<List<DaftarRuanganModel>> fetchRuanganList(int gedungId) async {
     final queryParams = gedungId != null ? '?idGedung=$gedungId' : '';
@@ -23,17 +23,25 @@ class RuanganDatasource {
     }
   }
 
-  Future<DaftarRuanganModel?> fetchRuangan(int ruanganId) async {
-    final response = await http.get(Uri.parse('$ruanganUrl/$ruanganId'));
+  Future<List<DaftarRuanganModel?>> fetchRuangan(int ruanganId) async {
+    final response = await http.get(Uri.parse('$ruanganUrl?id=$ruanganId'));
 
-    if (response == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
-      if (jsonResponse['status'] == 'success') {
-        return DaftarRuanganModel.fromJson(jsonResponse['data']);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      if (data is Map<String, dynamic> &&
+          data['data'] is Map<String, dynamic>) {
+        final ruanganData = data['data'] as Map<String, dynamic>;
+        print(ruanganData);
+
+        // Bungkus objek ke dalam list
+        return [DaftarRuanganModel.fromJson(ruanganData)];
+      } else {
+        throw Exception('Unexpected JSON structure');
       }
+    } else {
+      throw Exception('Failed to load data');
     }
-    return null;
   }
 
   Future<List<DaftarRuanganModel>> fetchRuanganNonRequired() async {

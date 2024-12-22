@@ -5,7 +5,7 @@ import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/kegiatan_datasource.dart';
 import 'package:sipit_app/datasources/mahasiswa_datasource.dart';
-import 'package:sipit_app/datasources/ormawa_datasource.dart';
+// import 'package:sipit_app/datasources/ormawa_datasource.dart';
 import 'package:sipit_app/datasources/ruangan_datasource.dart';
 import 'package:sipit_app/models/OrmawaModel.dart';
 import 'package:sipit_app/models/kegiatan_model.dart';
@@ -39,9 +39,9 @@ class _peminjamanPageState extends State<peminjamanPage> {
   bool _isLoadingRuangan = false;
   String _namaPeminjam = '';
   String _namaOrmawa = '';
-  final OrmawaDatasource ormawaDatasource = OrmawaDatasource();
+  // final OrmawaDatasource ormawaDatasource = OrmawaDatasource();
   TextEditingController _namaPeminjamController = TextEditingController();
-  TextEditingController _namaOrmawaController = TextEditingController();
+  // TextEditingController _namaOrmawaController = TextEditingController();
 
   Future<void> fetchApi() async {
     setState(() {
@@ -79,18 +79,18 @@ class _peminjamanPageState extends State<peminjamanPage> {
           _namaPeminjam = peminjam.namaPeminjam;
           _namaPeminjamController.text = _namaPeminjam;
         });
-        final OrmawaModel ormawa =
-            await ormawaDatasource.getOrmawaById(peminjam.idOrmawa);
-        setState(() {
-          _namaOrmawa = ormawa.namaOrmawa;
-          _namaOrmawaController.text = _namaOrmawa;
-        });
+        // final OrmawaModel ormawa =
+        // await ormawaDatasource.getOrmawaById(peminjam.idOrmawa);
+        // setState(() {
+        //   _namaOrmawa = ormawa.namaOrmawa;
+        //   _namaOrmawaController.text = _namaOrmawa;
+        // });
       } else {
         setState(() {
           _namaPeminjam = 'Peminjam tidak ditemukan';
           _namaPeminjamController.text = _namaPeminjam;
           _namaOrmawa = 'Ormawa tidak ditemukan';
-          _namaOrmawaController.text = _namaOrmawa;
+          // _namaOrmawaController.text = _namaOrmawa;
         });
       }
     } catch (e) {
@@ -98,7 +98,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
         _namaPeminjam = 'Error memuat data';
         _namaPeminjamController.text = _namaPeminjam;
         _namaOrmawa = 'Error memuat data';
-        _namaOrmawaController.text = _namaOrmawa;
+        // _namaOrmawaController.text = _namaOrmawa;
       });
       print(e);
     }
@@ -123,7 +123,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
   @override
   void dispose() {
     _namaPeminjamController.dispose();
-    _namaOrmawaController.dispose();
+    // _namaOrmawaController.dispose();
     super.dispose();
   }
 
@@ -192,7 +192,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
                         ),
                         SizedBox(height: 8),
                         TextFormField(
-                          controller: _namaOrmawaController,
+                          // controller: _namaOrmawaController,
                           readOnly: true,
                           decoration: const InputDecoration(
                             labelText: 'Ormawa',

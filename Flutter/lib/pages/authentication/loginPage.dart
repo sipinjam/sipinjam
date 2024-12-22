@@ -40,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() async {
+    print('tertekan');
     try {
       final peminjamData = await _datasource.login(
         _namaPeminjamController.text,
