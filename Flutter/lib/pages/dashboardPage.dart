@@ -20,7 +20,7 @@ class Dashboardpage extends StatelessWidget {
             return BottomNavigationBarItem(
                 icon: Icon(e['icon']), label: e['label']);
           }).toList(),
-          selectedItemColor: Color(0xff2F2F2F),
+          selectedItemColor: const Color(0xff2F2F2F),
           unselectedItemColor: Colors.grey[400],
           showUnselectedLabels: false,
           showSelectedLabels: false,

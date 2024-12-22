@@ -88,8 +88,8 @@ class _SchedulePageState extends State<SchedulePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Detail Kegiatan'),
-            content: Container(
+            title: const Text('Detail Kegiatan'),
+            content: SizedBox(
               width: 200,
               height: 100,
               child: PageView.builder(
@@ -121,19 +121,22 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Schedule',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 10),
+              child: const Text(
+                'Schedule',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -143,7 +146,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 controller: _searchGedungController,
                 hintText: "Cari Gedung",
                 inputDecorationTheme:
-                    InputDecorationTheme(border: InputBorder.none),
+                    const InputDecorationTheme(border: InputBorder.none),
                 dropdownMenuEntries: _gedungs.map((gedungName) {
                   return DropdownMenuEntry(
                     value: gedungName,
@@ -159,12 +162,12 @@ class _SchedulePageState extends State<SchedulePage> {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             if (_selectedGedung != null)
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8)),
@@ -173,7 +176,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   controller: _searchRuanganController,
                   hintText: "Cari Ruangan",
                   inputDecorationTheme:
-                      InputDecorationTheme(border: InputBorder.none),
+                      const InputDecorationTheme(border: InputBorder.none),
                   dropdownMenuEntries: _ruangans
                       .where((ruangan) =>
                           ruangan.namaGedung == _selectedGedung!.namaGedung)
@@ -188,15 +191,16 @@ class _SchedulePageState extends State<SchedulePage> {
                   },
                 ),
               ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             DButtonElevation(
-            onClick: () async {
+              onClick: () async {
                 if (_selectedGedung == null || _selectedRuangan == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text("Pilih gedung dan ruangan terlebih dahulu."),
+                      content:
+                          Text("Pilih gedung dan ruangan terlebih dahulu."),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -293,7 +297,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20), //spacing
+            const SizedBox(height: 10), //spacing
 
             // keterangan
             Card(
@@ -315,7 +319,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(239, 68, 68, 1),
+                        color: const Color.fromRGBO(239, 68, 68, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
@@ -332,7 +336,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(241, 207, 77, 1),
+                        color: const Color.fromRGBO(241, 207, 77, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
@@ -349,7 +353,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(74, 222, 128, 1),
+                        color: const Color.fromRGBO(74, 222, 128, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Text(
@@ -370,4 +374,3 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 }
-

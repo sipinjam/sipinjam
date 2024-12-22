@@ -7,6 +7,8 @@ void main() {
 }
 
 class UpdatePass extends StatelessWidget {
+  const UpdatePass({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,6 +19,8 @@ class UpdatePass extends StatelessWidget {
 }
 
 class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
+
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
@@ -66,7 +70,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
@@ -80,11 +84,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Nav.push(context, ProfilePage());
+                  Nav.push(context, const ProfilePage());
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, // Button color
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
                   'Update Password',

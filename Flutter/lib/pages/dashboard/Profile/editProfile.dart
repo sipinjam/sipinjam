@@ -110,8 +110,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         labelText: "Nama Lengkap",
                         border: OutlineInputBorder(),
                       ),
-                      validator: (value) =>
-                          value!.isEmpty ? "Nama Lengkap tidak boleh kosong" : null,
+                      validator: (value) => value!.isEmpty
+                          ? "Nama Lengkap tidak boleh kosong"
+                          : null,
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
@@ -120,8 +121,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         labelText: "No Telepon",
                         border: OutlineInputBorder(),
                       ),
-                      validator: (value) =>
-                          value!.isEmpty ? "No Telepon tidak boleh kosong" : null,
+                      validator: (value) => value!.isEmpty
+                          ? "No Telepon tidak boleh kosong"
+                          : null,
                     ),
                     const SizedBox(height: 20),
                     TextFormField(

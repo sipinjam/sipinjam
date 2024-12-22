@@ -45,7 +45,7 @@ class RuanganDatasource {
   }
 
   Future<List<DaftarRuanganModel>> fetchRuanganNonRequired() async {
-    final response = await http.get(Uri.parse('$ruanganUrl'));
+    final response = await http.get(Uri.parse(ruanganUrl));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final List<dynamic> ruanganData = data['data'];

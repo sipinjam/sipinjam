@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:sipit_app/models/ruanganModel.dart';
-
 DaftarRuanganModel daftarRuanganModelFromJson(String str) =>
     DaftarRuanganModel.fromJson(json.decode(str));
 
