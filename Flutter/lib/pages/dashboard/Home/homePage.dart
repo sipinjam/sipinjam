@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/app_constant.dart';
-import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/config/widget.dart';
 import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
-import 'package:sipit_app/theme.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sipit_app/config/app_session.dart';
@@ -389,7 +386,7 @@ class GedungCard extends StatelessWidget {
                 width: 200,
                 height: 170,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
                   image: DecorationImage(
                     image: NetworkImage(imageUrl),
                     fit: BoxFit.cover,

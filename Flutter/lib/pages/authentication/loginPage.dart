@@ -47,28 +47,26 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text,
       );
 
-      if (peminjamData != null) {
-        setState(() {
-          _peminjamModel = peminjamData;
-        });
+      setState(() {
+        _peminjamModel = peminjamData;
+      });
 
-        // Simpan status login
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('is_logged_in', true);
+      // Simpan status login
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('is_logged_in', true);
 
-        // Simpan data peminjam ke SharedPreferences
-        await AppSession.savePeminjam(peminjamData);
+      // Simpan data peminjam ke SharedPreferences
+      await AppSession.savePeminjam(peminjamData);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Login successful")),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login successful")),
+      );
 
-        // Pindah ke halaman HomePage setelah login berhasil
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Dashboardpage()),
-        );
-      }
+      // Pindah ke halaman HomePage setelah login berhasil
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Dashboardpage()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Username atau Password tidak cocok")),

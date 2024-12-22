@@ -17,7 +17,7 @@ import 'package:sipit_app/theme.dart';
 import '../../../models/daftarRuanganModel.dart';
 
 class peminjamanPage extends StatefulWidget {
-  peminjamanPage({super.key});
+  const peminjamanPage({super.key});
 
   @override
   _peminjamanPageState createState() => _peminjamanPageState();
@@ -40,7 +40,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
   String _namaPeminjam = '';
   String _namaOrmawa = '';
   // final OrmawaDatasource ormawaDatasource = OrmawaDatasource();
-  TextEditingController _namaPeminjamController = TextEditingController();
+  final TextEditingController _namaPeminjamController = TextEditingController();
   // TextEditingController _namaOrmawaController = TextEditingController();
 
   Future<void> fetchApi() async {
@@ -106,16 +106,16 @@ class _peminjamanPageState extends State<peminjamanPage> {
 
   // Fungsi untuk memilih tanggal
   Future<void> _selectDate() async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-    if (_picked != null) {
+    if (picked != null) {
       setState(() {
         _dateController.text =
-            _picked.toString().split(" ")[0]; // Hanya tanggalnya saja
+            picked.toString().split(" ")[0]; // Hanya tanggalnya saja
       });
     }
   }
@@ -176,12 +176,12 @@ class _peminjamanPageState extends State<peminjamanPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Peminjam',
                           style: TextStyle(
                               color: Colors.blue, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         TextFormField(
                           controller: _namaPeminjamController,
                           readOnly: true,
@@ -190,7 +190,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         TextFormField(
                           // controller: _namaOrmawaController,
                           readOnly: true,
@@ -199,7 +199,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                       ],
                     )),
               ),
@@ -223,7 +223,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
                       const SizedBox(height: 8),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(6)),
@@ -231,8 +231,8 @@ class _peminjamanPageState extends State<peminjamanPage> {
                           width: MediaQuery.of(context).size.width,
                           // controller: _searchRuanganController,
                           hintText: "Kegiatan",
-                          inputDecorationTheme:
-                              InputDecorationTheme(border: InputBorder.none),
+                          inputDecorationTheme: const InputDecorationTheme(
+                              border: InputBorder.none),
                           dropdownMenuEntries: _mahasiswas.map((ormawa) {
                             return DropdownMenuEntry(
                                 value: ormawa, label: ormawa.namaOrmawa!);
@@ -276,7 +276,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
 
                       // Bagian Ruangan
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(6)),
@@ -288,8 +288,9 @@ class _peminjamanPageState extends State<peminjamanPage> {
                                 width: MediaQuery.of(context).size.width,
                                 controller: _searchRuanganController,
                                 hintText: "Cari Ruangan",
-                                inputDecorationTheme: InputDecorationTheme(
-                                    border: InputBorder.none),
+                                inputDecorationTheme:
+                                    const InputDecorationTheme(
+                                        border: InputBorder.none),
                                 dropdownMenuEntries: _ruangans.map((ruangan) {
                                   return DropdownMenuEntry(
                                       value: ruangan,
@@ -437,7 +438,7 @@ class _peminjamanPageState extends State<peminjamanPage> {
 }
 
 class WaktuToggleButton extends StatefulWidget {
-  const WaktuToggleButton({Key? key}) : super(key: key);
+  const WaktuToggleButton({super.key});
 
   @override
   _WaktuToggleButtonState createState() => _WaktuToggleButtonState();

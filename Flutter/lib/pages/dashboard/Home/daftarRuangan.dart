@@ -22,9 +22,9 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   List<DaftarRuanganModel> _allRuanganData = [];
   List<DaftarRuanganModel> _filteredRuanganData = [];
   bool _isLoading = true;
-  int _page = 1;
+  final int _page = 1;
   final int _pageSize = 10;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(top: 25),
         child: Column(
           children: [
             Row(
@@ -130,19 +130,18 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 4),
             // Search bar
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Cari ruangan...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -153,72 +152,81 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                             style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                         )
-                      : GridView.builder(
-                          itemCount: _filteredRuanganData.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemBuilder: (context, index) {
-                            final ruangan = _filteredRuanganData[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => detailRuanganPage(
-                                        ruanganId: ruangan.idRuangan),
+                      : Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: GridView.builder(
+                            itemCount: _filteredRuanganData.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemBuilder: (context, index) {
+                              final ruangan = _filteredRuanganData[index];
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => detailRuanganPage(
+                                          ruanganId: ruangan.idRuangan),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Image.network(
-                                        '${ruangan.fotoRuangan!.isNotEmpty ? ruangan.fotoRuangan!.first : 'default_image.png'}',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            ruangan.namaRuangan,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                            ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(10)),
+                                          child: Image.network(
+                                            ruangan.fotoRuangan!.isNotEmpty
+                                                ? ruangan.fotoRuangan!.first
+                                                : 'default_image.png',
+                                            fit: BoxFit.cover,
                                           ),
-                                          const SizedBox(height: 3),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const Icon(Icons.people,
-                                                  size: 18),
-                                              const SizedBox(width: 3),
-                                              Text(
-                                                '${ruangan.kapasitas}',
-                                                style: const TextStyle(
-                                                    fontSize: 10),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              ruangan.namaRuangan,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
                                               ),
-                                            ],
-                                          ),
-                                        ],
+                                            ),
+                                            const SizedBox(height: 3),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.people,
+                                                    size: 18),
+                                                const SizedBox(width: 3),
+                                                Text(
+                                                  '${ruangan.kapasitas}',
+                                                  style: const TextStyle(
+                                                      fontSize: 10),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
             ),
           ],
@@ -227,33 +235,3 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
     );
   }
 }
-
-
-// class DetailRuanganPage extends StatelessWidget {
-//   final daftarRuanganModel ruangan;
-
-//   const DetailRuanganPage({super.key, required this.ruangan});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(ruangan.namaRuangan),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text('Nama Ruangan: ${ruangan.namaRuangan}'),
-//             Text('Kapasitas: ${ruangan.kapasitas}'),
-//             if (ruangan.fotoRuangan!.isNotEmpty)
-//               Image.network(
-//                 '${ruangan.fotoRuangan!.first}',
-//                 fit: BoxFit.cover,
-//               ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

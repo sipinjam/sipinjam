@@ -17,7 +17,7 @@ class PeminjamModel {
   String email;
   String noTelpon;
   int idJenisPeminjam;
-  int idOrmawa;
+  int? idOrmawa;
 
   PeminjamModel({
     required this.idPeminjam,
@@ -38,7 +38,7 @@ class PeminjamModel {
         email: json["email"],
         noTelpon: json["no_telpon"],
         idJenisPeminjam: json["id_jenis_peminjam"],
-        idOrmawa: json["id_ormawa"],
+        idOrmawa: json["id_ormawa"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +49,6 @@ class PeminjamModel {
         "email": email,
         "no_telpon": noTelpon,
         "id_jenis_peminjam": idJenisPeminjam,
-        "id_ormawa": idOrmawa,
+        "id_ormawa": idOrmawa ?? 0,
       };
 }

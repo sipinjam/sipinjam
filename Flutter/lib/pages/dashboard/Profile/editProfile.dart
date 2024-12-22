@@ -8,6 +8,8 @@ void main() {
 }
 
 class EditProfileApp extends StatelessWidget {
+  const EditProfileApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,6 +20,8 @@ class EditProfileApp extends StatelessWidget {
 }
 
 class EditProfilePage extends StatelessWidget {
+  const EditProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

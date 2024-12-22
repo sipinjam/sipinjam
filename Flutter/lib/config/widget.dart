@@ -8,7 +8,8 @@ class BookingCard extends StatelessWidget {
   final String status;
   final Color statusColor;
 
-  BookingCard({
+  const BookingCard({
+    super.key,
     required this.imageUrl,
     required this.buildingName,
     required this.borrower,

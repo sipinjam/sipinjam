@@ -48,13 +48,12 @@ class ProfilePage extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: Colors.grey[200],
-            body: Column(
-              children: [
-                // Bagian atas (Info profil)
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Container(
+            body: Container(
+              padding: EdgeInsets.fromLTRB(10, 40, 10, 20),
+              child: Column(
+                children: [
+                  // Bagian atas (Info profil)
+                  Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Colors.blue[700],
@@ -86,7 +85,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             Text(
                               peminjam.email,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16.0,
                               ),
@@ -96,67 +95,70 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-                Card(
-                  color: Colors.white, // Warna abu-abu
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Sudut membulat
+                  SizedBox(
+                    height: 10,
                   ),
-                  elevation: 4, // Efek bayangan
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: const Icon(Icons.edit),
-                          title: const Text('EDIT PROFILE'),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Nav.push(context, EditProfileApp());
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.lock),
-                          title: const Text('EDIT PASSWORD'),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Nav.push(context, UpdatePass());
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.help_outline),
-                          title: const Text('FAQ'),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Nav.push(context, FaqPage());
-                          },
-                        ),
-                        const SizedBox(height: 20.0),
-                        // Tombol Logout
-                        Center(
-                          child: TextButton(
-                            onPressed: () {
-                              Nav.replace(context, const LoginPage());
+                  Card(
+                    color: Colors.white, // Warna abu-abu
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Sudut membulat
+                    ),
+                    elevation: 4, // Efek bayangan
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.edit),
+                            title: const Text('EDIT PROFILE'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              Nav.push(context, EditProfileApp());
                             },
-                            child: DButtonBorder(
-                                onClick: () => logout(context),
-                                radius: 10,
-                                borderColor:
-                                    const Color.fromARGB(255, 211, 211, 211),
-                                child: const Text(
-                                  "LOG OUT",
-                                  style: TextStyle(color: Colors.red),
-                                )),
                           ),
-                        ),
-                      ],
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(Icons.lock),
+                            title: const Text('EDIT PASSWORD'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              Nav.push(context, UpdatePass());
+                            },
+                          ),
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(Icons.help_outline),
+                            title: const Text('FAQ'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              Nav.push(context, FaqPage());
+                            },
+                          ),
+                          const SizedBox(height: 20.0),
+                          // Tombol Logout
+                          Center(
+                            child: TextButton(
+                              onPressed: () {
+                                Nav.replace(context, const LoginPage());
+                              },
+                              child: DButtonBorder(
+                                  onClick: () => logout(context),
+                                  radius: 10,
+                                  borderColor:
+                                      const Color.fromARGB(255, 211, 211, 211),
+                                  child: const Text(
+                                    "LOG OUT",
+                                    style: TextStyle(color: Colors.red),
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });
