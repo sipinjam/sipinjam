@@ -192,15 +192,45 @@ class _SchedulePageState extends State<SchedulePage> {
               height: 4,
             ),
             DButtonElevation(
-                onClick: () async {
-                  await fetchAndSetMarkedDates(_selectedRuangan!);
-                },
-                mainColor: Color(0xff615EFC),
-                radius: 8,
-                child: Text(
-                  'Cek Ketersedian',
-                  style: TextStyle(color: Colors.white),
-                )),
+            onClick: () async {
+                if (_selectedGedung == null || _selectedRuangan == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Pilih gedung dan ruangan terlebih dahulu."),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                await fetchAndSetMarkedDates(_selectedRuangan!);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Peminjaman ruangan $_selectedRuangan berhasil diambil.",
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              mainColor: const Color(0xff615EFC),
+              radius: 8,
+              child: const Text(
+                'Cek Ketersediaan',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            // DButtonElevation(
+            //     onClick: () async {
+            //       await fetchAndSetMarkedDates(_selectedRuangan!);
+            //     },
+            //     mainColor: Color(0xff615EFC),
+            //     radius: 8,
+            //     child: Text(
+            //       'Cek Ketersedian',
+            //       style: TextStyle(color: Colors.white),
+            //     )),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
