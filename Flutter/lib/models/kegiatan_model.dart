@@ -47,4 +47,9 @@ class KegiatanModel {
         "id_mahasiswa": idMahasiswa,
         "id_peminjam": idPeminjam,
       };
+
+  @override
+  String toString() {
+    return 'KegiatanModel(idKegiatan: $idKegiatan, namaKegiatan: $namaKegiatan, temaKegiatan: $temaKegiatan, idOrmawa: $idOrmawa)';
+  }
 }

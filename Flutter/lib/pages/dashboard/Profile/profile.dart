@@ -45,6 +45,7 @@ class ProfilePage extends StatelessWidget {
 
           print("Nama Peminjam: ${peminjam.namaPeminjam}");
           print("Email: ${peminjam.email}");
+          print("idOrmawa: ${peminjam.idOrmawa}");
 
           return Scaffold(
             backgroundColor: Colors.grey[200],
