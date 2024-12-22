@@ -18,7 +18,7 @@ class AppConstants {
       'label': 'Home',
     },
     {
-      'view': peminjamanPage(),
+      'view': const PeminjamanPage(),
       'icon': Icons.article_rounded,
       'label': 'Peminjaman',
     },
