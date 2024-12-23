@@ -115,7 +115,8 @@ class ProfilePage extends StatelessWidget {
                             title: const Text('EDIT PROFILE'),
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap: () {
-                              Nav.push(context, EditProfileApp());
+                              Nav.push(context,
+                                  EditProfilePage(userId: peminjam.idPeminjam));
                             },
                           ),
                           const Divider(),
@@ -171,4 +172,3 @@ void main() {
     home: ProfilePage(),
   ));
 }
-  

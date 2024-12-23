@@ -33,10 +33,6 @@ class MyApp extends StatelessWidget {
         '/peminjaman': (context) => const PeminjamanPage(),
         '/profile': (context) => const ProfilePage(),
         '/history': (context) => const HistoryPage(),
-        // '/detailRuangan': (context) => const detailRuanganPage(),
-        '/faq': (context) => FaqPage(),
-        '/editProfile': (context) => EditProfileApp(),
-        '/updatePass': (context) => UpdatePass(),
       },
     );
   }
