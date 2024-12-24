@@ -5,10 +5,11 @@ import 'package:sipit_app/models/peminjamanModel.dart';
 import 'package:http/http.dart' as http;
 
 class PeminjamanDatasource {
+  final String url = '${AppConstants.baseUrl}/peminjaman.php';
+
   Future<Map<DateTime, List<Map<String, dynamic>>>> fetchMarkedDates(
       String roomName) async {
-    final response =
-        await http.get(Uri.parse('${AppConstants.baseUrl}/peminjaman.php'));
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = json.decode(response.body);
@@ -74,5 +75,45 @@ class PeminjamanDatasource {
     } else {
       throw Exception('Gagal memuat data');
     }
+  }
+
+  Future<PeminjamanModel?> postPeminjaman(
+    int? idKegiatan,
+    int? idRuangan,
+    DateTime tglPeminjaman,
+    String keterangan,
+    String sesi,
+    int idStatus,
+  ) async {
+    try {
+      final response = await http.post(
+          Uri.parse('http://192.168.1.5:8000/api/routes/peminjaman.php'),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode({
+            "id_ruangan": idRuangan,
+            "id_kegiatan": idKegiatan,
+            "id_status": idStatus,
+            "tgl_peminjaman": tglPeminjaman.toIso8601String(),
+            "sesi_peminjaman": sesi,
+            "keterangan": keterangan
+          }));
+
+      print('Response Status: ${response.statusCode}');
+      print(
+          'Response Body: ${response.body}'); // Log the response body for debugging
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return PeminjamanModel.fromJson(responseData);
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Response: ${response.body}'); // Detailed error response
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    return null;
   }
 }

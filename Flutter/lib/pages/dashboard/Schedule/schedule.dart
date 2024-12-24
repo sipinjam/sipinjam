@@ -225,22 +225,11 @@ class _SchedulePageState extends State<SchedulePage> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            // DButtonElevation(
-            //     onClick: () async {
-            //       await fetchAndSetMarkedDates(_selectedRuangan!);
-            //     },
-            //     mainColor: Color(0xff615EFC),
-            //     radius: 8,
-            //     child: Text(
-            //       'Cek Ketersedian',
-            //       style: TextStyle(color: Colors.white),
-            //     )),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
               elevation: 2,
-              // margin: const EdgeInsets.only(top: 6),
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
