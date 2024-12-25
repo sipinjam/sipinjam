@@ -86,8 +86,7 @@ class PeminjamanDatasource {
     int idStatus,
   ) async {
     try {
-      final response = await http.post(
-          Uri.parse('http://192.168.1.5:8000/api/routes/peminjaman.php'),
+      final response = await http.post(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
           },
@@ -115,5 +114,25 @@ class PeminjamanDatasource {
       print('Error: $e');
     }
     return null;
+  }
+
+  Future<bool> checkRuanganAvailability(
+    DateTime tanggal,
+    String sesi,
+    int? idRuangan,
+  ) async {
+    try {
+      final response = await http
+          .get(Uri.parse('$url?date=$tanggal&sesi=$sesi&ruangan=$idRuangan'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data']['available'] as bool;
+      } else {
+        throw Exception('failed to fetch data');
+      }
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
   }
 }

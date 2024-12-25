@@ -2,7 +2,9 @@ import 'package:d_button/d_button.dart';
 import 'package:d_info/d_info.dart';
 import 'package:d_input/d_input.dart';
 import 'package:flutter/material.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:sipit_app/config/app_session.dart';
+import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/kegiatan_datasource.dart';
 import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:sipit_app/models/kegiatan_model.dart';
@@ -37,10 +39,22 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
   int? _selectedRuangan;
   final TextEditingController _keteranganController = TextEditingController();
   // Color backgroundColorButton = Colors.white;
+  bool sesi1Available = true;
+  bool sesi2Available = true;
+  bool sesi3Available = true;
   Color borderColorButton1 = Colors.grey;
   Color borderColorButton2 = Colors.grey;
   Color borderColorButton3 = Colors.grey;
+  Color mainColorButton1 = Colors.white;
+  Color mainColorButton2 = Colors.white;
+  Color mainColorButton3 = Colors.white;
   String sesiPeminjaman = '';
+  final bool _peminjamanStatus = false;
+  final FocusNode _focusnodeKeterangan = FocusNode();
+
+  void _removeFocus() {
+    FocusScope.of(context).unfocus();
+  }
 
   Future<void> getKegiatan(int? idOrmawa) async {
     try {
@@ -109,17 +123,80 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
             sesi,
             idStatus);
         print(peminjaman);
-        if (peminjaman != null) {
-          print('peminjaman berhasil ditambahkan');
-        } else {
-          print('gagal menambahkan peminjaman');
-        }
+        _confirmPeminjaman();
       } catch (e) {
         print(e);
       }
     } else {
       print('data yang diperlukan tidak lengkap');
+      _PeminjamanGagal();
     }
+  }
+
+  void validateSessionAvailableability(DateTime tanggal, int idRuangan) async {
+    sesi1Available = await PeminjamanDatasource()
+        .checkRuanganAvailability(tanggal, '1', idRuangan);
+    sesi2Available = await PeminjamanDatasource()
+        .checkRuanganAvailability(tanggal, '2', idRuangan);
+    sesi3Available = await PeminjamanDatasource()
+        .checkRuanganAvailability(tanggal, '3', idRuangan);
+    if (sesi1Available == false || sesi2Available == false) {
+      sesi3Available = false;
+    } else if (sesi3Available == false) {
+      sesi1Available = false;
+      sesi2Available = false;
+    }
+
+    print(sesi1Available);
+    print(sesi2Available);
+    print(sesi3Available);
+
+    setState(() {
+      borderColorButton1 = sesi1Available ? Colors.grey : Colors.transparent;
+      borderColorButton2 = sesi2Available ? Colors.grey : Colors.transparent;
+      borderColorButton3 = sesi3Available ? Colors.grey : Colors.transparent;
+    });
+
+    if (!sesi3Available) {
+      print('Sesi 1 dan 2 tidak tersedia karena sesi 3 penuh');
+    }
+  }
+
+  void _confirmPeminjaman() {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.warning,
+      showCancelBtn: true,
+      text: 'apakah anda sudah yakin dengan pilihan anda?',
+      confirmBtnText: 'Ya',
+      cancelBtnText: 'Kembali',
+      onConfirmBtnTap: () {
+        Navigator.of(context).pop();
+        postDataToDatabase();
+        _PeminjamanSuccess();
+      },
+    );
+  }
+
+  void _PeminjamanSuccess() {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text: 'Peminjaman berhasil');
+  }
+
+  void _PeminjamanGagal() {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: 'Peminjaman Gagal \n periksa kembali form peminjaman');
+  }
+
+  @override
+  void dispose() {
+    _keteranganController.dispose();
+    _focusnodeKeterangan.dispose();
+    super.dispose();
   }
 
   @override
@@ -209,6 +286,13 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                         onSelected: (ruangan) {
                           setState(() {
                             _selectedRuangan = ruangan;
+                            if (_datePickerController.text.isNotEmpty &&
+                                ruangan != null) {
+                              final DateTime tanggalPeminjaman =
+                                  DateTime.parse(_datePickerController.text);
+                              validateSessionAvailableability(
+                                  tanggalPeminjaman, ruangan);
+                            }
                           });
                         },
                         dropdownMenuEntries: _filteredRuangans.map((ruangan) {
@@ -250,7 +334,15 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                           if (pickedDate != null) {
                             String formattedDate =
                                 DateFormat('yyyy-MM-dd').format(pickedDate);
-                            _datePickerController.text = formattedDate;
+                            setState(() {
+                              _datePickerController.text = formattedDate;
+                              DateTime _selectedDate =
+                                  DateTime.parse(formattedDate);
+                              if (_selectedRuangan != null) {
+                                validateSessionAvailableability(
+                                    _selectedDate, _selectedRuangan!);
+                              }
+                            });
                           }
                         },
                       ),
@@ -276,18 +368,24 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                               DButtonBorder(
                                   borderColor: borderColorButton1,
                                   borderWidth: 1,
+                                  splashColor: biruTua,
                                   height: 50,
-                                  // mainColor: backgroundColorButton,
+                                  mainColor: mainColorButton1,
                                   width:
                                       MediaQuery.sizeOf(context).width * 0.42,
-                                  onClick: () {
-                                    setState(() {
-                                      borderColorButton1 = biruTua;
-                                      borderColorButton2 = Colors.grey;
-                                      borderColorButton3 = Colors.grey;
-                                      sesiPeminjaman = '1';
-                                    });
-                                  },
+                                  onClick: sesi1Available
+                                      ? () {
+                                          setState(() {
+                                            borderColorButton1 = biruTua;
+                                            mainColorButton1 = biruTua;
+                                            borderColorButton2 = Colors.grey;
+                                            mainColorButton2 = Colors.white;
+                                            borderColorButton3 = Colors.grey;
+                                            mainColorButton3 = Colors.white;
+                                            sesiPeminjaman = '1';
+                                          });
+                                        }
+                                      : null,
                                   radius: 8,
                                   child: Text(
                                     'Sesi Pagi',
@@ -295,17 +393,24 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                               DButtonBorder(
                                   borderColor: borderColorButton2,
                                   borderWidth: 1,
+                                  splashColor: biruTua,
+                                  mainColor: mainColorButton2,
                                   height: 50,
                                   width:
                                       MediaQuery.sizeOf(context).width * 0.42,
-                                  onClick: () {
-                                    setState(() {
-                                      borderColorButton1 = Colors.grey;
-                                      borderColorButton2 = biruTua;
-                                      borderColorButton3 = Colors.grey;
-                                      sesiPeminjaman = '2';
-                                    });
-                                  },
+                                  onClick: sesi2Available
+                                      ? () {
+                                          setState(() {
+                                            borderColorButton1 = Colors.grey;
+                                            mainColorButton1 = Colors.white;
+                                            borderColorButton2 = biruTua;
+                                            mainColorButton2 = biruTua;
+                                            borderColorButton3 = Colors.grey;
+                                            mainColorButton3 = Colors.white;
+                                            sesiPeminjaman = '2';
+                                          });
+                                        }
+                                      : null,
                                   radius: 8,
                                   child: Text(
                                     'Sesi Siang',
@@ -318,16 +423,23 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                           Container(
                             child: DButtonBorder(
                                 borderColor: borderColorButton3,
+                                mainColor: mainColorButton3,
                                 borderWidth: 1,
+                                splashColor: biruTua,
                                 height: 50,
-                                onClick: () {
-                                  setState(() {
-                                    borderColorButton1 = Colors.grey;
-                                    borderColorButton2 = Colors.grey;
-                                    borderColorButton3 = biruTua;
-                                    sesiPeminjaman = '3';
-                                  });
-                                },
+                                onClick: sesi3Available
+                                    ? () {
+                                        setState(() {
+                                          borderColorButton1 = Colors.grey;
+                                          mainColorButton1 = Colors.white;
+                                          borderColorButton2 = Colors.grey;
+                                          mainColorButton2 = Colors.white;
+                                          borderColorButton3 = biruTua;
+                                          mainColorButton3 = biruTua;
+                                          sesiPeminjaman = '3';
+                                        });
+                                      }
+                                    : null,
                                 radius: 8,
                                 child: Text(
                                   'Full Day',
@@ -341,8 +453,10 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                     ),
                     DInputMix(
                       boxColor: Colors.white,
+                      boxBorder: Border.all(color: Colors.grey),
                       controller: _keteranganController,
                       title: 'Keterangan',
+                      // inputFocusNode: _focusnodeKeterangan,
                       titleGap: 10,
                       titleStyle:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
