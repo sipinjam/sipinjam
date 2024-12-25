@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sipit_app/config/nav.dart';
-import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
 
 class EditProfilePage extends StatefulWidget {
-  final int userId; // User ID
+  final int userId; // ID user diterima dari halaman sebelumnya
   const EditProfilePage({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -15,138 +13,208 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
 
-  bool _isLoading = false;
+  final String apiUrl = "http://192.168.1.4:8000/api/routes/users.php/?id=";
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _fetchUserData(); // Ambil data user saat halaman dimuat
   }
 
-  Future<void> _loadUserData() async {
-    // Simulate API GET User
-    final response = await http.get(
-      Uri.parse('https://example.com/api/get-user/${widget.userId}'),
-    );
+  // Fungsi untuk fetch data user
+  Future<void> _fetchUserData() async {
+    try {
+      final response = await http.get(Uri.parse('$apiUrl${widget.userId}'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == 'success') {
+          final userData = data['data'];
+          setState(() {
+            _nameController.text = userData?['nama_lengkap'] ?? 'Nama tidak ditemukan';
+            _emailController.text = userData?['email'] ?? 'Email tidak ditemukan';
+            _phoneController.text = userData?['no_telpon'] ?? 'Nomor telepon tidak ditemukan';
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      setState(() {
-        _nameController.text = data['nama_lengkap'];
-        _phoneController.text = data['no_telpon'];
-        _addressController.text = data['alamat'] ?? ""; // Set empty if null
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load user data')),
-      );
-    }
-  }
-
-  Future<void> _saveChanges() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Prepare data for the API
-    final requestBody = {
-      "id_peminjam": widget.userId,
-      "nama_lengkap": _nameController.text,
-      "no_telpon": _phoneController.text,
-      "alamat": _addressController.text,
-    };
-
-    final response = await http.post(
-      Uri.parse('https://example.com/api/update-profile'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(requestBody),
-    );
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      if (responseData['status'] == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile updated successfully!')),
-        );
-        Nav.push(context, const ProfilePage()); // Navigate back to ProfilePage
+          });
+        } else {
+          _showError("Failed to fetch user data: ${data['message']}");
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Update failed: ${responseData['message']}')),
-        );
+        _showError("Server error: ${response.statusCode}");
       }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update profile')),
-      );
+    } catch (e) {
+      _showError("Error fetching user data: $e");
     }
+  }
+
+  // Fungsi untuk update data user
+  Future<void> _updateUserProfile() async {
+  if (_formKey.currentState!.validate()) {
+    try {
+      final updatedUser = {
+        "nama_lengkap": _nameController.text,
+        "email": _emailController.text,
+        "no_telpon": _phoneController.text,
+      };
+
+      // Gunakan URL yang sama dengan yang di Postman
+      final response = await http.patch(
+        Uri.parse('http://192.168.1.4:8000/api/routes/users.php/?id=${widget.userId}'),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.encode(updatedUser), // Pastikan body dalam format JSON
+      );
+
+      // Debugging untuk melihat respon dari server
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == 'success') {
+          _showSuccess("Profile updated successfully!");
+          Navigator.pop(context, true); // Kembali ke halaman sebelumnya
+        } else {
+          _showError("Failed to update profile: ${data['message']}");
+        }
+      } else {
+        _showError("Server error: ${response.statusCode}");
+      }
+    } catch (e) {
+      _showError("Error updating profile: $e");
+    }
+  }
+}
+
+  // Future<void> _updateUserProfile() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     try {
+  //       final updatedUser = {
+  //         "nama_lengkap": _nameController.text,
+  //         "email": _emailController.text,
+  //         "no_telpon": _phoneController.text,
+  //       };
+
+  //       // Perbaikan URL
+  //       final response = await http.patch(
+  //         Uri.parse('$apiUrl${widget.userId}'),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: json.encode(updatedUser),
+  //       );
+
+  //       if (response.statusCode == 200) {
+  //         final data = json.decode(response.body);
+  //         if (data['status'] == 'success') {
+  //           _showSuccess("Profile updated successfully!");
+  //           Navigator.pop(context, true); // Kembali ke halaman sebelumnya
+  //         } else {
+  //           _showError("Failed to update profile: ${data['message']}");
+  //         }
+  //       } else {
+  //         _showError("Server error: ${response.statusCode}");
+  //       }
+  //     } catch (e) {
+  //       _showError("Error updating profile: $e");
+  //     }
+  //   }
+  // }
+
+//         final response = await http.patch(
+//   Uri.parse('$apiUrl${widget.userId}'),
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: json.encode(updatedUser),
+// );
+
+
+//         if (response.statusCode == 200) {
+//           final data = json.decode(response.body);
+//           if (data['status'] == 'success') {
+//             _showSuccess("Profile updated successfully!");
+//             Navigator.pop(context, true); // Kembali ke halaman sebelumnya
+//           } else {
+//             _showError("Failed to update profile: ${data['message']}");
+//           }
+//         } else {
+//           _showError("Server error: ${response.statusCode}");
+//         }
+//       } catch (e) {
+//         _showError("Error updating profile: $e");
+//       }
+//     }
+//   }
+
+  // Fungsi untuk menampilkan pesan sukses
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.green),
+    );
+  }
+
+  // Fungsi untuk menampilkan pesan error
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: const Text('Edit Profile'),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: "Nama Lengkap",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) => value!.isEmpty
-                          ? "Nama Lengkap tidak boleh kosong"
-                          : null,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _phoneController,
-                      decoration: const InputDecoration(
-                        labelText: "No Telepon",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) => value!.isEmpty
-                          ? "No Telepon tidak boleh kosong"
-                          : null,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _addressController,
-                      decoration: const InputDecoration(
-                        labelText: "Alamat",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) =>
-                          value!.isEmpty ? "Alamat tidak boleh kosong" : null,
-                    ),
-                    const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: _saveChanges,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      child: const Text("Save Changes"),
-                    ),
-                  ],
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Nama Lengkap'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Nama tidak boleh kosong' : null,
               ),
-            ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Email tidak boleh kosong' : null,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(labelText: 'No. Telp'),
+                validator: (value) =>
+                    value!.isEmpty ? 'No. Telp tidak boleh kosong' : null,
+              ),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Batal'),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: _updateUserProfile,
+                    child: const Text('Konfirmasi'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
