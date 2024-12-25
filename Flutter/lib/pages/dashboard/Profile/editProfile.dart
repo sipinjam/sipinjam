@@ -168,7 +168,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -202,11 +209,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 children: [
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.blue[700], // Warna teks biru
+                      backgroundColor: Colors.white,   // Latar belakang putih
+                    ),
                     child: const Text('Batal'),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: _updateUserProfile,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.blue[700], // Warna teks biru
+                      backgroundColor: Colors.white,   // Latar belakang putih
+                    ),
                     child: const Text('Konfirmasi'),
                   ),
                 ],
