@@ -77,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              peminjam.namaPeminjam,
+                              peminjam.namaLengkap, //nama lengkap
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.0,
@@ -172,3 +172,4 @@ void main() {
     home: ProfilePage(),
   ));
 }
+

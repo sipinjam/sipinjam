@@ -22,6 +22,7 @@ class PeminjamansController
             k.nama_kegiatan,
             k.tema_kegiatan,
             k.id_peminjam,
+            k.id_ormawa,
             p.tgl_peminjaman,
             p.sesi_peminjaman,
             k.daftar_panitia,
@@ -140,6 +141,58 @@ class PeminjamansController
             response('success', 'Ruangan tidak tersedia', ['available' => false], 200);
         } else {
             response('success', 'Ruangan tersedia', ['available' => true], 200);
+        }
+    }
+    public function getPeminjamanByIdOrmawa($id_ormawa)
+    {
+        $query = "
+        SELECT 
+            p.id_peminjaman,
+            k.nama_kegiatan,
+            k.tema_kegiatan,
+            k.id_ormawa,
+            o.nama_ormawa,
+            p.tgl_peminjaman,
+            p.sesi_peminjaman,
+            k.daftar_panitia,
+            r.nama_ruangan,
+            m.nama_mahasiswa AS nama_ketua_ormawa,
+            mp.nama_mahasiswa AS nama_ketua_pelaksana,
+            b.nama_pembina,
+            s.nama_status,
+            p.keterangan,
+            pem.nama_lengkap
+        FROM 
+            peminjaman p
+        JOIN 
+            kegiatan k ON p.id_kegiatan = k.id_kegiatan
+        JOIN 
+            ruangan r ON p.id_ruangan = r.id_ruangan
+        JOIN 
+            mahasiswa m ON k.id_mahasiswa = m.id_mahasiswa
+        JOIN 
+            mahasiswa mp ON k.id_mahasiswa = mp.id_mahasiswa
+        JOIN 
+            status s ON p.id_status = s.id_status
+        JOIN
+            peminjam pem ON k.id_peminjam = pem.id_peminjam
+        JOIN
+            ormawa o ON k.id_ormawa = o.id_ormawa
+        JOIN
+            pembina b ON o.id_ormawa = b.id_ormawa
+        WHERE 
+            k.id_ormawa = ?
+    ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([$id_ormawa]);
+
+        $peminjamanData = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if ($peminjamanData) {
+            response('success', 'Peminjaman data fetched successfully', $peminjamanData, 200);
+        } else {
+            response('error', 'Peminjaman data not found', null, 404);
         }
     }
 
