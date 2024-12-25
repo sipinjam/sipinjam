@@ -185,7 +185,7 @@
 
     // Fetch dan render data
     async function getPeminjaman() {
-        const loggedInUserId = getCookies("id_peminjam");
+        const loggedInUserId = getCookies("id_ormawa");
 
         try {
             const response = await fetch("http://localhost/sipinjamfix/sipinjam/api/peminjaman/");
@@ -194,7 +194,7 @@
             if (result.status === "success") {
                 // Filter data berdasarkan ID pengguna yang login
                 filteredData = result.data.filter(
-                    (item) => item.id_peminjam === parseInt(loggedInUserId)
+                    (item) => item.id_ormawa === parseInt(loggedInUserId)
                 );
 
                 if (filteredData.length === 0) {
