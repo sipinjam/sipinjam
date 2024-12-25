@@ -20,7 +20,12 @@ switch ($method) {
         } elseif (!empty($_GET["date"]) && !empty($_GET["sesi"]) && !empty($_GET["ruangan"])) {
             // Memanggil fungsi getPeminjamanByDate jika parameter ada
             $PeminjamanController->getPeminjamanByDate();
-        } else {
+        }
+        elseif (!empty($_GET["id_ormawa"])) { // Ganti "id" dengan "id_ormawa"
+            $id_ormawa = intval($_GET["id_ormawa"]); // Ambil nilai id_ormawa
+            $PeminjamanController->getPeminjamanByIdOrmawa($id_ormawa); // Panggil fungsi yang sesuai
+        }
+        else {
             $PeminjamanController->getAllPeminjaman();
         }
         break;
