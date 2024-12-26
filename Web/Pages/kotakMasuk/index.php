@@ -42,6 +42,7 @@
                     <th class="px-4 py-2">Ormawa</th>
                     <th class="px-4 py-2">Tanggal Pinjam</th>
                     <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2">Keterangan</th>
                     <th class="px-4 py-2 text-center">Detail Peminjaman</th>
                 </tr>
             </thead>
@@ -175,6 +176,7 @@
                 <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
                 <td class="border px-4 py-2">
                     <span class="${statusColor} font-bold">${item.nama_status}</span>
+                <td class="border px-4 py-2">${item.keterangan}</td>
                 </td>
                 <td class="border px-4 py-2 text-center">
                     <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail</button>
