@@ -12,13 +12,28 @@
 
 <body class="bg-gray-100">
 
+    <!-- Header -->
+    <?php include '../../components/header.php' ?>
+    <!-- End Header -->
     <!-- Sidebar -->
     <?php include '../../Components/sidebar.php'; ?>
     <!-- End Sidebar -->
 
     <!-- Main Content -->
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 pt-20 sm:ml-64">
         <h3 class="text-4xl font-bold p-4">Kotak Masuk</h3>
+
+        <!-- Dropdown Filter by Status -->
+        <div class="mb-4">
+            <label for="statusFilter" class="font-medium text-gray-700">Filter by Status:</label>
+            <select id="statusFilter" class="ml-4 px-4 py-2 border border-gray-300 rounded-lg" onchange="filterTable()">
+                <option value="all">All</option>
+                <option value="proses">Proses</option>
+                <option value="disetujui">Disetujui</option>
+                <option value="ditolak">Ditolak</option>
+            </select>
+        </div>
+
         <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
             <thead class="bg-biru-500 text-white">
                 <tr>
@@ -116,48 +131,70 @@
         const data = await response.json();
 
         if (data.status === "success") {
-            const peminjamanList = data.data.filter(item => item.nama_status.toLowerCase() === "proses"); // Filter hanya yang status "proses"
+            const peminjamanList = data.data;
             const peminjamanTable = document.getElementById('peminjamanTable');
             
-            peminjamanList.forEach(item => {
-                // Tentukan warna status berdasarkan item.nama_status
-                let statusColor;
-                switch (item.nama_status.toLowerCase()) {
-                    case 'proses':
-                        statusColor = 'text-yellow-600';
-                        break;
-                    case 'disetujui':
-                        statusColor = 'text-green-600';
-                        break;
-                    case 'ditolak':
-                        statusColor = 'text-red-600'; // Warna merah untuk ditolak
-                        break;
-                    default:
-                        statusColor = 'text-gray-600';
-                }
+            // Menyimpan data untuk referensi filter
+            window.peminjamanData = peminjamanList;
 
-                // Buat baris tabel untuk setiap item
-                const row = document.createElement('tr');
-                row.classList.add('hover:bg-gray-100'); // Tambahkan efek hover pada baris
-
-                row.innerHTML = `
-                    <td class="border px-4 py-2">${item.nama_ruangan}</td>
-                    <td class="border px-4 py-2">${item.nama_lengkap}</td>
-                    <td class="border px-4 py-2">${item.nama_ormawa}</td>
-                    <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
-                    <td class="border px-4 py-2">
-                        <span class="${statusColor} font-bold ">${item.nama_status}</span>
-                    </td>
-                    <td class="border px-4 py-2 text-center">
-                        <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail</button>
-                    </td>
-                `;
-
-                peminjamanTable.appendChild(row);
-            });
+            // Memuat data awal
+            loadPeminjamanTable(peminjamanList);
         } else {
             alert('Failed to load peminjaman data.');
         }
+    }
+
+    // Fungsi untuk memuat tabel peminjaman
+    function loadPeminjamanTable(peminjamanList) {
+        const peminjamanTable = document.getElementById('peminjamanTable');
+        peminjamanTable.innerHTML = ''; // Bersihkan tabel sebelum memuat data baru
+        
+        peminjamanList.forEach(item => {
+            let statusColor;
+            switch (item.nama_status.toLowerCase()) {
+                case 'proses':
+                    statusColor = 'text-yellow-600';
+                    break;
+                case 'disetujui':
+                    statusColor = 'text-green-600';
+                    break;
+                case 'ditolak':
+                    statusColor = 'text-red-600';
+                    break;
+                default:
+                    statusColor = 'text-gray-600';
+            }
+
+            const row = document.createElement('tr');
+            row.classList.add('hover:bg-gray-100');
+
+            row.innerHTML = `
+                <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                <td class="border px-4 py-2">${item.nama_lengkap}</td>
+                <td class="border px-4 py-2">${item.nama_ormawa}</td>
+                <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
+                <td class="border px-4 py-2">
+                    <span class="${statusColor} font-bold">${item.nama_status}</span>
+                </td>
+                <td class="border px-4 py-2 text-center">
+                    <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail</button>
+                </td>
+            `;
+
+            peminjamanTable.appendChild(row);
+        });
+    }
+
+    // Fungsi untuk memfilter tabel berdasarkan status
+    function filterTable() {
+        const filterValue = document.getElementById('statusFilter').value;
+        let filteredData = window.peminjamanData;
+
+        if (filterValue !== 'all') {
+            filteredData = window.peminjamanData.filter(item => item.nama_status.toLowerCase() === filterValue);
+        }
+
+        loadPeminjamanTable(filteredData);
     }
 
     // Fungsi untuk menentukan status yang sesuai
@@ -203,6 +240,7 @@
     // Fungsi untuk membuka modal detail dan menampilkan data peminjaman berdasarkan ID
     async function openDetailModal(idPeminjaman) {
         const url = `http://localhost/sipinjamfix/sipinjam/api/peminjaman/${idPeminjaman}`;
+        selectedIdPeminjaman = idPeminjaman; // Set ID peminjaman yang dipilih
 
         try {
             const response = await fetch(url);
@@ -259,7 +297,6 @@
         document.getElementById('mainModal').classList.add('hidden');
 
         // Bersihkan data modal
-        document.getElementById('modalImage').src = '';
         document.getElementById('modalTitle').innerText = '';
         document.getElementById('peminjam').innerText = '';
         document.getElementById('ormawa').innerText = '';
