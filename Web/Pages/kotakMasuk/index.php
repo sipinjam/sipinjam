@@ -199,20 +199,6 @@
         loadPeminjamanTable(filteredData);
     }
 
-    // Fungsi untuk menentukan status yang sesuai
-    function getStatusText(status) {
-        switch (status) {
-            case 'proses':
-                return 'Proses';
-            case 'disetujui':
-                return 'Disetujui';
-            case 'ditolak':
-                return 'Ditolak';
-            default:
-                return 'Unknown';
-        }
-    }
-
     // Sub Modal
     const subModal = document.getElementById('subModal');
     const openSubModal = document.getElementById('openSubModal');
@@ -280,9 +266,6 @@
                 // Menampilkan sesi di modal
                 document.getElementById("sesi").innerText = sesiText;
 
-                // Set selectedIdPeminjaman dengan ID peminjaman yang dibuka
-                selectedIdPeminjaman = peminjaman.id_peminjaman;
-
                 // Show modal
                 document.getElementById('mainModal').classList.remove('hidden');
             } else {
@@ -292,27 +275,6 @@
             alert('Error fetching data: ' + error.message);
         }
     }
-
-    // Fungsi untuk menutup modal dan mereset data
-    function closeModal() {
-        selectedIdPeminjaman = null; // Reset ID peminjaman
-        document.getElementById('mainModal').classList.add('hidden');
-
-        // Bersihkan data modal
-        document.getElementById('modalTitle').innerText = '';
-        document.getElementById('peminjam').innerText = '';
-        document.getElementById('ormawa').innerText = '';
-        document.getElementById('ketua_ormawa').innerText = '';
-        document.getElementById('pembina').innerText = '';
-        document.getElementById('nama_kegiatan').innerText = '';
-        document.getElementById('tema_kegiatan').innerText = '';
-        document.getElementById('ketua_pelaksana').innerText = '';
-        document.getElementById('tanggal').innerText = '';
-        document.getElementById('sesi').innerText = '';
-    }
-
-    // Event listener untuk tombol TUTUP modal
-    document.getElementById('closeMainModal').addEventListener('click', closeModal);
 
     // Event listener untuk tombol SETUJU
     document.getElementById("btnSetuju").addEventListener("click", async () => {
@@ -372,7 +334,6 @@
         alert('Terjadi kesalahan: ' + error.message);
     }
 });
-
 
     // Menutup modal
     document.getElementById('closeMainModal').addEventListener('click', () => {
