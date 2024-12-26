@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../../Public/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <title>SIPINJAM - Kotak Masuk</title>
 </head>
 
@@ -23,18 +24,7 @@
     <div class="p-4 pt-20 sm:ml-64">
         <h3 class="text-4xl font-bold p-4">Kotak Masuk</h3>
 
-        <!-- Dropdown Filter by Status -->
-        <div class="mb-4">
-            <label for="statusFilter" class="font-medium text-gray-700">Filter by Status:</label>
-            <select id="statusFilter" class="ml-4 px-4 py-2 border border-gray-300 rounded-lg" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="proses">Proses</option>
-                <option value="disetujui">Disetujui</option>
-                <option value="ditolak">Ditolak</option>
-            </select>
-        </div>
-
-        <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+        <table id="peminjamanTable" class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
             <thead class="bg-biru-500 text-white">
                 <tr>
                     <th class="px-4 py-2">Nama Ruangan</th>
@@ -42,25 +32,22 @@
                     <th class="px-4 py-2">Ormawa</th>
                     <th class="px-4 py-2">Tanggal Pinjam</th>
                     <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Keterangan</th>
                     <th class="px-4 py-2 text-center">Detail Peminjaman</th>
                 </tr>
             </thead>
-            <tbody class="text-gray-700" id="peminjamanTable">
+            <tbody class="text-gray-700">
                 <!-- Data akan dimuat dengan JavaScript -->
             </tbody>
         </table>
     </div>
 
-    <!-- End Main -->
-
-    <!-- Main Modal (Detail Peminjaman) -->
     <div id="mainModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-8 rounded-xl shadow-2xl max-w-2xl w-full">
             <!-- Header -->
             <div class="flex justify-between items-center border-b pb-4 mb-6">
                 <h2 id="modalTitle" class="text-2xl font-bold mt-4 text-gray-800 text-left"></h2>
-                <button id="closeMainModal" class="text-gray-500 hover:text-gray-800 text-2xl font-semibold">&times;</button>
+                <button id="closeMainModal"
+                    class="text-gray-500 hover:text-gray-800 text-2xl font-semibold">&times;</button>
             </div>
 
             <!-- Modal Content -->
@@ -123,80 +110,51 @@
             </div>
         </div>
     </div>
-    <!-- End Main Modal -->
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
-    // Fungsi untuk mengambil data peminjaman dari API dan menambahkannya ke dalam grid
+    // Fungsi untuk mengambil data peminjaman dari API
     async function fetchPeminjaman() {
         const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman');
         const data = await response.json();
 
         if (data.status === "success") {
-            const peminjamanList = data.data;
-            const peminjamanTable = document.getElementById('peminjamanTable');
-            
-            // Menyimpan data untuk referensi filter
-            window.peminjamanData = peminjamanList;
-
-            // Memuat data awal
+            const peminjamanList = data.data.filter(item => item.nama_status.toLowerCase() === 'proses');
             loadPeminjamanTable(peminjamanList);
         } else {
             alert('Failed to load peminjaman data.');
         }
     }
 
-    // Fungsi untuk memuat tabel peminjaman
+    // Fungsi untuk memuat tabel peminjaman dengan DataTables
     function loadPeminjamanTable(peminjamanList) {
-        const peminjamanTable = document.getElementById('peminjamanTable');
-        peminjamanTable.innerHTML = ''; // Bersihkan tabel sebelum memuat data baru
-        
+        const peminjamanTable = $('#peminjamanTable tbody');
+        peminjamanTable.empty(); // Bersihkan tabel sebelum memuat data baru
+
         peminjamanList.forEach(item => {
-            let statusColor;
-            switch (item.nama_status.toLowerCase()) {
-                case 'proses':
-                    statusColor = 'text-yellow-600';
-                    break;
-                case 'disetujui':
-                    statusColor = 'text-green-600';
-                    break;
-                case 'ditolak':
-                    statusColor = 'text-red-600';
-                    break;
-                default:
-                    statusColor = 'text-gray-600';
-            }
-
-            const row = document.createElement('tr');
-            row.classList.add('hover:bg-gray-100');
-
-            row.innerHTML = `
-                <td class="border px-4 py-2">${item.nama_ruangan}</td>
-                <td class="border px-4 py-2">${item.nama_lengkap}</td>
-                <td class="border px-4 py-2">${item.nama_ormawa}</td>
-                <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
-                <td class="border px-4 py-2">
-                    <span class="${statusColor} font-bold">${item.nama_status}</span>
-                <td class="border px-4 py-2">${item.keterangan}</td>
-                </td>
-                <td class="border px-4 py-2 text-center">
-                    <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail</button>
-                </td>
-            `;
-
-            peminjamanTable.appendChild(row);
+            peminjamanTable.append(`
+                    <tr>
+                        <td class="border px-4 py-2">${item.nama_ruangan}</td>
+                        <td class="border px-4 py-2">${item.nama_lengkap}</td>
+                        <td class="border px-4 py-2">${item.nama_ormawa}</td>
+                        <td class="border px-4 py-2">${item.tgl_peminjaman}</td>
+                        <td class="border px-4 py-2 text-yellow-600 font-bold">${item.nama_status}</td>
+                        <td class="border px-4 py-2 text-center">
+                            <button type="button" class="border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" onclick="openDetailModal(${item.id_peminjaman})">Lihat Detail</button>
+                        </td>
+                    </tr>
+                `);
         });
-    }
 
-    // Fungsi untuk memfilter tabel berdasarkan status
-    function filterTable() {
-        const filterValue = document.getElementById('statusFilter').value;
-        let filteredData = window.peminjamanData;
-
-        if (filterValue !== 'all') {
-            filteredData = window.peminjamanData.filter(item => item.nama_status.toLowerCase() === filterValue);
-        }
-
-        loadPeminjamanTable(filteredData);
+        // Inisialisasi DataTables
+        $('#peminjamanTable').DataTable({
+            destroy: true, // Hapus DataTables lama jika ada
+            responsive: true,
+            paging: true,
+            searching: false,
+            ordering: true,
+        });
     }
 
     // Sub Modal
@@ -284,11 +242,16 @@
         }
 
         try {
-            const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/peminjaman/${selectedIdPeminjaman}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_status: 3 }) // 3 untuk disetujui
-            });
+            const response = await fetch(
+                `http://localhost/sipinjamfix/sipinjam/api/peminjaman/${selectedIdPeminjaman}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_status: 3
+                    }) // 3 untuk disetujui
+                });
 
             const result = await response.json();
             if (result.status === 'success') {
@@ -304,36 +267,42 @@
 
     // Event listener untuk tombol TOLAK
     document.getElementById('btnSubmitTolak').addEventListener('click', async () => {
-    if (!selectedIdPeminjaman) {
-        alert('ID peminjaman tidak ditemukan.');
-        return;
-    }
-
-    const keterangan = document.getElementById('alasanTolak').value.trim(); // Ambil isi dari textarea
-    if (!keterangan) {
-        alert('Harap masukkan alasan penolakan.');
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost/sipinjamfix/sipinjam/api/peminjaman/${selectedIdPeminjaman}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_status: 2, keterangan }) // Tambahkan 'keterangan' ke body request
-        });
-
-        const result = await response.json();
-        if (result.status === 'success') {
-            alert('Peminjaman berhasil ditolak.');
-            document.getElementById('subModal').classList.add('hidden'); // Tutup sub-modal
-            location.reload(); // Refresh data di halaman
-        } else {
-            alert('Gagal menolak peminjaman: ' + result.message);
+        if (!selectedIdPeminjaman) {
+            alert('ID peminjaman tidak ditemukan.');
+            return;
         }
-    } catch (error) {
-        alert('Terjadi kesalahan: ' + error.message);
-    }
-});
+
+        const keterangan = document.getElementById('alasanTolak').value.trim(); // Ambil isi dari textarea
+        if (!keterangan) {
+            alert('Harap masukkan alasan penolakan.');
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `http://localhost/sipinjamfix/sipinjam/api/peminjaman/${selectedIdPeminjaman}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_status: 2,
+                        keterangan
+                    }) // Tambahkan 'keterangan' ke body request
+                });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Peminjaman berhasil ditolak.');
+                document.getElementById('subModal').classList.add('hidden'); // Tutup sub-modal
+                location.reload(); // Refresh data di halaman
+            } else {
+                alert('Gagal menolak peminjaman: ' + result.message);
+            }
+        } catch (error) {
+            alert('Terjadi kesalahan: ' + error.message);
+        }
+    });
 
     // Menutup modal
     document.getElementById('closeMainModal').addEventListener('click', () => {
@@ -344,4 +313,5 @@
     window.onload = fetchPeminjaman;
     </script>
 </body>
+
 </html>
