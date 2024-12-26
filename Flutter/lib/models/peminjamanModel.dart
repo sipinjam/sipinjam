@@ -15,6 +15,7 @@ class PeminjamanModel {
   String namaKegiatan;
   String temaKegiatan;
   int idPeminjam;
+  int idOrmawa;
   DateTime tglPeminjaman;
   String sesiPeminjaman;
   String daftarPanitia;
@@ -22,12 +23,16 @@ class PeminjamanModel {
   String namaKetuaOrmawa;
   String namaKetuaPelaksana;
   String namaStatus;
+  dynamic keterangan;
+  String namaOrmawa;
+  String namaLengkap;
 
   PeminjamanModel({
     required this.idPeminjaman,
     required this.namaKegiatan,
     required this.temaKegiatan,
     required this.idPeminjam,
+    required this.idOrmawa,
     required this.tglPeminjaman,
     required this.sesiPeminjaman,
     required this.daftarPanitia,
@@ -35,6 +40,9 @@ class PeminjamanModel {
     required this.namaKetuaOrmawa,
     required this.namaKetuaPelaksana,
     required this.namaStatus,
+    required this.keterangan,
+    required this.namaOrmawa,
+    required this.namaLengkap,
   });
 
   factory PeminjamanModel.fromJson(Map<String, dynamic> json) =>
@@ -43,6 +51,7 @@ class PeminjamanModel {
         namaKegiatan: json["nama_kegiatan"],
         temaKegiatan: json["tema_kegiatan"],
         idPeminjam: json["id_peminjam"],
+        idOrmawa: json["id_ormawa"],
         tglPeminjaman: DateTime.parse(json["tgl_peminjaman"]),
         sesiPeminjaman: json["sesi_peminjaman"],
         daftarPanitia: json["daftar_panitia"],
@@ -50,6 +59,9 @@ class PeminjamanModel {
         namaKetuaOrmawa: json["nama_ketua_ormawa"],
         namaKetuaPelaksana: json["nama_ketua_pelaksana"],
         namaStatus: json["nama_status"],
+        keterangan: json["keterangan"],
+        namaOrmawa: json["nama_ormawa"],
+        namaLengkap: json["nama_lengkap"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,6 +69,7 @@ class PeminjamanModel {
         "nama_kegiatan": namaKegiatan,
         "tema_kegiatan": temaKegiatan,
         "id_peminjam": idPeminjam,
+        "id_ormawa": idOrmawa,
         "tgl_peminjaman":
             "${tglPeminjaman.year.toString().padLeft(4, '0')}-${tglPeminjaman.month.toString().padLeft(2, '0')}-${tglPeminjaman.day.toString().padLeft(2, '0')}",
         "sesi_peminjaman": sesiPeminjaman,
@@ -65,5 +78,8 @@ class PeminjamanModel {
         "nama_ketua_ormawa": namaKetuaOrmawa,
         "nama_ketua_pelaksana": namaKetuaPelaksana,
         "nama_status": namaStatus,
+        "keterangan": keterangan,
+        "nama_ormawa": namaOrmawa,
+        "nama_lengkap": namaLengkap,
       };
 }

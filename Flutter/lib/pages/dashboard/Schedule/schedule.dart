@@ -82,41 +82,6 @@ class _SchedulePageState extends State<SchedulePage> {
     fetchGedungs();
   }
 
-  void _showEventDetails(
-      DateTime date, List<Map<String, dynamic>> eventDetails) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Detail Kegiatan'),
-            content: SizedBox(
-              width: 200,
-              height: 100,
-              child: PageView.builder(
-                  itemCount: eventDetails.length,
-                  itemBuilder: (context, index) {
-                    final event = eventDetails[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Nama Kegiatan: ${event['nama_kegiatan']}'),
-                        Text('Sesi: ${event['sesi']}'),
-                        Text('Status: ${event['status']}'),
-                      ],
-                    );
-                  }),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Tutup'))
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,21 +218,17 @@ class _SchedulePageState extends State<SchedulePage> {
                                     final eventDetails = _markedDates[dayKey]!;
                                     final color =
                                         eventDetails[0]['color'] as Color;
-                                    return GestureDetector(
-                                      onTap: () =>
-                                          _showEventDetails(day, eventDetails),
-                                      child: Container(
-                                        margin: const EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          color: color,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '${day.day}',
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
+                                    return Container(
+                                      margin: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: color,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${day.day}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
                                       ),
                                     );

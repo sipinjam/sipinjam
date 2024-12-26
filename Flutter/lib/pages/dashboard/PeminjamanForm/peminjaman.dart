@@ -123,7 +123,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
             sesi,
             idStatus);
         print(peminjaman);
-        _confirmPeminjaman();
+        // _confirmPeminjaman();
       } catch (e) {
         print(e);
       }
@@ -146,10 +146,6 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
       sesi1Available = false;
       sesi2Available = false;
     }
-
-    print(sesi1Available);
-    print(sesi2Available);
-    print(sesi3Available);
 
     setState(() {
       borderColorButton1 = sesi1Available ? Colors.grey : Colors.transparent;
@@ -475,7 +471,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                 height: 50,
                 width: MediaQuery.sizeOf(context).width,
                 onClick: () {
-                  postDataToDatabase();
+                  _confirmPeminjaman();
                 },
                 radius: 16,
                 mainColor: Color(0xff22C55E),

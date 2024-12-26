@@ -44,14 +44,26 @@ class PeminjamanDatasource {
           }
 
           if (markedDates.containsKey(date)) {
-            for (var existingEvent in markedDates[date]!) {
-              if ((sesiPeminjaman == '3') ||
-                  (existingEvent['sesiPeminjaman'] == '1') ||
-                  (existingEvent['sesiPeminjaman'] == '2')) {
+            print('Events for date $date: ${markedDates[date]}');
+
+            bool hasSesi1 = markedDates[date]!
+                    .any((event) => event['sesi']?.trim() == 'Pagi') ||
+                sesiPeminjaman == '1';
+            bool hasSesi2 = markedDates[date]!
+                    .any((event) => event['sesi']?.trim() == 'Siang') ||
+                sesiPeminjaman == '2';
+
+            print('date: $date, hasSesi1: $hasSesi1, hasSesi2: $hasSesi2');
+
+            if ((sesiPeminjaman == '3') || (hasSesi1 && hasSesi2)) {
+              for (var existingEvent in markedDates[date]!) {
                 existingEvent['color'] = const Color.fromRGBO(239, 68, 68, 1);
-                existingEvent['sesiDisplay'] = 'Full Sesi';
+                existingEvent['sesi'] = 'Full Sesi';
               }
+              color = const Color.fromRGBO(239, 68, 68, 1);
+              sesiDisplay = 'Full Sesi';
             }
+
             markedDates[date]!.add({
               'color': color,
               'nama_kegiatan': peminjaman.namaKegiatan,
