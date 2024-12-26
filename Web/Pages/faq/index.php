@@ -28,11 +28,13 @@
             [
                 "question" => "Bagaimana Cara Pengajuan Peminjaman Ruangan?",
                 "answer" => "<ol class='list-decimal list-inside'>
-                                <li>Memilih gedung yang akan dipinjam pada page home.</li>
-                                <li>Memilih ruangan dan pinjam.</li>
-                                <li>Mengisi form untuk peminjaman.</li>
-                                <li>Tekan tombol pinjam.</li>
-                                <li>Cek status peminjaman pada page riwayat.</li>
+                                <li>Melihat daftar gedung dan ruangan yang akan dipinjam pada 'Beranda'</li>
+                                <li>Perhatikan dengan seksama untuk pemilihan tanggal dengan melihat di 'Cek Ketersediaan'  apakah ruangan pada tanggal tersebut sudah disewa Ormawa lain.</li>
+                                <li>Pilih 'Peminjaman'.</li>
+                                <li>Mengisi data form untuk peminjaman.</li>
+                                <li>Tekan tombol Pinjam.</li>
+                                <li>Cek status peminjaman pada 'Riwayat'.</li>
+                                <li>Apabila peminjaman disetujui, Anda dapat melihat Ruangan Yang Dipinjam pada 'Beranda'.</li>
                             </ol>"
             ],
             [
@@ -40,8 +42,8 @@
                 "answer" => "Ya, batasan waktu peminjaman ditentukan berdasarkan peraturan yang berlaku."
             ],
             [
-                "question" => "Bagaimana Cara Mengganti Password?",
-                "answer" => "Anda dapat mengganti password melalui halaman profil pengguna."
+                "question" => "Bagaimana cara mengetahui ruangan yang sudah dipesan Ormawa lain?",
+                "answer" => "Anda bisa mengecek ketersediaan ruangan di 'Cek Ketersediaan', ruangan yang sudah dipesan pada tanggal tersebut akan berwarna sesuai keterangan sesi."
             ],
             [
                 "question" => "Apakah Ada Biaya Tambahan Selain Biaya Sewa Tempat?",
@@ -53,7 +55,7 @@
             ],
             [
                 "question" => "Bagaimana Saya Tahu Bahwa Peminjaman Saya Sudah Berhasil Dikonfirmasi?",
-                "answer" => "Anda akan menerima notifikasi atau konfirmasi pada menu home setelah peminjaman disetujui."
+                "answer" => "Anda bisa mengecek ketersediaan ruangan di Schedule Page, ruangan yang sudah dipesan pada tanggal tersebut akan berwarna sesuai keterangan sesi."
             ]
         ];
 

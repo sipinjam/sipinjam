@@ -6,7 +6,7 @@ import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
 import 'package:sipit_app/pages/dashboard/Schedule/schedule.dart';
 
 class AppConstants {
-  static const _host = "http://192.168.1.5:8000";
+  static const _host = "http://192.168.1.4:8000";
 
   static const apiUrl = "$_host/api";
   static const baseUrl = "$apiUrl/routes";

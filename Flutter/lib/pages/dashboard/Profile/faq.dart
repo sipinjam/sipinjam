@@ -16,7 +16,7 @@ class FaqPage extends StatelessWidget {
     Faq(
       question: 'Bagaimana Cara Pengajuan Peminjaman Ruangan?',
       answer:
-          '1. Memilih gedung yang akan dipinjam pada page home.\n2. Memilih ruangan dan pinjam.\n3. Mengisi form untuk peminjaman.\n4. Tekan tombol pinjam. \n5. Cek status peminjaman pada page riwayat.',
+          '1. Melihat daftar gedung dan ruangan yang akan dipinjam pada page Home.\n2. Perhatikan dengan seksama untuk pemilihan tanggal dengan melihat di page Schedule apakah ruangan pada tanggal tersebut sudah disewa Ormawa lain.\n3. Pilih page Peminjaman.\n4. Mengisi data form untuk peminjaman.\n5. Tekan tombol Pinjam. \n6. Cek status peminjaman pada page Riwayat. \n7. Apabila peminjaman disetujui, Anda dapat melihat Ruangan Yang Dipinjam pada page Home.',
     ),
     Faq(
       question: 'Apakah ada batasan waktu dalam peminjaman tempat?',
@@ -32,11 +32,11 @@ class FaqPage extends StatelessWidget {
     ),
     Faq(
       question: 'Bagaimana Saya Tahu Bahwa Peminjaman Saya Sudah Berhasil Dikonfirmasi?',
-      answer: 'Anda akan menerima notifikasi atau konfirmasi pada menu home setelah peminjaman disetujui.',
+      answer: 'Cek secara berkala di page Riwayat untuk mengetahui peminjaman Anda telat disetujui atau belum. Status "Proses" berarti permintaan peminjaman masih dalam tahap peninjauan. Status "Disetujui" berarti permintaan peminjaman Anda telah diterima dan akan ditampilkan di page Home.',
     ),
     Faq(
-      question: 'Bagaimana Cara Mengganti Password?',
-      answer: 'Anda dapat mengganti password melalui halaman profil pengguna.',
+      question: 'Bagaimana cara mengetahui ruangan yang sudah dipesan Ormawa lain?',
+      answer: 'Anda bisa mengecek ketersediaan ruangan di Schedule Page, ruangan yang sudah dipesan pada tanggal tersebut akan berwarna sesuai keterangan sesi.',
     ),
   ];
 
@@ -61,7 +61,10 @@ class FaqPage extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(faqs[index].answer),
+                child: Text(
+                faqs[index].answer,
+                textAlign: TextAlign.justify, // Menambahkan justify alignment
+              ),
               ),
             ],
           );

@@ -120,15 +120,15 @@ class ProfilePage extends StatelessWidget {
                             },
                           ),
                           const Divider(),
-                          ListTile(
-                            leading: const Icon(Icons.lock),
-                            title: const Text('EDIT PASSWORD'),
-                            trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                              Nav.push(context, UpdatePass());
-                            },
-                          ),
-                          const Divider(),
+                          // ListTile(
+                          //   leading: const Icon(Icons.lock),
+                          //   title: const Text('EDIT PASSWORD'),
+                          //   trailing: const Icon(Icons.arrow_forward_ios),
+                          //   onTap: () {
+                          //     Nav.push(context, UpdatePass());
+                          //   },
+                          // ),
+                          // const Divider(),
                           ListTile(
                             leading: const Icon(Icons.help_outline),
                             title: const Text('FAQ'),
