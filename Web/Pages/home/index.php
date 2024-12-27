@@ -115,26 +115,29 @@ function getCookies(name) {
 async function getPeminjaman() {
     const loggedInOrmawa = getCookies("id_ormawa");
     const loggedInUserId = getCookies("id_jenis_peminjam");
+    const today = new Date();
 
-        try {
-            const response = await fetch("http://localhost/sipinjamfix/sipinjam/api/peminjaman/");
-            const result = await response.json();
+    try {
+        const response = await fetch("http://localhost/sipinjamfix/sipinjam/api/peminjaman/");
+        const result = await response.json();
 
-            if (result.status === "success") {
-                let filteredData;
+        if (result.status === "success") {
+            let filteredData;
 
-                if (loggedInUserId === "1") {
-                    // Jika id_jenis_peminjam adalah 1, tampilkan semua data kecuali status "proses"
-                    filteredData = result.data.filter(item => item.nama_status.toLowerCase() == "proses" || item.nama_status.toLowerCase() == "disetujui")
-                    && itemDate > today;
-                } else {
-                    // Filter berdasarkan id_ormawa
-                    filteredData = result.data.filter(
-                        (item) => item.id_ormawa === parseInt(loggedInOrmawa)
-                    );
-                }
+            if (loggedInUserId === "1") {
+                filteredData = result.data.filter(item => {
+                    const tglPeminjaman = new Date(item.tgl_peminjaman);
+                    return (item.nama_status.toLowerCase() === "proses" || item.nama_status.toLowerCase() === "disetujui") 
+                        && tglPeminjaman > today;
+                });
+            } else {
+                filteredData = result.data.filter(item => {
+                    const tglPeminjaman = new Date(item.tgl_peminjaman);
+                    return item.id_ormawa === parseInt(loggedInOrmawa) && tglPeminjaman > today;
+                });
+            }
 
-                const peminjamanTable = document.getElementById("peminjamanTable");
+            const peminjamanTable = document.getElementById("peminjamanTable");
 
             if (filteredData.length === 0) {
                 peminjamanTable.innerHTML =
@@ -142,6 +145,7 @@ async function getPeminjaman() {
                     <td colspan="6" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td>
                     </tr>`;
             } else {
+                peminjamanTable.innerHTML = "";
                 filteredData.forEach(item => {
                     const row = document.createElement('tr');
                     row.className = 'bg-white hover:bg-gray-100';
@@ -174,7 +178,6 @@ async function getPeminjaman() {
                             sesiText = "Tidak diketahui";
                     }
 
-
                     row.innerHTML = `
                         <td class="border px-4 py-2">${item.nama_ruangan}</td>
                         <td class="border px-4 py-2">${item.nama_kegiatan}</td>
@@ -192,6 +195,7 @@ async function getPeminjaman() {
         console.error('Terjadi kesalahan saat mengambil data:', error);
     }
 }
+
 
 
 // Panggil fungsi saat halaman dimuat
