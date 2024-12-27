@@ -109,45 +109,38 @@ function getCookies(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
 }
 
 async function getPeminjaman() {
-    const loggedInUserId = getCookies("id_peminjam"); // Ambil nama pengguna dari cookie
+    const loggedInOrmawa = getCookies("id_ormawa");
+    const loggedInUserId = getCookies("id_jenis_peminjam");
 
-    if (!loggedInUserId) {
-        console.error("Nama peminjam tidak ditemukan dalam cookie.");
-        return;
-    }
+        try {
+            const response = await fetch("http://localhost/sipinjamfix/sipinjam/api/peminjaman/");
+            const result = await response.json();
 
-    try {
-        const response = await fetch('http://localhost/sipinjamfix/sipinjam/api/peminjaman/');
-        const result = await response.json();
+            if (result.status === "success") {
+                let filteredData;
 
-        if (result.status === 'success') {
-            const peminjamanTable = document.getElementById('peminjamanTable');
-            peminjamanTable.innerHTML = '';
-
-            const data = result.data;
-
-            // Filter data based on logged-in user ID
-            const filteredData = data.filter(item => {
-                const itemDate = new Date(item.tgl_peminjaman);
-                const today = new Date();
-                // Directly check if 'id_peminjam' matches the logged-in user ID
-                if (item.id_peminjam) {
-                    const match = item.id_peminjam === parseInt(loggedInUserId) &&
-                        (item.nama_status.toLowerCase() === 'disetujui' || item.nama_status
-                        .toLowerCase() === 'proses') &&
-                        itemDate > today;
-                    return match;
+                if (loggedInUserId === "1") {
+                    // Jika id_jenis_peminjam adalah 1, tampilkan semua data kecuali status "proses"
+                    filteredData = result.data.filter(item => item.nama_status.toLowerCase() == "proses" || item.nama_status.toLowerCase() == "disetujui")
+                    && itemDate > today;
                 } else {
-                    return false; // Exclude items with missing id_peminjam
+                    // Filter berdasarkan id_ormawa
+                    filteredData = result.data.filter(
+                        (item) => item.id_ormawa === parseInt(loggedInOrmawa)
+                    );
                 }
-            });
 
-            if (result.data.length === 0) {
+                const peminjamanTable = document.getElementById("peminjamanTable");
+
+            if (filteredData.length === 0) {
                 peminjamanTable.innerHTML =
-                    '<tr><td colspan="6" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td></tr>';
+                    `<tr>
+                    <td colspan="6" class="text-center py-4">Tidak ada data peminjaman ditemukan.</td>
+                    </tr>`;
             } else {
                 filteredData.forEach(item => {
                     const row = document.createElement('tr');
@@ -191,11 +184,6 @@ async function getPeminjaman() {
                     `;
                     peminjamanTable.appendChild(row);
                 });
-
-                if (filteredData.length === 0) {
-                    peminjamanTable.innerHTML =
-                        '<tr><td colspan="6" class="text-center py-4">Tidak ada ruangan yang sedang dipinjam.</td></tr>';
-                }
             }
         } else {
             console.error('Gagal mengambil data peminjaman:', result.message);
