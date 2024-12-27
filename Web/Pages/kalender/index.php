@@ -205,15 +205,15 @@
         // api for peminjaman calendar
         let currentDate = new Date();
         let eventDays = [];
+        let allEvents = [];
 
-        function getColor(waktuMulai, waktuSelesai) {
-            if (waktuMulai === "08:00:00" && waktuSelesai === "12:00:00") {
-                return "rgb(241, 207, 77)";
-            } else if (waktuMulai === "12:00:00" && waktuSelesai === "16:00:00") {
-                return "rgb(74, 222, 128)";
-            } else if (waktuMulai === "08:00:00" && waktuSelesai === "16:00:00") {
-                return "rgb(239, 68, 68)";
-            }
+        function getColor(sesi) {
+            if(sesi === '1') {
+                return 'rgb(241, 207, 77)';
+            } else if (sesi === '2') {
+                return 'rgb(74, 222, 128)';
+            } else if (sesi === '3') {
+                return 'rgb(239, 68, 68)';}
         }
 
         async function fetchDataPeminjaman(roomName) {
@@ -224,26 +224,25 @@
                 console.log("API Response:", data); // Debugging data API
 
                 if (data.status === "success") {
-                    eventDays = data.data
+                    allEvents = data.data
                         .filter(item =>
                             item.nama_ruangan.toLowerCase() === roomName.toLowerCase() &&
                             item.nama_status !== "ditolak"
                         )
                         .map(item => ({
-                            day: new Date(item.tanggal_kegiatan).getDate() - 1,
-                            month: new Date(item.tanggal_kegiatan).getMonth() + 1,
-                            year: new Date(item.tanggal_kegiatan).getFullYear(),
+                            day: new Date(item.tgl_peminjaman).getDate() - 1,
+                            month: new Date(item.tgl_peminjaman).getMonth() + 1,
+                            year: new Date(item.tgl_peminjaman).getFullYear(),
                             nama_ruangan: item.nama_ruangan,
                             nama_kegiatan: item.nama_kegiatan,
                             status: item.nama_status,
-                            waktuMulai: item.waktu_mulai,
-                            waktuSelesai: item.waktu_selesai,
+                            sesi: item.sesi_peminjaman,
                             nama_ormawa: item.nama_ormawa,
                         }));
 
-                    console.log("Filtered Event Days:", eventDays); // Debugging hasil filter dan mapping
+                    console.log("Filtered Event Days:", allEvents); // Debugging hasil filter dan mapping
 
-                    updateCalendarColors(eventDays);
+                    updateCalendarColors(allEvents);
                 } else {
                     console.error("API Error:", data.message); // Menangani error API
                 }
@@ -290,6 +289,8 @@
                 calendarDays.appendChild(dayElement);
             }
 
+            updateCalendarColors(allEvents);
+
             // Tutup modal
             closeModal.addEventListener("click", () => {
                 eventModal.classList.add("hidden");
@@ -303,40 +304,53 @@
         }
 
         function updateCalendarColors(events) {
-            const calendarDays = document.getElementById('calendar-days').children;
-            const today = new Date();
+    const calendarDays = document.getElementById('calendar-days').children;
+    const today = new Date();
 
-            for (let dayElement of calendarDays) {
-                const dateString = dayElement.dataset.date;
+    for (let dayElement of calendarDays) {
+        const dateString = dayElement.dataset.date;
 
-                // Mencari event yang cocok berdasarkan tanggal
-                const event = events.find(event =>
-                    dateString === `${event.year}-${event.month.toString().padStart(2, '0')}-${event.day.toString().padStart(2, '0')}`
-                );
+        // Mencari event yang cocok berdasarkan tanggal
+        const eventsForDay = events.filter(event =>
+            dateString === `${event.year}-${event.month.toString().padStart(2, '0')}-${event.day.toString().padStart(2, '0')}`
+        );
 
-                if (event) {
-                    const eventDate = new Date(`${event.year}-${event.month}-${event.day}`)
-                    const color = eventDate < today ? "rgb(30, 64, 175)" : getColor(event.waktuMulai, event.waktuSelesai);
-                    dayElement.style.backgroundColor = color;
-
-                    dayElement.style.cursor = 'pointer';
-
-                    dayElement.addEventListener("click", () => {
-                        document.getElementById('event-modal').classList.remove('hidden');
-                        document.getElementById('event-title').textContent = event.nama_kegiatan;
-                        document.getElementById('event-details').textContent = `
-        Nama Ruangan: ${event.nama_ruangan}
-        Waktu: ${event.waktuMulai} - ${event.waktuSelesai}
-        Ormawa: ${event.nama_ormawa}
-        Status: ${event.status}
-        `
-                    });
-                } else {
-                    // Reset style jika tidak ada event
-                    dayElement.style.backgroundColor = "";
-                }
+        if (eventsForDay.length > 0) {
+            const eventDate = new Date(`${eventsForDay[0].year}-${eventsForDay[0].month}-${eventsForDay[0].day + 1}`);
+            let color;
+            
+            // Cek jika tanggal kegiatan sudah lewat
+            if (eventDate < today) {
+                color = "rgb(30, 64, 175)"; // Warna biru
+            } else if (eventsForDay.length > 1 || eventsForDay.some(event => event.sesi == '3')) {
+                // Cek jika ada lebih dari satu event atau terdapat sesi '3'
+                color = "rgb(239, 68, 68)"; // Warna merah
+            } else {
+                // Jika hanya ada satu event
+                color = getColor(eventsForDay[0].sesi);
             }
-        }
+
+            dayElement.style.backgroundColor = color;
+            dayElement.style.cursor = 'pointer';
+
+            // Bersihkan marker sebelumnya
+            dayElement.innerHTML = dayElement.innerHTML.split('<div')[0]; 
+
+            dayElement.addEventListener("click", () => {
+                document.getElementById('event-modal').classList.remove('hidden');
+                document.getElementById('event-title').textContent = eventsForDay.map(event => event.nama_kegiatan).join(', ');
+                document.getElementById('event-details').textContent = eventsForDay.map(event => `
+Nama Ruangan: ${event.nama_ruangan}
+Ormawa: ${event.nama_ormawa}
+Status: ${event.status}
+Sesi: ${event.sesi}`).join('\n\n');
+            });
+        } 
+    }
+}
+
+
+
 
         async function handleSearchRoom() {
             const selectedGedung = document.getElementById("buttonGedung").textContent.trim();
