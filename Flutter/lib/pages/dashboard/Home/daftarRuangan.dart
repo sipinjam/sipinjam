@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:sipit_app/config/app_constant.dart';
 import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
 import 'dart:convert';
+import '../../../config/nav.dart';
 import '../../../models/daftarRuanganModel.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class DaftarRuanganPage extends StatefulWidget {
 class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
   List<DaftarRuanganModel> _allRuanganData = [];
   List<DaftarRuanganModel> _filteredRuanganData = [];
+  String? _selectedRuangan;
   bool _isLoading = true;
   final int _page = 1;
   final int _pageSize = 10;
@@ -132,15 +134,32 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
             ),
             const SizedBox(height: 4),
             // Search bar
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Cari ruangan...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SearchAnchor.bar(
+                  barHintText: 'Cari Ruangan',
+                  suggestionsBuilder: (context, controller) {
+                    final String input = controller.value.text.toLowerCase();
+                    final suggestions = _filteredRuanganData.where((ruangan) {
+                      final label = ruangan.namaRuangan.toLowerCase();
+                      return label.contains(input);
+                    }).toList();
+                    return suggestions.map((filteredItem) {
+                      return ListTile(
+                        title: Text(filteredItem.namaRuangan),
+                        onTap: () {
+                          setState(() {
+                            _selectedRuangan = filteredItem.namaRuangan;
+                            print(_selectedRuangan);
+                            Nav.push(
+                                context,
+                                detailRuanganPage(
+                                    ruanganId: filteredItem.idRuangan));
+                          });
+                        },
+                      );
+                    }).toList();
+                  }),
             ),
             Expanded(
               child: _isLoading

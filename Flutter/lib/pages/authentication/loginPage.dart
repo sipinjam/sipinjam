@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 70,
+                    height: 40,
                   ),
                   DButtonBorder(
                     borderColor: Colors.white,

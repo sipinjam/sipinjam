@@ -1,11 +1,23 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/app_constant.dart';
+import 'package:sipit_app/config/nav.dart';
+import 'package:sipit_app/datasources/gedung_datasource.dart';
+import 'package:sipit_app/datasources/ruangan_datasource.dart';
+import 'package:sipit_app/models/daftarRuanganModel.dart';
+import 'package:sipit_app/models/gedungModel.dart';
+import 'package:sipit_app/models/ruanganModel.dart';
 import 'package:sipit_app/pages/dashboard/Home/daftarRuangan.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:retry/retry.dart';
 import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/models/peminjamanModel.dart';
 import 'package:intl/intl.dart';
+import 'package:sipit_app/pages/dashboard/Home/detailRuangan.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +28,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> gedungList = [];
+  final GedungDatasource _gedungDatasource = GedungDatasource();
+  List<GedungModel?> _gedungs = [];
+  String? gedungImage;
+  bool _isLoading = false;
+  final RuanganDatasource _ruanganDatasource = RuanganDatasource();
+  List<DaftarRuanganModel> _ruangans = [];
+  String? selectedRuangan;
   List<PeminjamanModel> bookingList = [];
   TextEditingController searchController = TextEditingController();
 
@@ -23,19 +42,38 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     fetchGedungs();
+    getRuanganAPI();
     fetchBookings();
   }
 
   Future<void> fetchGedungs() async {
-    final response =
-        await http.get(Uri.parse('${AppConstants.baseUrl}/gedung.php'));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['status'] == 'success') {
-        setState(() {
-          gedungList = List<Map<String, dynamic>>.from(data['data']);
-        });
-      }
+    try {
+      final gedungs = await _gedungDatasource.fetchGedungList();
+      setState(() {
+        _gedungs = gedungs;
+        gedungImage = _gedungs.first!.fotoGedung.isNotEmpty == true
+            ? "${AppConstants.apiUrl}${_gedungs.first!.fotoGedung.replaceAll("../../../api/", "/")}"
+            : null;
+        print(_gedungs);
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      print('Error: $e');
+    }
+  }
+
+  Future<void> getRuanganAPI() async {
+    try {
+      final ruangans = await _ruanganDatasource.fetchRuanganNonRequired();
+      setState(() {
+        _ruangans = ruangans;
+        print(_ruangans);
+      });
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -87,43 +125,6 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
-  Future<void> searchRooms(String keyword) async {
-    final response =
-        await http.get(Uri.parse('${AppConstants.baseUrl}/ruangan.php'));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['status'] == 'success') {
-        List<Map<String, dynamic>> ruanganList =
-            List<Map<String, dynamic>>.from(data['data']);
-
-        // Filter berdasarkan nama gedung atau nama ruangan
-        List<Map<String, dynamic>> filteredRooms = ruanganList.where((room) {
-          return room['nama_gedung']
-                  .toLowerCase()
-                  .contains(keyword.toLowerCase()) ||
-              room['nama_ruangan']
-                  .toLowerCase()
-                  .contains(keyword.toLowerCase());
-        }).toList();
-
-        if (filteredRooms.isNotEmpty) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  DaftarRuanganPage(buildingId: filteredRooms),
-            ),
-          );
-        } else {
-          // Jika tidak ada hasil
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tidak ditemukan hasil')),
-          );
-        }
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,62 +135,33 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Search Bar
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 2,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: TextField(
-                            controller: searchController,
-                            decoration: const InputDecoration(
-                              hintText: 'Cari ruangan',
-                              border: InputBorder.none,
-                            ),
-                            onSubmitted: (keyword) {
-                              // Ketika pengguna menekan Enter
-                              keyword = keyword.trim();
-                              if (keyword.isNotEmpty) {
-                                searchRooms(
-                                    keyword); // Memanggil fungsi searchRooms
-                                searchController
-                                    .clear(); // Menghapus teks setelah pencarian
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Masukkan kata kunci pencarian')),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.search, color: Colors.grey.shade600),
-                        onPressed: () {
-                          String keyword = searchController.text.trim();
-                          if (keyword.isNotEmpty) {
-                            searchRooms(
-                                keyword); // Memanggil fungsi searchRooms
-                            searchController
-                                .clear(); // Menghapus teks setelah pencarian
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text('Masukkan kata kunci pencarian')),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                SearchAnchor.bar(
+                    barHintText: 'Cari Ruangan',
+                    suggestionsBuilder: (context, controller) {
+                      final String input = controller.value.text.toLowerCase();
+                      final suggestions = _ruangans.where((ruangan) {
+                        final label = ruangan.namaRuangan.toLowerCase();
+                        return label.contains(input);
+                      }).toList();
+                      return suggestions.map((filteredItem) {
+                        return ListTile(
+                          title: Text(filteredItem.namaRuangan),
+                          onTap: () {
+                            setState(() {
+                              selectedRuangan = filteredItem.namaRuangan;
+                              print(selectedRuangan);
+                              Nav.push(
+                                  context,
+                                  detailRuanganPage(
+                                      ruanganId: filteredItem.idRuangan));
+                            });
+                          },
+                        );
+                      }).toList();
+                    }),
+
+                SizedBox(
+                  height: 10,
                 ),
 
                 // DAFTAR GEDUNG
@@ -197,15 +169,15 @@ class _HomePageState extends State<HomePage> {
                   height: 220, // Tinggi kontainer untuk daftar gedung
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: gedungList.length,
+                    itemCount: _gedungs.length,
                     itemBuilder: (context, index) {
-                      final gedung = gedungList[index];
+                      final gedung = _gedungs[index];
                       String imageUrl =
-                          '${AppConstants.apiUrl}/assets/gedung/${gedung['foto_gedung'].split('/').last}';
+                          '${AppConstants.apiUrl}${gedung!.fotoGedung.replaceAll("../../../api/", "/")}';
                       return GedungCard(
                         imageUrl: imageUrl,
-                        buildingName: gedung['nama_gedung'],
-                        buildingId: gedung['id_gedung'],
+                        buildingName: gedung.namaGedung,
+                        buildingId: gedung.idGedung,
                       );
                     },
                   ),
