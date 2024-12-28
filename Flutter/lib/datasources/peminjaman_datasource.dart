@@ -28,9 +28,12 @@ class PeminjamanDatasource {
           final date = DateTime.parse(peminjaman.tglPeminjaman.toString());
           final sesiPeminjaman = peminjaman.sesiPeminjaman;
           var sesiDisplay = '';
+          DateTime dayNow = DateTime.now();
           Color? color;
 
-          if (date.isBefore(DateTime.now())) {
+          print(dayNow);
+
+          if (date.isBefore(dayNow)) {
             color = const Color(0xff615EFC);
           } else if (sesiPeminjaman == '1') {
             color = const Color.fromRGBO(241, 207, 77, 1);
@@ -55,7 +58,9 @@ class PeminjamanDatasource {
 
             print('date: $date, hasSesi1: $hasSesi1, hasSesi2: $hasSesi2');
 
-            if ((sesiPeminjaman == '3') || (hasSesi1 && hasSesi2)) {
+            if (date.isBefore(dayNow)) {
+              color = const Color(0xff615EFC);
+            } else if ((sesiPeminjaman == '3') || (hasSesi1 && hasSesi2)) {
               for (var existingEvent in markedDates[date]!) {
                 existingEvent['color'] = const Color.fromRGBO(239, 68, 68, 1);
                 existingEvent['sesi'] = 'Full Sesi';
