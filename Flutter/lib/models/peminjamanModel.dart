@@ -82,4 +82,9 @@ class PeminjamanModel {
         "nama_ormawa": namaOrmawa,
         "nama_lengkap": namaLengkap,
       };
+
+  @override
+  String toString() {
+    return 'PeminjamanModel(idPeminjam: $idPeminjam, namaKegiatan: $namaKegiatan, namaRuangan: $namaRuangan)';
+  }
 }

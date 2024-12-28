@@ -43,7 +43,7 @@ class _HistoryState extends State<History> {
   }
 
   Future<void> _fetchHistoryData() async {
-    const baseUrl = '${AppConstants.baseUrl}/peminjaman.php/';
+    const baseUrl = '${AppConstants.baseUrl}/peminjaman.php';
     try {
       final peminjamData = await AppSession.getPeminjam();
       if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {
@@ -51,6 +51,7 @@ class _HistoryState extends State<History> {
       }
 
       final idPeminjamLogin = peminjamData.idOrmawa; // ID Ormawa yang login
+      print(idPeminjamLogin);
       final url =
           '$baseUrl?id_ormawa=$idPeminjamLogin'; // Filter berdasarkan ID Ormawa
 
@@ -101,7 +102,7 @@ class _HistoryState extends State<History> {
       ),
       backgroundColor: Colors.grey[200],
       body: _allHistoryData.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: Text('tidak ada kegiatan peminjaman'))
           : Column(
               children: [
                 Expanded(

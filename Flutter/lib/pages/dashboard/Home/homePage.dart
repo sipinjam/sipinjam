@@ -27,40 +27,55 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Map<String, dynamic>> gedungList = [];
   final GedungDatasource _gedungDatasource = GedungDatasource();
-  List<GedungModel?> _gedungs = [];
-  String? gedungImage;
-  bool _isLoading = false;
   final RuanganDatasource _ruanganDatasource = RuanganDatasource();
+
+  List<GedungModel?> _gedungs = [];
   List<DaftarRuanganModel> _ruangans = [];
-  String? selectedRuangan;
   List<PeminjamanModel> bookingList = [];
+  List<PeminjamanModel> _filteredPeminjaman = [];
+  String? gedungImage;
+  String? selectedRuangan;
+
   TextEditingController searchController = TextEditingController();
+  bool _isLoading = false;
+  bool _isDisposed = false;
+
+  late Future<List<PeminjamanModel>?> bookingsFuture;
 
   @override
   void initState() {
     super.initState();
+    bookingsFuture = fetchBookings();
     fetchGedungs();
     getRuanganAPI();
-    fetchBookings();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    searchController.dispose();
+    super.dispose();
   }
 
   Future<void> fetchGedungs() async {
     try {
       final gedungs = await _gedungDatasource.fetchGedungList();
-      setState(() {
-        _gedungs = gedungs;
-        gedungImage = _gedungs.first!.fotoGedung.isNotEmpty == true
-            ? "${AppConstants.apiUrl}${_gedungs.first!.fotoGedung.replaceAll("../../../api/", "/")}"
-            : null;
-        print(_gedungs);
-        _isLoading = false;
-      });
+      if (!_isDisposed) {
+        setState(() {
+          _gedungs = gedungs;
+          gedungImage = _gedungs.first!.fotoGedung.isNotEmpty == true
+              ? "${AppConstants.apiUrl}${_gedungs.first!.fotoGedung.replaceAll("../../../api/", "/")}"
+              : null;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (!_isDisposed) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       print('Error: $e');
     }
   }
@@ -68,83 +83,74 @@ class _HomePageState extends State<HomePage> {
   Future<void> getRuanganAPI() async {
     try {
       final ruangans = await _ruanganDatasource.fetchRuanganNonRequired();
-      setState(() {
-        _ruangans = ruangans;
-        print(_ruangans);
-      });
+      if (!_isDisposed) {
+        setState(() {
+          _ruangans = ruangans;
+        });
+      }
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> fetchBookings() async {
-  final baseUrl = '${AppConstants.baseUrl}/peminjaman.php'; // Pastikan URL benar
-  try {
-    // Ambil data peminjam dari sesi login
-    final peminjamData = await AppSession.getPeminjam();
-
-    if (peminjamData == null || peminjamData.idPeminjam == null) {
-      throw Exception('Data peminjam tidak ditemukan.');
-    }
-
-    final idPeminjamLogin = peminjamData.idPeminjam;
-
-    final response = await http.get(Uri.parse(baseUrl));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      if (data['status'] == 'success' && data['data'] != null) {
-        // Filter data berdasarkan id_peminjam
-        final filteredData = (data['data'] as List)
-            .where((item) => item['id_peminjam'] == idPeminjamLogin)
-            .map((item) => PeminjamanModel.fromJson(item))
-            .toList();
-
-        setState(() {
-          bookingList = filteredData;
-        });
-      } else {
-        throw Exception('Data tidak ditemukan atau tidak valid.');
+  Future<List<PeminjamanModel>?> fetchBookings() async {
+    final baseUrl = '${AppConstants.baseUrl}/peminjaman.php';
+    try {
+      final peminjamData = await AppSession.getPeminjam();
+      if (peminjamData == null || peminjamData.idPeminjam == null) {
+        throw Exception('Data peminjam tidak ditemukan.');
       }
-    } else {
-      throw Exception(
-          'Gagal memuat data. Kode status: ${response.statusCode}');
+
+      final idPeminjamLogin = peminjamData.idPeminjam;
+      print('id peminjam = $idPeminjamLogin');
+
+      final response = await http.get(Uri.parse(baseUrl));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> peminjamanData = data['data'];
+        print('peminjaman: $peminjamanData');
+        _filteredPeminjaman = peminjamanData
+            .where((item) {
+              final tglPeminjaman = DateTime.tryParse(item['tgl_peminjaman']);
+              return item['id_peminjam'] == idPeminjamLogin &&
+                  item['nama_status'] != 'ditolak' &&
+                  tglPeminjaman!.isBefore(DateTime.now());
+            })
+            .map((json) => PeminjamanModel.fromJson(json))
+            .toList();
+        print('filtered data: $_filteredPeminjaman');
+        bookingList = _filteredPeminjaman;
+        return bookingList;
+      } else {
+        throw Exception(
+            'Gagal memuat data. Kode status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
     }
-  } catch (e) {
-    print('Error fetching data: $e');
-    setState(() {
-      bookingList = [];
-    });
-  }
-}
-
-
-  List<PeminjamanModel> getFilteredBookings() {
-    DateTime now = DateTime.now();
-    return bookingList.where((PeminjamanModel booking) {
-      return (booking.namaStatus == 'proses' || booking.namaStatus == 'disetujui') &&
-          now.isBefore(booking.tglPeminjaman.add(const Duration(days: 1)));
-    }).toList();
+    return [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SearchAnchor.bar(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search bar
+                  SearchAnchor.bar(
                     barHintText: 'Cari Ruangan',
                     suggestionsBuilder: (context, controller) {
                       final String input = controller.value.text.toLowerCase();
                       final suggestions = _ruangans.where((ruangan) {
-                        final label = ruangan.namaRuangan.toLowerCase();
-                        return label.contains(input);
+                        return ruangan.namaRuangan
+                            .toLowerCase()
+                            .contains(input);
                       }).toList();
                       return suggestions.map((filteredItem) {
                         return ListTile(
@@ -152,7 +158,6 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             setState(() {
                               selectedRuangan = filteredItem.namaRuangan;
-                              print(selectedRuangan);
                               Nav.push(
                                   context,
                                   detailRuanganPage(
@@ -161,66 +166,76 @@ class _HomePageState extends State<HomePage> {
                           },
                         );
                       }).toList();
-                    }),
-
-                SizedBox(
-                  height: 10,
-                ),
-
-                // DAFTAR GEDUNG
-                SizedBox(
-                  height: 220, // Tinggi kontainer untuk daftar gedung
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _gedungs.length,
-                    itemBuilder: (context, index) {
-                      final gedung = _gedungs[index];
-                      String imageUrl =
-                          '${AppConstants.apiUrl}${gedung!.fotoGedung.replaceAll("../../../api/", "/")}';
-                      return GedungCard(
-                        imageUrl: imageUrl,
-                        buildingName: gedung.namaGedung,
-                        buildingId: gedung.idGedung,
-                      );
                     },
                   ),
-                ),
-                const SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
-                // DAFTAR RUANGAN
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "RUANGAN YANG DIPINJAM",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  // Daftar gedung
+                  SizedBox(
+                    height: 220,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _gedungs.length,
+                      itemBuilder: (context, index) {
+                        final gedung = _gedungs[index];
+                        String imageUrl =
+                            '${AppConstants.apiUrl}${gedung!.fotoGedung.replaceAll("../../../api/", "/")}';
+                        return GedungCard(
+                          imageUrl: imageUrl,
+                          buildingName: gedung.namaGedung,
+                          buildingId: gedung.idGedung,
+                        );
+                      },
                     ),
-                    const SizedBox(height: 10),
-                    // Kondisi untuk memeriksa apakah daftar peminjaman kosong
-                    if (getFilteredBookings().isEmpty)
-                      const Center(
-                        child: Text(
-                          "Tidak ada data peminjaman",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      )
-                    else
-                      for (final booking in getFilteredBookings())
-                        BookingCard(
-                          buildingName: booking.namaRuangan,
-                          activityName: booking.namaKegiatan,
-                          date: DateFormat('yyyy-MM-dd')
-                              .format(booking.tglPeminjaman),
-                          status: booking.namaStatus,
-                          sesi: booking.sesiPeminjaman,
-                        ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 10),
+
+                  Text(
+                    'Ruangan Yang Dipinjam',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // Daftar ruangan
+                  FutureBuilder<List<PeminjamanModel>?>(
+                    future: bookingsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(
+                            child: Text('Tidak ada peminjaman yang tersedia.'));
+                      } else {
+                        final bookings = snapshot.data!;
+                        print(bookings);
+                        return ListView.builder(
+                          padding: EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: bookings.length,
+                          itemBuilder: (context, index) {
+                            final booking = bookings[index];
+                            return BookingCard(
+                              buildingName: booking.namaRuangan,
+                              activityName: booking.namaKegiatan,
+                              date: DateFormat('yyyy-MM-dd')
+                                  .format(booking.tglPeminjaman),
+                              status: booking.namaStatus,
+                              sesi: booking.sesiPeminjaman,
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -269,7 +284,7 @@ class BookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
