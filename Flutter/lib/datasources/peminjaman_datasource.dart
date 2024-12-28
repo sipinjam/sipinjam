@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sipit_app/config/app_constant.dart';
+import 'package:sipit_app/config/app_session.dart';
 import 'package:sipit_app/models/peminjamanModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -150,6 +151,25 @@ class PeminjamanDatasource {
     } catch (e) {
       print('Error: $e');
       return false;
+    }
+  }
+
+  Future<List<PeminjamanModel>> getPeminjamanByIdOrmawa(int? idOrmawa) async {
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List ruanganData = data['data'];
+
+      // Filter data berdasarkan ID ormawa
+      final List<PeminjamanModel> _filteredByIdOrmawa = ruanganData
+          .where((peminjaman) => peminjaman['id_ormawa'] == idOrmawa)
+          .map<PeminjamanModel>((json) => PeminjamanModel.fromJson(json))
+          .toList();
+
+      return _filteredByIdOrmawa; // Kembalikan hasil filter
+    } else {
+      throw Exception('Failed to load data ruangan');
     }
   }
 }
