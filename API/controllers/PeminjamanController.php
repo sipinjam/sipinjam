@@ -197,81 +197,98 @@ class PeminjamansController
     }
 
     public function createPeminjaman()
-    {
-        // Mengambil data JSON dari request body
-        $inputData = json_decode(file_get_contents('php://input'), true);
+{
+    // Mengambil data JSON dari request body
+    $inputData = json_decode(file_get_contents('php://input'), true);
 
+    // Pastikan inputData adalah array
+    if (!is_array($inputData)) {
+        response('error', 'Input data harus berupa array', null, 400);
+        return;
+    }
+
+    $results = []; // Array untuk menyimpan hasil peminjaman
+    $errors = []; // Array untuk menyimpan kesalahan
+
+    foreach ($inputData as $data) {
         // Update required fields to remove 'id_peminjam'
         $requiredFields = ['id_kegiatan', 'id_ruangan', 'id_status', 'keterangan', 'tgl_peminjaman', 'sesi_peminjaman'];
-        $missingFields = array_diff($requiredFields, array_keys($inputData));
+        $missingFields = array_diff($requiredFields, array_keys($data));
         if (!empty($missingFields)) {
-            response('error', 'Missing parameters: ' . implode(', ', $missingFields), null, 400);
-            return;
+            $errors[] = 'Missing parameters for one of the entries: ' . implode(', ', $missingFields);
+            continue; // Lanjutkan ke peminjaman berikutnya
         }
 
         // Check if kegiatan exists
         $kegiatanQuery = "SELECT * FROM kegiatan WHERE id_kegiatan = ?";
         $kegiatanStmt = $this->conn->prepare($kegiatanQuery);
-        $kegiatanStmt->execute([$inputData['id_kegiatan']]);
+        $kegiatanStmt->execute([$data['id_kegiatan']]);
         $kegiatan = $kegiatanStmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$kegiatan) {
-            response('error', 'Kegiatan tidak ditemukan', null, 400);
-            return;
+            $errors[] = 'Kegiatan tidak ditemukan untuk ID: ' . $data['id_kegiatan'];
+            continue;
         }
 
         // Check if ruangan exists
         $ruanganQuery = "SELECT * FROM ruangan WHERE id_ruangan = ?";
         $ruanganStmt = $this->conn->prepare($ruanganQuery);
-        $ruanganStmt->execute([$inputData['id_ruangan']]);
+        $ruanganStmt->execute([$data['id_ruangan']]);
         $ruangan = $ruanganStmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$ruangan) {
-            response('error', 'Ruangan tidak ditemukan', null, 400);
-            return;
+            $errors[] = 'Ruangan tidak ditemukan untuk ID: ' . $data['id_ruangan'];
+            continue;
         }
 
         // Check if status exists
         $statusQuery = "SELECT * FROM status WHERE id_status = ?";
         $statusStmt = $this->conn->prepare($statusQuery);
-        $statusStmt->execute([$inputData['id_status']]);
+        $statusStmt->execute([$data['id_status']]);
         $status = $statusStmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$status) {
-            response('error', 'Status tidak ditemukan', null, 400);
-            return;
+            $errors[] = 'Status tidak ditemukan untuk ID: ' . $data['id_status'];
+            continue;
         }
 
         // Validate date format
-        $tgl_peminjaman = date('Y-m-d', strtotime($inputData['tgl_peminjaman']));
+        $tgl_peminjaman = date('Y-m-d', strtotime($data['tgl_peminjaman']));
         if (!preg_match('/\d{4}-\d{2}-\d{2}/', $tgl_peminjaman)) {
-            response('error', 'Format tanggal peminjaman salah', null, 400);
-            return;
+            $errors[] = 'Format tanggal peminjaman salah untuk ID: ' . $data['id_kegiatan'];
+            continue;
         }
 
         // Validate session
-        $sesi_peminjaman = $inputData['sesi_peminjaman'];
+        $sesi_peminjaman = $data['sesi_peminjaman'];
         if (!in_array($sesi_peminjaman, [1, 2, 3])) {
-            response('error', 'Sesi peminjaman salah', null, 400);
-            return;
+            $errors[] = 'Sesi peminjaman salah untuk ID: ' . $data['id_kegiatan'];
+            continue;
         }
 
-        // Insert into peminjaman table without id_peminjam
+        // Insert into peminjaman table
         $peminjamanQuery = "INSERT INTO peminjaman (id_kegiatan, id_ruangan, id_status, keterangan, tgl_peminjaman, sesi_peminjaman) 
-                        VALUES (?, ?, ?, ?, ?, ?)";
+                            VALUES (?, ?, ?, ?, ?, ?)";
         $peminjamanStmt = $this->conn->prepare($peminjamanQuery);
 
-        if ($peminjamanStmt->execute([$inputData['id_kegiatan'], $inputData['id_ruangan'], $inputData['id_status'], $inputData['keterangan'], $tgl_peminjaman, $sesi_peminjaman])) {
+        if ($peminjamanStmt->execute([$data['id_kegiatan'], $data['id_ruangan'], $data['id_status'], $data['keterangan'], $tgl_peminjaman, $sesi_peminjaman])) {
             $new_id = $this->conn->lastInsertId();
-            $result_stmt = $this->conn->prepare("SELECT * FROM peminjaman WHERE id_peminjaman = ?");
+            $result_stmt = $this->conn-> prepare("SELECT * FROM peminjaman WHERE id_peminjaman = ?");
             $result_stmt->execute([$new_id]);
             $new_data = $result_stmt->fetch(PDO::FETCH_OBJ);
-
-            response('success', 'Peminjaman Added Successfully', $new_data, statusCode: 201);
+            $results[] = $new_data; // Simpan data peminjaman yang berhasil
         } else {
-            response('error', 'Unable to create peminjaman', null, 400);
+            $errors[] = 'Unable to create peminjaman for ID: ' . $data['id_kegiatan'];
         }
     }
+
+    // Mengembalikan respons
+    if (!empty($errors)) {
+        response('error', 'Beberapa peminjaman gagal: ' . implode('; ', $errors), null, 400);
+    } else {
+        response('success', 'Semua peminjaman berhasil ditambahkan', $results, statusCode: 201);
+    }
+}
     public function editPeminjaman($id_peminjaman)
     {
         $inputData = json_decode(file_get_contents('php://input'), true);
