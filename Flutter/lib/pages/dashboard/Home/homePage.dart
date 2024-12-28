@@ -78,49 +78,52 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchBookings() async {
-    const baseUrl = '${AppConstants.baseUrl}/peminjaman.php/';
-    try {
-      final peminjamData = await AppSession.getPeminjam();
-      if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {
-        throw Exception('Data peminjam tidak ditemukan.');
-      }
+  final baseUrl = '${AppConstants.baseUrl}/peminjaman.php'; // Pastikan URL benar
+  try {
+    // Ambil data peminjam dari sesi login
+    final peminjamData = await AppSession.getPeminjam();
 
-      final idPeminjamLogin =
-          peminjamData.idPeminjam; // Nama peminjam yang login
-      final url =
-          '$baseUrl?id_peminjam=$idPeminjamLogin'; // Filter berdasarkan nama
+    if (peminjamData == null || peminjamData.idPeminjam == null) {
+      throw Exception('Data peminjam tidak ditemukan.');
+    }
 
-      final response = await http.get(Uri.parse(url));
+    final idPeminjamLogin = peminjamData.idPeminjam;
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+    final response = await http.get(Uri.parse(baseUrl));
 
-        // Filter data yang sesuai dengan nama peminjam yang login
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      if (data['status'] == 'success' && data['data'] != null) {
+        // Filter data berdasarkan id_peminjam
         final filteredData = (data['data'] as List)
-            .map((json) => PeminjamanModel.fromJson(json))
-            .where((item) => item.idPeminjam == idPeminjamLogin)
+            .where((item) => item['id_peminjam'] == idPeminjamLogin)
+            .map((item) => PeminjamanModel.fromJson(item))
             .toList();
 
         setState(() {
           bookingList = filteredData;
         });
       } else {
-        throw Exception(
-            'Gagal memuat data. Kode status: ${response.statusCode}');
+        throw Exception('Data tidak ditemukan atau tidak valid.');
       }
-    } catch (e) {
-      print('Error fetching data: $e');
-      setState(() {
-        bookingList = [];
-      });
+    } else {
+      throw Exception(
+          'Gagal memuat data. Kode status: ${response.statusCode}');
     }
+  } catch (e) {
+    print('Error fetching data: $e');
+    setState(() {
+      bookingList = [];
+    });
   }
+}
+
 
   List<PeminjamanModel> getFilteredBookings() {
     DateTime now = DateTime.now();
     return bookingList.where((PeminjamanModel booking) {
-      return (booking.namaStatus == 'proses' ||
-              booking.namaStatus == 'disetujui') &&
+      return (booking.namaStatus == 'proses' || booking.namaStatus == 'disetujui') &&
           now.isBefore(booking.tglPeminjaman.add(const Duration(days: 1)));
     }).toList();
   }
