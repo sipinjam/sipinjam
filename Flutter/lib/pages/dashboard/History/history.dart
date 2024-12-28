@@ -4,7 +4,10 @@ import 'package:sipit_app/config/app_constant.dart';
 import 'dart:convert';
 
 import 'package:sipit_app/config/app_session.dart';
+import 'package:sipit_app/datasources/peminjam_datasource.dart';
+import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:sipit_app/models/historyModel.dart';
+import 'package:sipit_app/models/peminjamanModel.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -33,8 +36,10 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   int _page = 1;
-  List<HistoryModel> _allHistoryData = [];
+  // List<HistoryModel> _allHistoryData = [];
   final int _pageSize = 10;
+  final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
+  List<PeminjamanModel?> _peminjamanData = [];
 
   @override
   void initState() {
@@ -43,54 +48,23 @@ class _HistoryState extends State<History> {
   }
 
   Future<void> _fetchHistoryData() async {
-    const baseUrl = '${AppConstants.baseUrl}/peminjaman.php';
     try {
-      final peminjamData = await AppSession.getPeminjam();
-      if (peminjamData == null || peminjamData.namaPeminjam.isEmpty) {
-        throw Exception('Data peminjam tidak ditemukan.');
-      }
-
-      final idPeminjamLogin = peminjamData.idOrmawa; // ID Ormawa yang login
-      print(idPeminjamLogin);
-      final url =
-          '$baseUrl?id_ormawa=$idPeminjamLogin'; // Filter berdasarkan ID Ormawa
-
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print('Response JSON: $data'); // Debugging
-
-        // Pastikan data['data'] adalah List
-        if (data['data'] is List) {
-          // Mengonversi setiap item dalam list menjadi PeminjamanModel
-          final List<HistoryModel> peminjamanList = (data['data'] as List)
-              .map((json) => HistoryModel.fromJson(json))
-              .toList();
-
-          setState(() {
-            _allHistoryData = peminjamanList; // Simpan dalam list
-          });
-        } else {
-          throw Exception('Data tidak dalam format yang diharapkan.');
-        }
-      } else {
-        throw Exception(
-            'Gagal memuat data. Kode status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
+      final user = await AppSession.getPeminjam();
+      final history =
+          await _peminjamanDatasource.getPeminjamanByIdOrmawa(user!.idOrmawa);
       setState(() {
-        _allHistoryData = [];
+        _peminjamanData = history;
       });
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final totalPages = (_allHistoryData.length / _pageSize).ceil();
+    final totalPages = (_peminjamanData.length / _pageSize).ceil();
     final displayedData =
-        _allHistoryData.skip((_page - 1) * _pageSize).take(_pageSize).toList();
+        _peminjamanData.skip((_page - 1) * _pageSize).take(_pageSize).toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -101,7 +75,7 @@ class _HistoryState extends State<History> {
         elevation: 0,
       ),
       backgroundColor: Colors.grey[200],
-      body: _allHistoryData.isEmpty
+      body: _peminjamanData.isEmpty
           ? const Center(child: Text('tidak ada kegiatan peminjaman'))
           : Column(
               children: [
@@ -112,7 +86,7 @@ class _HistoryState extends State<History> {
                     itemBuilder: (context, index) {
                       final item = displayedData[index];
                       return _buildHistoryCard(
-                        item.namaStatus,
+                        item!.namaStatus,
                         _getStatusColor(item.namaStatus),
                         item.tglPeminjaman.toLocal().toString().split(' ')[0],
                         item.namaKegiatan,

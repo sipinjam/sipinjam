@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sipit_app/config/app_constant.dart';
 import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/datasources/gedung_datasource.dart';
+import 'package:sipit_app/datasources/peminjaman_datasource.dart';
 import 'package:sipit_app/datasources/ruangan_datasource.dart';
 import 'package:sipit_app/models/daftarRuanganModel.dart';
 import 'package:sipit_app/models/gedungModel.dart';
@@ -29,32 +30,26 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GedungDatasource _gedungDatasource = GedungDatasource();
   final RuanganDatasource _ruanganDatasource = RuanganDatasource();
+  final PeminjamanDatasource _peminjamanDatasource = PeminjamanDatasource();
 
-  List<GedungModel?> _gedungs = [];
+  List<GedungModel> _gedungs = [];
   List<DaftarRuanganModel> _ruangans = [];
-  List<PeminjamanModel> bookingList = [];
-  List<PeminjamanModel> _filteredPeminjaman = [];
-  String? gedungImage;
+  Future<List<PeminjamanModel>>? bookingsFuture;
   String? selectedRuangan;
 
-  TextEditingController searchController = TextEditingController();
-  bool _isLoading = false;
   bool _isDisposed = false;
-
-  late Future<List<PeminjamanModel>?> bookingsFuture;
 
   @override
   void initState() {
     super.initState();
-    bookingsFuture = fetchBookings();
     fetchGedungs();
-    getRuanganAPI();
+    fetchRuanganAPI();
+    bookingsFuture = _fetchBookings();
   }
 
   @override
   void dispose() {
     _isDisposed = true;
-    searchController.dispose();
     super.dispose();
   }
 
@@ -64,23 +59,14 @@ class _HomePageState extends State<HomePage> {
       if (!_isDisposed) {
         setState(() {
           _gedungs = gedungs;
-          gedungImage = _gedungs.first!.fotoGedung.isNotEmpty == true
-              ? "${AppConstants.apiUrl}${_gedungs.first!.fotoGedung.replaceAll("../../../api/", "/")}"
-              : null;
-          _isLoading = false;
         });
       }
     } catch (e) {
-      if (!_isDisposed) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      print('Error: $e');
+      debugPrint('Error fetching gedungs: $e');
     }
   }
 
-  Future<void> getRuanganAPI() async {
+  Future<void> fetchRuanganAPI() async {
     try {
       final ruangans = await _ruanganDatasource.fetchRuanganNonRequired();
       if (!_isDisposed) {
@@ -89,46 +75,31 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e) {
-      print(e);
+      debugPrint('Error fetching ruangans: $e');
     }
   }
 
-  Future<List<PeminjamanModel>?> fetchBookings() async {
-    final baseUrl = '${AppConstants.baseUrl}/peminjaman.php';
+  Future<List<PeminjamanModel>> _fetchBookings() async {
     try {
-      final peminjamData = await AppSession.getPeminjam();
-      if (peminjamData == null || peminjamData.idPeminjam == null) {
-        throw Exception('Data peminjam tidak ditemukan.');
-      }
+      final user = await AppSession.getPeminjam();
+      if (user == null) throw Exception('User not found');
 
-      final idPeminjamLogin = peminjamData.idPeminjam;
-      print('id peminjam = $idPeminjamLogin');
+      final bookings =
+          await _peminjamanDatasource.getPeminjamanByIdOrmawa(user.idOrmawa);
+      final today = DateTime.now();
 
-      final response = await http.get(Uri.parse(baseUrl));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final List<dynamic> peminjamanData = data['data'];
-        print('peminjaman: $peminjamanData');
-        _filteredPeminjaman = peminjamanData
-            .where((item) {
-              final tglPeminjaman = DateTime.tryParse(item['tgl_peminjaman']);
-              return item['id_peminjam'] == idPeminjamLogin &&
-                  item['nama_status'] != 'ditolak' &&
-                  tglPeminjaman!.isBefore(DateTime.now());
-            })
-            .map((json) => PeminjamanModel.fromJson(json))
-            .toList();
-        print('filtered data: $_filteredPeminjaman');
-        bookingList = _filteredPeminjaman;
-        return bookingList;
-      } else {
-        throw Exception(
-            'Gagal memuat data. Kode status: ${response.statusCode}');
-      }
+      return bookings.where((booking) {
+        final tglPeminjaman = DateTime.tryParse('${booking.tglPeminjaman}');
+        return booking.namaStatus != 'ditolak' &&
+            tglPeminjaman != null &&
+            tglPeminjaman.isAfter(today);
+      })
+          // .map((json) => PeminjamanModel.fromJson(json))
+          .toList();
     } catch (e) {
-      print('Error fetching data: $e');
+      debugPrint('Error fetching bookings: $e');
+      return [];
     }
-    return [];
   }
 
   @override
@@ -179,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         final gedung = _gedungs[index];
                         String imageUrl =
-                            '${AppConstants.apiUrl}${gedung!.fotoGedung.replaceAll("../../../api/", "/")}';
+                            '${AppConstants.apiUrl}${gedung.fotoGedung.replaceAll("../../../api/", "/")}';
                         return GedungCard(
                           imageUrl: imageUrl,
                           buildingName: gedung.namaGedung,
