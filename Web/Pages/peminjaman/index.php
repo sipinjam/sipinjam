@@ -50,7 +50,7 @@
                 <div class="space-y-4 px-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Nama Kegiatan</label>
-                        <input id="nama_kegiatan_input" type="text" placeholder="Masukkan Nama Kegiatan"
+                        <input id="nama_kegiatan_tambah" type="text" placeholder="Masukkan Nama Kegiatan"
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
                     </div>
                     <div>
@@ -227,7 +227,7 @@
         // Panggil fungsi untuk mengisi form saat halaman dimuat
         document.addEventListener('DOMContentLoaded', fillForm);
         document.getElementById('submitKegiatan').addEventListener('click', async () => {
-            const namaKegiatan = document.getElementById('nama_kegiatan_input').value;
+            const namaKegiatan = document.getElementById('nama_kegiatan_tambah').value;
             const temaKegiatan = document.getElementById('tema_kegiatan_input').value;
             const daftarPanitiaInput = document.getElementById('daftar_panitia_input');
             const idOrmawa = getCookie('id_ormawa'); // Ambil id_ormawa dari cookie
