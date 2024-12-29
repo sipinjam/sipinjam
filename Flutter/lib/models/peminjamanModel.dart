@@ -47,21 +47,21 @@ class PeminjamanModel {
 
   factory PeminjamanModel.fromJson(Map<String, dynamic> json) =>
       PeminjamanModel(
-        idPeminjaman: json["id_peminjaman"],
-        namaKegiatan: json["nama_kegiatan"],
-        temaKegiatan: json["tema_kegiatan"],
-        idPeminjam: json["id_peminjam"],
-        idOrmawa: json["id_ormawa"],
+        idPeminjaman: json["id_peminjaman"] ?? 0,
+        namaKegiatan: json["nama_kegiatan"] ?? '',
+        temaKegiatan: json["tema_kegiatan"] ?? '',
+        idPeminjam: json["id_peminjam"] ?? 0,
+        idOrmawa: json["id_ormawa"] ?? 0,
         tglPeminjaman: DateTime.parse(json["tgl_peminjaman"]),
-        sesiPeminjaman: json["sesi_peminjaman"],
-        daftarPanitia: json["daftar_panitia"],
-        namaRuangan: json["nama_ruangan"],
-        namaKetuaOrmawa: json["nama_ketua_ormawa"],
-        namaKetuaPelaksana: json["nama_ketua_pelaksana"],
-        namaStatus: json["nama_status"],
-        keterangan: json["keterangan"],
-        namaOrmawa: json["nama_ormawa"],
-        namaLengkap: json["nama_lengkap"],
+        sesiPeminjaman: json["sesi_peminjaman"] ?? '',
+        daftarPanitia: json["daftar_panitia"] ?? '',
+        namaRuangan: json["nama_ruangan"] ?? '',
+        namaKetuaOrmawa: json["nama_ketua_ormawa"] ?? '',
+        namaKetuaPelaksana: json["nama_ketua_pelaksana"] ?? '',
+        namaStatus: json["nama_status"] ?? '',
+        keterangan: json["keterangan"] ?? '',
+        namaOrmawa: json["nama_ormawa"] ?? '',
+        namaLengkap: json["nama_lengkap"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

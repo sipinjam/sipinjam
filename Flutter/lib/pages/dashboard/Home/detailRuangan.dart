@@ -92,7 +92,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Container(
+                  : SizedBox(
                       width: MediaQuery.sizeOf(context).width,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +103,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                               height: 400,
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(14)),
+                                    const BorderRadius.all(Radius.circular(14)),
                                 image: DecorationImage(
                                     image: NetworkImage(selectedImage!),
                                     fit: BoxFit.cover),
@@ -112,14 +112,14 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                   alignment: Alignment.bottomCenter,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.only(left: 16),
+                                      padding: const EdgeInsets.only(left: 16),
                                       width: MediaQuery.sizeOf(context).width,
                                       height: 100,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.vertical(
                                             bottom: Radius.circular(14)),
-                                        color: const Color.fromARGB(
-                                            87, 158, 158, 158),
+                                        color:
+                                            Color.fromARGB(87, 158, 158, 158),
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
@@ -235,7 +235,7 @@ class _detailRuanganPageState extends State<detailRuanganPage> {
                                             width:
                                                 foto == selectedImage ? 2 : 0,
                                           ),
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(10)),
                                           image: DecorationImage(
                                               image: NetworkImage(foto),

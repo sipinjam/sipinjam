@@ -172,7 +172,7 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                           ),
                         )
                       : Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: GridView.builder(
                             itemCount: _filteredRuanganData.length,
                             gridDelegate:
@@ -201,8 +201,9 @@ class _DaftarRuanganPageState extends State<DaftarRuanganPage> {
                                     children: [
                                       Expanded(
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(10)),
+                                          borderRadius:
+                                              const BorderRadius.vertical(
+                                                  top: Radius.circular(10)),
                                           child: Image.network(
                                             ruangan.fotoRuangan!.isNotEmpty
                                                 ? ruangan.fotoRuangan!.first

@@ -95,41 +95,68 @@ class PeminjamanDatasource {
     }
   }
 
+  // Future<PeminjamanModel?> postPeminjaman(
+  //   int? idKegiatan,
+  //   int? idRuangan,
+  //   DateTime tglPeminjaman,
+  //   String keterangan,
+  //   String sesi,
+  //   int idStatus,
+  // ) async {
+  //   try {
+  //     final response = await http.post(Uri.parse(url),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: jsonEncode({
+  //           "id_ruangan": idRuangan,
+  //           "id_kegiatan": idKegiatan,
+  //           "id_status": idStatus,
+  //           "tgl_peminjaman": tglPeminjaman.toIso8601String(),
+  //           "sesi_peminjaman": sesi,
+  //           "keterangan": keterangan
+  //         }));
+
+  //     print('Response Status: ${response.statusCode}');
+  //     print(
+  //         'Response Body: ${response.body}'); // Log the response body for debugging
+
+  //     if (response.statusCode == 200) {
+  //       final responseData = jsonDecode(response.body);
+  //       return PeminjamanModel.fromJson(responseData);
+  //     } else {
+  //       print('Error: ${response.statusCode}');
+  //       print('Response: ${response.body}'); // Detailed error response
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  //   return null;
+  // }
+
   Future<PeminjamanModel?> postPeminjaman(
-    int? idKegiatan,
-    int? idRuangan,
-    DateTime tglPeminjaman,
-    String keterangan,
-    String sesi,
-    int idStatus,
-  ) async {
+      List<Map<String, dynamic>> peminjaman) async {
     try {
-      final response = await http.post(Uri.parse(url),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: jsonEncode({
-            "id_ruangan": idRuangan,
-            "id_kegiatan": idKegiatan,
-            "id_status": idStatus,
-            "tgl_peminjaman": tglPeminjaman.toIso8601String(),
-            "sesi_peminjaman": sesi,
-            "keterangan": keterangan
-          }));
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(peminjaman),
+      );
 
-      print('Response Status: ${response.statusCode}');
-      print(
-          'Response Body: ${response.body}'); // Log the response body for debugging
+      print('response status: ${response.statusCode}');
+      print('response body: ${response.body}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
         return PeminjamanModel.fromJson(responseData);
       } else {
         print('Error: ${response.statusCode}');
-        print('Response: ${response.body}'); // Detailed error response
+        print('response: ${response.body}');
       }
     } catch (e) {
-      print('Error: $e');
+      print(e);
     }
     return null;
   }
@@ -162,12 +189,12 @@ class PeminjamanDatasource {
       final List ruanganData = data['data'];
 
       // Filter data berdasarkan ID ormawa
-      final List<PeminjamanModel> _filteredByIdOrmawa = ruanganData
+      final List<PeminjamanModel> filteredByIdOrmawa = ruanganData
           .where((peminjaman) => peminjaman['id_ormawa'] == idOrmawa)
           .map<PeminjamanModel>((json) => PeminjamanModel.fromJson(json))
           .toList();
 
-      return _filteredByIdOrmawa; // Kembalikan hasil filter
+      return filteredByIdOrmawa; // Kembalikan hasil filter
     } else {
       throw Exception('Failed to load data ruangan');
     }

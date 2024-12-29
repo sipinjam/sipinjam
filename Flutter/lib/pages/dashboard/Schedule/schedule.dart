@@ -91,7 +91,7 @@ class _SchedulePageState extends State<SchedulePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(0, 30, 0, 10),
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
               child: const Text(
                 'Schedule',
                 style: TextStyle(

@@ -50,7 +50,7 @@ class ProfilePage extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.grey[200],
             body: Container(
-              padding: EdgeInsets.fromLTRB(10, 40, 10, 20),
+              padding: const EdgeInsets.fromLTRB(10, 40, 10, 20),
               child: Column(
                 children: [
                   // Bagian atas (Info profil)
@@ -96,7 +96,7 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Card(
@@ -172,4 +172,3 @@ void main() {
     home: ProfilePage(),
   ));
 }
-
