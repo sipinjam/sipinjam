@@ -438,7 +438,7 @@
             }
 
             // Nonaktifkan tombol sesi 3 jika sesi 1 atau 2 sudah ada
-            if (sesi1Available || sesi2Available) {
+            if (!sesi1Available || !sesi2Available) {
                 button3.disabled = true;
                 button3.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
@@ -512,6 +512,7 @@
                 if (response.ok) {
                     alert('Peminjaman berhasil dibuat!');
                     // Reset form or redirect as needed
+                    window.location.href = '/sipinjamfix/sipinjam/web/pages/history';
                 } else {
                     const errorData = await response.json();
                     alert('Gagal membuat peminjaman: ' + errorData.message);
