@@ -363,7 +363,7 @@
                             if (selectedSesi === '3') {
                                 const sesi1Available = await checkRuanganAvailability(tglPeminjaman, 1, idRuangan);
                                 const sesi2Available = await checkRuanganAvailability(tglPeminjaman, 2, idRuangan);
-                                if (sesi1Available || sesi2Available) {
+                                if (!sesi1Available || !sesi2Available) {
                                     alert('Sesi 3 tidak dapat dipilih karena sesi 1 atau 2 sudah ada.');
                                     return; // Hentikan eksekusi jika sesi 1 atau 2 sudah ada
                                 }
