@@ -12,6 +12,38 @@
     <title>SIPINJAM - Riwayat</title>
 </head>
 
+<style>
+/* Gaya untuk tombol pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background-color: #4A90E2;
+    /* Warna latar belakang */
+    color: white;
+    /* Warna teks */
+    border: none;
+    /* Hilangkan border */
+    border-radius: 4px;
+    /* Membuat sudut membulat */
+    padding: 5px 10px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+/* Gaya untuk tombol pagination aktif */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #2A70C2;
+    /* Warna untuk tombol aktif */
+    font-weight: bold;
+}
+
+/* Gaya untuk tombol pagination saat hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #357ABD;
+    /* Warna saat dihover */
+    color: white;
+}
+</style>
+
+
 <body>
     <!-- Header -->
     <?php include '../../components/header.php' ?>
@@ -131,7 +163,8 @@
                     order: [
                         [2, 'desc']
                     ], // Urutkan berdasarkan tanggal
-                    pageLength: 10
+                    pageLength: 10,
+                    searching: false
                 });
             } else {
                 console.error("Gagal mendapatkan data peminjaman:", result.message);
