@@ -319,7 +319,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Tanggal Peminjaman</label>
-                <input id="tgl_peminjaman_${formCount}" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                <input id="tgl_peminjaman_${formCount}" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm" min="${getTodayDate()}>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 my-2">Sesi Peminjaman</label>
@@ -345,10 +345,27 @@
         </div>
     `;
             document.getElementById('formContainer').insertAdjacentHTML('beforeend', formHTML);
+            addSessionButtonListeners(formCount);
             getRuangan(formCount); // Panggil fungsi getRuangan untuk form yang baru ditambahkan
-
             // Tambahkan event listener untuk tombol sesi
-            document.querySelectorAll(`.time-button`).forEach(button => {
+
+            // Event listener untuk input tanggal
+            document.getElementById(`tgl_peminjaman_${formCount}`).addEventListener('change', () => {
+                const tglPeminjaman = document.getElementById(`tgl_peminjaman_${formCount}`).value;
+                const inputRuangan = document.getElementById(`ruangan_${formCount}`);
+                const idRuangan = inputRuangan.getAttribute('data-id');
+                if (tglPeminjaman && idRuangan) {
+                    disableUnavailableSessions(tglPeminjaman, idRuangan,formCount);
+                }
+            });
+
+        }
+
+        function addSessionButtonListeners(formCount) {
+            const formElement = document.querySelector(`.form-item:nth-child(${formCount})`); // Ambil elemen form berdasarkan formCount
+            const buttons = formElement.querySelectorAll('.time-button'); // Cari tombol hanya di dalam form ini
+
+            buttons.forEach(button => {
                 button.addEventListener('click', async () => {
                     const selectedSesi = button.getAttribute('data-sesi');
                     const tglPeminjaman = document.getElementById(`tgl_peminjaman_${formCount}`).value;
@@ -359,7 +376,20 @@
                         // Cek ketersediaan untuk sesi yang dipilih
                         const isAvailable = await checkRuanganAvailability(tglPeminjaman, selectedSesi, idRuangan);
                         if (isAvailable) {
-                            // Jika sesi 1 atau 2 sudah ada, nonaktifkan sesi 3
+                            // Nonaktifkan semua tombol sesi lainnya hanya dalam form ini
+                            buttons.forEach(btn => {
+                                btn.classList.remove('bg-blue-500', 'text-white');
+                                btn.disabled = false; // Aktifkan semua tombol dalam form ini
+                            });
+
+                            // Tandai tombol yang dipilih
+                            buttons.forEach(btn => {
+                                button.classList.add('bg-blue-500', 'text-white');
+                                button.classList.remove('bg-blue-100', 'text-blue-500');
+                            });
+
+
+                            // Nonaktifkan tombol sesi 3 jika sesi 1 atau 2 sudah ada
                             if (selectedSesi === '3') {
                                 const sesi1Available = await checkRuanganAvailability(tglPeminjaman, 1, idRuangan);
                                 const sesi2Available = await checkRuanganAvailability(tglPeminjaman, 2, idRuangan);
@@ -368,10 +398,6 @@
                                     return; // Hentikan eksekusi jika sesi 1 atau 2 sudah ada
                                 }
                             }
-
-                            // Jika sesi tersedia, ubah gaya tombol
-                            button.classList.add('bg-blue-500', 'text-white');
-                            button.classList.remove('bg-blue-100', 'text-blue-500');
                         } else {
                             alert('Ruangan tidak tersedia untuk sesi ini.');
                         }
@@ -380,18 +406,15 @@
                     }
                 });
             });
-
-            // Event listener untuk input tanggal
-            document.getElementById(`tgl_peminjaman_${formCount}`).addEventListener('change', () => {
-                const tglPeminjaman = document.getElementById(`tgl_peminjaman_${formCount}`).value;
-                const inputRuangan = document.getElementById(`ruangan_${formCount}`);
-                const idRuangan = inputRuangan.getAttribute('data-id');
-                if (tglPeminjaman && idRuangan) {
-                    disableUnavailableSessions(tglPeminjaman, idRuangan);
-                }
-            });
         }
 
+        function getTodayDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
         document.getElementById('addForm').addEventListener('click', createForm);
 
         document.getElementById('formContainer').addEventListener('click', function(event) {
@@ -411,14 +434,16 @@
             }
         }
 
-        async function disableUnavailableSessions(tanggal, ruangan) {
+        async function disableUnavailableSessions(tanggal, ruangan, formCount) {
             // Cek ketersediaan sesi 1 dan 2
             const sesi1Available = await checkRuanganAvailability(tanggal, 1, ruangan);
             const sesi2Available = await checkRuanganAvailability(tanggal, 2, ruangan);
 
-            const button1 = document.querySelector(`.time-button[data-sesi="1"]`);
-            const button2 = document.querySelector(`.time-button[data-sesi="2"]`);
-            const button3 = document.querySelector(`.time-button[data-sesi="3"]`);
+            // Seleksi tombol hanya di dalam formulir tertentu
+            const formElement = document.querySelector(`.form-item:nth-child(${formCount})`);
+            const button1 = formElement.querySelector(`.time-button[data-sesi="1"]`);
+            const button2 = formElement.querySelector(`.time-button[data-sesi="2"]`);
+            const button3 = formElement.querySelector(`.time-button[data-sesi="3"]`);
 
             // Nonaktifkan tombol sesi 1 dan 2 jika tidak tersedia
             button1.disabled = !sesi1Available;
@@ -446,6 +471,7 @@
                 button3.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
+
         document.getElementById('submitPeminjaman').addEventListener('click', async () => {
             const errors = [];
             const allData = []; // Array untuk menyimpan data dari semua form

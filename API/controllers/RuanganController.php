@@ -58,8 +58,8 @@ class RuangansController
         if ($stmt) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 // Pecah foto_ruangan menjadi array untuk setiap ruangan
-                $row['foto_ruangan'] = !empty($row['foto_ruangan']) 
-                    ? explode(', ', $row['foto_ruangan']) 
+                $row['foto_ruangan'] = !empty($row['foto_ruangan'])
+                    ? explode(', ', $row['foto_ruangan'])
                     : [];
 
                 // Tambahkan setiap hasil ruangan ke dalam array data
@@ -91,7 +91,7 @@ class RuangansController
                 r.kapasitas,
                 p.nama_peminjam,
                 GROUP_CONCAT(DISTINCT f.nama_fasilitas SEPARATOR ', ') AS nama_fasilitas,
-                GROUP_CONCAT(fr.nama_foto SEPARATOR ', ') AS foto_ruangan
+                GROUP_CONCAT(DISTINCT fr.nama_foto SEPARATOR ', ') AS foto_ruangan
             FROM 
                 ruangan r
             LEFT JOIN 
