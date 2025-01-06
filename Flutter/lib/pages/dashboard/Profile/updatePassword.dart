@@ -3,7 +3,7 @@ import 'package:sipit_app/config/nav.dart';
 import 'package:sipit_app/pages/dashboard/Profile/profile.dart';
 
 void main() {
-  runApp(UpdatePass());
+  runApp(const UpdatePass());
 }
 
 class UpdatePass extends StatelessWidget {
@@ -11,7 +11,7 @@ class UpdatePass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: ChangePasswordScreen(),
     );

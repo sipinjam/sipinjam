@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 10),
 
-                  Text(
+                  const Text(
                     'Ruangan Yang Dipinjam',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -183,9 +183,9 @@ class _HomePageState extends State<HomePage> {
                         final bookings = snapshot.data!;
                         print(bookings);
                         return ListView.builder(
-                          padding: EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(0),
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: bookings.length,
                           itemBuilder: (context, index) {
                             final booking = bookings[index];
@@ -347,7 +347,8 @@ class GedungCard extends StatelessWidget {
                 width: 200,
                 height: 170,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(8)),
                   image: DecorationImage(
                     image: NetworkImage(imageUrl),
                     fit: BoxFit.cover,

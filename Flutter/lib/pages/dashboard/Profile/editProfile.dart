@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class EditProfilePage extends StatefulWidget {
   final int userId; // ID user diterima dari halaman sebelumnya
-  const EditProfilePage({Key? key, required this.userId}) : super(key: key);
+  const EditProfilePage({super.key, required this.userId});
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -33,10 +33,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
         if (data['status'] == 'success') {
           final userData = data['data'];
           setState(() {
-            _nameController.text = userData?['nama_lengkap'] ?? 'Nama tidak ditemukan';
-            _emailController.text = userData?['email'] ?? 'Email tidak ditemukan';
-            _phoneController.text = userData?['no_telpon'] ?? 'Nomor telepon tidak ditemukan';
-
+            _nameController.text =
+                userData?['nama_lengkap'] ?? 'Nama tidak ditemukan';
+            _emailController.text =
+                userData?['email'] ?? 'Email tidak ditemukan';
+            _phoneController.text =
+                userData?['no_telpon'] ?? 'Nomor telepon tidak ditemukan';
           });
         } else {
           _showError("Failed to fetch user data: ${data['message']}");
@@ -51,43 +53,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   // Fungsi untuk update data user
   Future<void> _updateUserProfile() async {
-  if (_formKey.currentState!.validate()) {
-    try {
-      final updatedUser = {
-        "nama_lengkap": _nameController.text,
-        "email": _emailController.text,
-        "no_telpon": _phoneController.text,
-      };
+    if (_formKey.currentState!.validate()) {
+      try {
+        final updatedUser = {
+          "nama_lengkap": _nameController.text,
+          "email": _emailController.text,
+          "no_telpon": _phoneController.text,
+        };
 
-      // Gunakan URL yang sama dengan yang di Postman
-      final response = await http.patch(
-        Uri.parse('http://192.168.1.4:8000/api/routes/users.php/?id=${widget.userId}'),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: json.encode(updatedUser), // Pastikan body dalam format JSON
-      );
+        // Gunakan URL yang sama dengan yang di Postman
+        final response = await http.patch(
+          Uri.parse(
+              'http://192.168.1.4:8000/api/routes/users.php/?id=${widget.userId}'),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: json.encode(updatedUser), // Pastikan body dalam format JSON
+        );
 
-      // Debugging untuk melihat respon dari server
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+        // Debugging untuk melihat respon dari server
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${response.body}');
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['status'] == 'success') {
-          _showSuccess("Profile updated successfully!");
-          Navigator.pop(context, true); // Kembali ke halaman sebelumnya
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          if (data['status'] == 'success') {
+            _showSuccess("Profile updated successfully!");
+            Navigator.pop(context, true); // Kembali ke halaman sebelumnya
+          } else {
+            _showError("Failed to update profile: ${data['message']}");
+          }
         } else {
-          _showError("Failed to update profile: ${data['message']}");
+          _showError("Server error: ${response.statusCode}");
         }
-      } else {
-        _showError("Server error: ${response.statusCode}");
+      } catch (e) {
+        _showError("Error updating profile: $e");
       }
-    } catch (e) {
-      _showError("Error updating profile: $e");
     }
   }
-}
 
   // Future<void> _updateUserProfile() async {
   //   if (_formKey.currentState!.validate()) {
@@ -131,7 +134,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 //   },
 //   body: json.encode(updatedUser),
 // );
-
 
 //         if (response.statusCode == 200) {
 //           final data = json.decode(response.body);
@@ -211,7 +213,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     onPressed: () => Navigator.pop(context),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.blue[700], // Warna teks biru
-                      backgroundColor: Colors.white,   // Latar belakang putih
+                      backgroundColor: Colors.white, // Latar belakang putih
                     ),
                     child: const Text('Batal'),
                   ),
@@ -220,7 +222,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     onPressed: _updateUserProfile,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.blue[700], // Warna teks biru
-                      backgroundColor: Colors.white,   // Latar belakang putih
+                      backgroundColor: Colors.white, // Latar belakang putih
                     ),
                     child: const Text('Konfirmasi'),
                   ),

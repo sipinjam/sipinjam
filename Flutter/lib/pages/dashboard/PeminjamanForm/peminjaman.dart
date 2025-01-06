@@ -115,15 +115,21 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
 
     if (idKegiatan != null && idRuangan != null) {
       try {
-        final peminjaman = await PeminjamanDatasource().postPeminjaman(
-            idKegiatan,
-            idRuangan,
-            tanggalPeminjaman,
-            keterangan,
-            sesi,
-            idStatus);
+        List<Map<String, dynamic>> peminjamanList = [
+          {
+            'id_ruangan': idRuangan,
+            'id_kegiatan': idKegiatan,
+            'id_status': idStatus,
+            'tgl_peminjaman': tanggalPeminjaman.toIso8601String(),
+            'sesi_peminjaman': sesi,
+            'keterangan': keterangan,
+          }
+        ];
+        print('data yang dikirim: $peminjamanList');
+
+        final peminjaman =
+            await PeminjamanDatasource().postPeminjaman(peminjamanList);
         print(peminjaman);
-        // _confirmPeminjaman();
       } catch (e) {
         print(e);
       }
@@ -209,11 +215,11 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Peminjaman',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
@@ -225,7 +231,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Kegiatan',
                       style: TextStyle(
                         fontSize: 17,
@@ -233,7 +239,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 10),
                       width: MediaQuery.sizeOf(context).width,
                       child: DropdownMenu<int>(
                         width: MediaQuery.sizeOf(context).width,
@@ -263,14 +269,14 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Ruangan',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     DropdownMenu<int>(
@@ -297,21 +303,21 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                             label: ruangan.namaRuangan,
                           );
                         }).toList()),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     DInputMix(
                       boxColor: Colors.white,
                       controller: _datePickerController,
                       title: 'Tanggal Peminjaman',
-                      titleStyle: TextStyle(
+                      titleStyle: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                       crossAxisAlignmentTitle: CrossAxisAlignment.start,
                       titleGap: 10,
                       hint: 'Pilih Tanggal Pinjam',
-                      hintStyle: TextStyle(fontSize: 16),
+                      hintStyle: const TextStyle(fontSize: 16),
                       inputPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
                       boxRadius: 4,
                       boxBorder: Border.all(color: Colors.grey, width: 1),
@@ -332,11 +338,11 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                                 DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               _datePickerController.text = formattedDate;
-                              DateTime _selectedDate =
+                              DateTime selectedDate =
                                   DateTime.parse(formattedDate);
                               if (_selectedRuangan != null) {
                                 validateSessionAvailableability(
-                                    _selectedDate, _selectedRuangan!);
+                                    selectedDate, _selectedRuangan!);
                               }
                             });
                           }
@@ -347,15 +353,15 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          Text(
+                          const Text(
                             'Sesi',
                             style: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -383,7 +389,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                                         }
                                       : null,
                                   radius: 8,
-                                  child: Text(
+                                  child: const Text(
                                     'Sesi Pagi',
                                   )),
                               DButtonBorder(
@@ -408,12 +414,12 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                                         }
                                       : null,
                                   radius: 8,
-                                  child: Text(
+                                  child: const Text(
                                     'Sesi Siang',
                                   )),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Container(
@@ -437,11 +443,11 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                                       }
                                     : null,
                                 radius: 8,
-                                child: Text(
+                                child: const Text(
                                   'Full Day',
                                 )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           )
                         ],
@@ -454,8 +460,8 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                       title: 'Keterangan',
                       // inputFocusNode: _focusnodeKeterangan,
                       titleGap: 10,
-                      titleStyle:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      titleStyle: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.bold),
                       hint: 'Tulis Keterangan',
                       minLine: 3,
                       maxLine: 5,
@@ -464,7 +470,7 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             DButtonElevation(
@@ -474,8 +480,8 @@ class _PeminjamanPageState extends State<PeminjamanPage> {
                   _confirmPeminjaman();
                 },
                 radius: 16,
-                mainColor: Color(0xff22C55E),
-                child: Text(
+                mainColor: const Color(0xff22C55E),
+                child: const Text(
                   'Submit',
                   style: TextStyle(
                       fontSize: 17,
