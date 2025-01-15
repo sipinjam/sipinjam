@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sipit_app/config/app_constant.dart';
 
 class EditProfilePage extends StatefulWidget {
   final int userId; // ID user diterima dari halaman sebelumnya
@@ -16,7 +17,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  final String apiUrl = "http://192.168.1.4:8000/api/routes/users.php/?id=";
+  final String apiUrl = "${AppConstants.baseUrl}/users.php/?id=";
 
   @override
   void initState() {

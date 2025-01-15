@@ -9,7 +9,6 @@ import 'package:sipit_app/models/peminjamModel.dart';
 import 'package:sipit_app/pages/authentication/loginPage.dart';
 import 'package:sipit_app/pages/dashboard/Profile/editProfile.dart';
 import 'package:sipit_app/pages/dashboard/Profile/faq.dart';
-import 'package:sipit_app/pages/dashboard/Profile/updatePassword.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

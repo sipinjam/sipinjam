@@ -208,12 +208,13 @@
         let allEvents = [];
 
         function getColor(sesi) {
-            if(sesi === '1') {
+            if (sesi === '1') {
                 return 'rgb(241, 207, 77)';
             } else if (sesi === '2') {
                 return 'rgb(74, 222, 128)';
             } else if (sesi === '3') {
-                return 'rgb(239, 68, 68)';}
+                return 'rgb(239, 68, 68)';
+            }
         }
 
         async function fetchDataPeminjaman(roomName) {
@@ -304,63 +305,76 @@
         }
 
         function updateCalendarColors(events) {
-    const calendarDays = document.getElementById('calendar-days').children;
-    const today = new Date();
+            const calendarDays = document.getElementById('calendar-days').children;
+            const today = new Date();
 
-    for (let dayElement of calendarDays) {
-        const dateString = dayElement.dataset.date;
+            for (let dayElement of calendarDays) {
+                const dateString = dayElement.dataset.date;
 
-        // Mencari event yang cocok berdasarkan tanggal
-        const eventsForDay = events.filter(event =>
-            dateString === `${event.year}-${event.month.toString().padStart(2, '0')}-${event.day.toString().padStart(2, '0')}`
-        );
+                // Mencari event yang cocok berdasarkan tanggal
+                const eventsForDay = events.filter(event =>
+                    dateString === `${event.year}-${event.month.toString().padStart(2, '0')}-${event.day.toString().padStart(2, '0')}`
+                );
 
-        if (eventsForDay.length > 0) {
-            const eventDate = new Date(`${eventsForDay[0].year}-${eventsForDay[0].month}-${eventsForDay[0].day + 1}`);
-            let color;
-            
-            // Cek jika tanggal kegiatan sudah lewat
-            if (eventDate < today) {
-                color = "rgb(30, 64, 175)"; // Warna biru
-            } else if (eventsForDay.length > 1 || eventsForDay.some(event => event.sesi == '3')) {
-                // Cek jika ada lebih dari satu event atau terdapat sesi '3'
-                color = "rgb(239, 68, 68)"; // Warna merah
-            } else {
-                // Jika hanya ada satu event
-                color = getColor(eventsForDay[0].sesi);
-            }
+                if (eventsForDay.length > 0) {
+                    const eventDate = new Date(`${eventsForDay[0].year}-${eventsForDay[0].month}-${eventsForDay[0].day + 1}`);
+                    let color;
 
-            dayElement.style.backgroundColor = color;
-            dayElement.style.cursor = 'pointer';
+                    // Cek jika tanggal kegiatan sudah lewat
+                    if (eventDate < today) {
+                        color = "rgb(30, 64, 175)"; // Warna biru
+                    } else if (eventsForDay.length > 1 || eventsForDay.some(event => event.sesi == '3')) {
+                        // Cek jika ada lebih dari satu event atau terdapat sesi '3'
+                        color = "rgb(239, 68, 68)"; // Warna merah
+                    } else {
+                        // Jika hanya ada satu event
+                        color = getColor(eventsForDay[0].sesi);
+                    }
 
-            // Bersihkan marker sebelumnya
-            dayElement.innerHTML = dayElement.innerHTML.split('<div')[0]; 
+                    dayElement.style.backgroundColor = color;
+                    dayElement.style.cursor = 'pointer';
 
-            dayElement.addEventListener("click", () => {
-                document.getElementById('event-modal').classList.remove('hidden');
-                document.getElementById('event-title').textContent = eventsForDay.map(event => event.nama_kegiatan).join(', ');
-                document.getElementById('event-details').textContent = eventsForDay.map(event => `
+                    // Bersihkan marker sebelumnya
+                    dayElement.innerHTML = dayElement.innerHTML.split('<div')[0];
+
+                    dayElement.addEventListener("click", () => {
+                        document.getElementById('event-modal').classList.remove('hidden');
+                        document.getElementById('event-title').textContent = eventsForDay.map(event => event.nama_kegiatan).join(', ');
+                        document.getElementById('event-details').textContent = eventsForDay.map(event => `
 Nama Ruangan: ${event.nama_ruangan}
 Ormawa: ${event.nama_ormawa}
 Status: ${event.status}
 Sesi: ${event.sesi}`).join('\n\n');
-            });
-        } 
-    }
-}
-
-
-
+                    });
+                }
+            }
+        }
 
         async function handleSearchRoom() {
+            clearDataPeminjam();
             const selectedGedung = document.getElementById("buttonGedung").textContent.trim();
             if (selectedGedung === "--Gedung--" || selectedRoomName === "") {
                 showSnackbar("Harap pilih gedung dan ruangan terlebih dahulu.");
             } else {
                 showSnackbar(`Menampilkan data untuk ${selectedRoomName}.`);
+                
                 await fetchDataPeminjaman(selectedRoomName);
             }
         }
+
+        function clearDataPeminjam() {
+    const calendarDays = document.getElementById('calendar-days').children;
+    for (let dayElement of calendarDays) {
+        dayElement.style.backgroundColor = ""; // Hapus warna background
+        dayElement.style.cursor = ""; // Reset pointer
+        dayElement.removeEventListener("click", () => {}); // Hapus event listener
+    }
+
+    const eventModal = document.getElementById("event-modal");
+    if (eventModal) {
+        eventModal.classList.add("hidden"); // Tutup modal event jika terbuka
+    }
+}
 
         // Navigasi bulan
         document.getElementById("prev-month").addEventListener("click", () => {
